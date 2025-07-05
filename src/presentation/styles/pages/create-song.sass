@@ -1,0 +1,21 @@
+@use '../common/settings'
+@use '../common/mixins'
+
+@include mixins.md
+    .create-song-container
+        margin-top: 1rem
+    .form-container
+        align-items: center
+        display: flex
+        flex-direction: column
+        justify-content: center
+        margin-top: 1rem
+        padding-top: 0.3rem
+
+    .lyrics-textarea 
+        width: 100%
+        & > * > textarea
+            min-height: 50rem
+            width: 100%
+            text-align: center
+            font-size: 1.2rem

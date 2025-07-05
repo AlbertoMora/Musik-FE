@@ -1,0 +1,25 @@
+@use '../common/settings'
+@use '../common/mixins'
+
+@include mixins.md
+    .form
+        &-group
+            align-items: center
+            display: flex
+            margin-bottom: 1.5rem
+            justify-content: space-evenly
+            padding-left: 10rem
+            padding-right: 10rem
+            width: 100%
+
+    .input-background > * > input,
+    .input-background > * > textarea,
+    .input-background > * > button
+        background-color: color-mix(in srgb,var(--background), var(--foreground) 5%)
+        color: var(--foreground)
+
+    .combobox-background
+        background-color: color-mix(in srgb,var(--background), var(--foreground) 5%)
+        color: var(--foreground)
+        & > div > div:hover
+            background-color: color-mix(in srgb,var(--background), var(--foreground) 10%)

@@ -1,0 +1,151 @@
+@use 'sass:color';
+@use '../common/mixins';
+@use '../common/settings';
+
+
+
+@include mixins.md 
+    .navbar 
+        display: flex
+        flex-direction: column
+        width: 100%
+        position: sticky
+        top: 0
+        left: 0
+        z-index: 2    
+
+        &-container 
+            align-items: center
+            background-color: color.adjust(settings.$primary-color, $blackness: 20%) 
+            column-gap: 2rem
+            display: flex
+            @include mixins.BoxShadow(3)
+            height: 4rem
+            padding: 0 3rem
+            width: 100%
+        
+
+        &-logo 
+            align-items: center
+            cursor: pointer
+            display: flex
+            width: 2.5rem !important
+            justify-content: center
+            user-select: none
+        
+
+        &-login-button 
+            color: var(--third-color)
+            background-color: transparent
+            border: var(--third-color) 1px solid
+
+            &:hover 
+                color: var(--third-color)
+            
+        
+
+        &-link 
+            align-items: center
+            background-color: transparent
+            column-gap: 0.5rem
+            display: flex
+            font-weight: 500
+            justify-content: center
+        
+
+        &-links 
+            align-items: center
+            column-gap: 2rem
+            display: flex
+            justify-content: center
+            margin-left: auto
+        
+
+        &-search-section 
+            align-items: center
+            background-color: color-mix(in srgb,var(--light-color), black 5%)
+            color: color-mix(in srgb,var(--third-color), black 5%)
+            column-gap: 0.5rem
+            border-radius: 5px
+            cursor: pointer
+            display: flex
+            height: 2rem
+            justify-content: flex-start
+            padding: 0 1rem
+            min-width: 10rem
+
+            &:hover 
+                background-color: color-mix(in srgb,var(--light-color),  black 8%)
+            
+        
+
+        &-cart 
+            background-color: color-mix(in srgb,var(--light-color),  black 5%)
+            border-radius: 50%
+            cursor: pointer
+            padding: 0.5rem
+            user-select: none
+
+            &:hover 
+                background-color: color-mix(in srgb,var(--light-color),  black 8%)
+            
+        
+
+    .logo-link
+        margin-right: auto
+
+
+    .login-modal
+        &-container
+            align-items: center
+            background-color: rgba(0, 0, 0, 0.33)
+            display: flex
+            height: 100vh
+            justify-content: center
+            left: 0
+            position: fixed
+            top: 0
+            width: 100vw
+        &-form
+            align-items: center
+            background-color: var(--foreground)
+            border-radius: 15px
+            color: var(--background)
+            display: flex
+            flex-direction: column
+            justify-content: space-
+            gap: 1rem
+            padding: 4rem
+            position: relative
+            width: 25rem 
+            @include mixins.BoxShadow(5)
+        &-logo
+            width: 10rem !important
+
+    .ssnn
+        &-container
+            align-items: center
+            display: flex
+            justify-content: center
+            gap: 2rem
+            padding: 0
+        &-button
+            align-items: center
+            display: flex
+            background-color: #fff
+            color: var(--background)
+            border-radius: 50% 
+            justify-content: center
+            width: 2.5rem
+            height: 2.5rem
+            padding: 0 
+            text-align: center
+            @include mixins.BoxShadow(1)
+            &:hover
+                @include mixins.BoxShadow(2)
+
+.right-floating-button
+    position: absolute
+    top: 1rem
+    right: 1rem
+    left: auto

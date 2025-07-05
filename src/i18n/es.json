@@ -1,0 +1,75 @@
+{
+    "app": {
+        "title": "Musik",
+        "navbar": {
+            "searchbar": {
+                "placeholder": "Busca canciones, artistas o géneros..."
+            },
+            "auth": {
+                "button": "Iniciar Sesión",
+                "login": {
+                    "title": "Inicio de Sesión",
+                    "button": "Iniciar Sesión",
+                    "divider": "O",
+                    "username": {
+                        "label": "Correo Electrónico o Usuario",
+                        "placeholder": "Ex: usuario123 or usuario@correo.com"
+                    },
+                    "password": { "label": "Contraseña", "placeholder": "" },
+                    "signup_button": "Registrarse"
+                },
+                "signup": {
+                    "title": "Registro de Usuario",
+                    "button": "Registrarse",
+                    "username": {
+                        "label": "Usuario",
+                        "placeholder": "Ex: usuario123"
+                    },
+                    "email": {
+                        "label": "Correo Electrónico",
+                        "placeholder": "Ex: usuario@correo.com"
+                    },
+                    "password": {
+                        "label": "Contraseña",
+                        "placeholder": "Digita una contraseña"
+                    },
+                    "conf_pass": {
+                        "label": "Confirmar Contraseña",
+                        "placeholder": "Confirma tu contraseña"
+                    },
+                    "login_button": "Ir a Inicio de Sesión"
+                }
+            }
+        }
+    },
+    "lyrics": {
+        "create": {
+            "title": "Crear Letra",
+            "breadcrumb": {
+                "home": "Inicio",
+                "songs": "Canciones",
+                "lyrics": "Mis Letras",
+                "create": "Crear"
+            },
+            "form": {
+                "title": { "label": "Título", "placeholder": "Digita el título de la canción" },
+                "artist": {
+                    "label": "Artista",
+                    "placeholder": "Selecciona el artista de la canción"
+                },
+                "key": {
+                    "label": "Tonalidad",
+                    "placeholder": "Selecciona la tonalidad de la canción"
+                },
+                "genre": { "label": "Género", "placeholder": "Selecciona el género de la canción" },
+                "bpm": { "label": "Tempo", "placeholder": "Digita el tempo de la canción (BPM)" },
+                "lyrics": {
+                    "label": "Letra",
+                    "placeholder": "Aquí puedes escribir la letra de la canción"
+                },
+                "save": "Guardar",
+                "cancel": "Cancelar"
+            }
+        }
+    }
+}

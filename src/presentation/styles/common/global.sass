@@ -1,0 +1,41 @@
+:root 
+    --background: #ededed
+    --foreground: #050a1d
+    --main-color: #050a1d
+    --secondary-color: #5234c0
+    --third-color: #3775e7
+    --gray-color: #dadada
+
+    --main-text-color: #070F2B
+    --white-text-color: #FFF
+
+@theme inline 
+    --color-background: var(--background)
+    --color-foreground: var(--foreground)
+    --font-sans: var(--font-geist-sans)
+    --font-mono: var(--font-geist-mono)
+
+
+@media(prefers-color-scheme: dark)
+    :root 
+        --background: #050a1d
+        --foreground: #ededed
+    
+
+
+body 
+    background: var(--background)
+    color: var(--foreground)
+    font-family: Arial, Helvetica, sans-serif
+
+
+html,
+body 
+    margin: 0
+    padding: 0
+
+
+.j-left
+    margin-right: auto
+.j-right
+    margin-left: auto

@@ -1,0 +1,60 @@
+{
+    "app": {
+        "title": "Musik",
+        "navbar": {
+            "searchbar": {
+                "placeholder": "Search songs, artists, genres..."
+            },
+            "auth": {
+                "button": "Sign In",
+                "login": {
+                    "title": "Login Form",
+                    "button": "Sign In",
+                    "divider": "Or",
+                    "username": {
+                        "label": "Email or Username",
+                        "placeholder": "Ex: user123 or user@mail.com"
+                    },
+                    "password": { "label": "Password", "placeholder": "" },
+                    "signup_button": "Sign Up"
+                },
+                "signup": {
+                    "title": "Sign Up Form",
+                    "button": "Sign Up",
+                    "username": {
+                        "label": "Username",
+                        "placeholder": "Ex: user123"
+                    },
+                    "email": { "label": "Email", "placeholder": "Ex: user@mail.com" },
+                    "password": { "label": "Password", "placeholder": "" },
+                    "conf_pass": {
+                        "label": "Confirm Password",
+                        "placeholder": "Confirm your password"
+                    },
+                    "login_button": "Go to Login"
+                }
+            }
+        }
+    },
+    "lyrics": {
+        "create": {
+            "title": "Create Lyrics",
+            "breadcrumb": {
+                "home": "Home",
+                "songs": "Songs",
+                "lyrics": "My Lyrics",
+                "create": "Create"
+            },
+            "form": {
+                "title": { "label": "Title", "placeholder": "Enter song title" },
+                "artist": { "label": "Artist", "placeholder": "Enter artist name" },
+                "key": { "label": "Key", "placeholder": "Enter musical key" },
+                "genre": { "label": "Genre", "placeholder": "Enter genre" },
+                "bpm": { "label": "BPM", "placeholder": "Enter beats per minute" },
+                "lyrics": { "label": "Lyrics", "placeholder": "Enter song lyrics" },
+                "save": "Save",
+                "cancel": "Cancel"
+            }
+        }
+    }
+}

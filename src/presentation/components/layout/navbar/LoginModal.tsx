@@ -21,11 +21,20 @@ import { I18nTypes } from '@/i18n/dictionaries';
 interface ILoginModalProps {
     isOpen: boolean;
     setSignUpState: (value: boolean) => void;
+    setDfaModalState: (value: boolean) => void;
     setOwnState: (value: boolean) => void;
     i18n: I18nTypes['app']['navbar']['auth']['login'];
+    setUserMail: (value: string) => void;
 }
 
-const LoginModal = ({ isOpen, setSignUpState, setOwnState, i18n }: ILoginModalProps) => {
+const LoginModal = ({
+    isOpen,
+    setSignUpState,
+    setDfaModalState,
+    setOwnState,
+    i18n,
+    setUserMail,
+}: ILoginModalProps) => {
     const form = useForm(loginFormConfig);
     const [shouldShowAlert, setShouldShowAlert] = useState(false);
 
@@ -47,7 +56,14 @@ const LoginModal = ({ isOpen, setSignUpState, setOwnState, i18n }: ILoginModalPr
             });
             if (!challengeRes) return setShouldShowAlert(true);
 
-            location.reload();
+            if (challengeRes.shouldVerifySession) {
+                setUserMail(challengeRes.sendTo ?? '');
+                setDfaModalState(true);
+                form.reset();
+                setOwnState(false);
+            } else {
+                location.reload();
+            }
         }
     };
 

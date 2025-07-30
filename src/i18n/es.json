@@ -42,6 +42,10 @@
                         "placeholder": "Confirma tu contraseña"
                     },
                     "login_button": "Ir a Inicio de Sesión"
+                },
+                "dfa": {
+                    "title": "Segundo Factor de Autenticación",
+                    "caption": "Hemos enviado un código secreto a la dirección de correo electrónico:"
                 }
             }
         }

@@ -34,7 +34,6 @@ export const signInChallengeAction = async (challengeInfo: ISignInChallengeModel
     const data = await authAdapter.signInChallenge(challengeInfo);
     if (!data) return null;
 
-    console.log(data);
     if (!data.shouldVerifySession) {
         await setSessionCookie(data);
     }
@@ -43,7 +42,6 @@ export const signInChallengeAction = async (challengeInfo: ISignInChallengeModel
 
 const setSessionCookie = async (data: ISessionResponseDTO) => {
     const tokenData = getTokenData<ISessionDataModel>(data.accessToken);
-    console.log(data);
 
     const cookieStore = await cookies();
     cookieStore.set(authConstants.sessionCookieKey, data.accessToken, {

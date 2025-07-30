@@ -36,4 +36,5 @@ export interface ISessionResponseDTO {
     shouldVerifySession: boolean;
     accessToken: string;
     refreshToken: string;
+    sendTo?: string;
 }

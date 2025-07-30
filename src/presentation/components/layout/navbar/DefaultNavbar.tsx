@@ -4,23 +4,15 @@ import React, { useState } from 'react';
 import { Anchor, Image, Menu, MenuTarget, MenuDropdown, MenuItem, Button } from '@mantine/core';
 
 import '../../../styles/components/navbar.sass';
-import LoginModal, { ILogin18nProps } from './LoginModal';
+import LoginModal from './LoginModal';
 import { IconLogin2 } from '@tabler/icons-react';
-import SignUpModal, { ISignUp18nProps } from './SignUpModal';
-
-interface I18nNavbarProps {
-    searchbar: {
-        placeholder: string;
-    };
-    auth: {
-        login: ILogin18nProps;
-        signup: ISignUp18nProps;
-    };
-}
+import SignUpModal from './SignUpModal';
+import DfaModal from './DfaModal';
+import { I18nTypes } from '@/i18n/dictionaries';
 
 interface INavbarProps {
     isLogged: boolean;
-    i18n: I18nNavbarProps;
+    i18n: I18nTypes['app']['navbar'];
 }
 
 interface INavigationConfigItems {
@@ -68,6 +60,8 @@ const navbarLinks = navigationConfig.map((n, i) => (
 const DefaultNavbar = ({ isLogged, i18n }: INavbarProps) => {
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
     const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(false);
+    const [isDfaModalOpen, setIsDfaModalOpen] = useState(false);
+    const [userMail, setUserMail] = useState('');
 
     return (
         <nav className='navbar'>
@@ -100,12 +94,21 @@ const DefaultNavbar = ({ isLogged, i18n }: INavbarProps) => {
                 isOpen={isLoginModalOpen}
                 setSignUpState={setIsSignUpModalOpen}
                 setOwnState={setIsLoginModalOpen}
+                setUserMail={setUserMail}
+                setDfaModalState={setIsDfaModalOpen}
             />
             <SignUpModal
                 i18n={i18n.auth.signup}
                 isOpen={isSignUpModalOpen}
                 setLoginModalState={setIsLoginModalOpen}
                 setOwnState={setIsSignUpModalOpen}
+            />
+            <DfaModal
+                userMail={userMail}
+                i18n={i18n.auth.dfa}
+                setUserMail={setUserMail}
+                active={isDfaModalOpen}
+                setOwnState={setIsDfaModalOpen}
             />
         </nav>
     );

@@ -12,13 +12,16 @@ export class AuthAdapterFromMicro implements IAuthGateway {
     public static readonly AUTH_MICRO_URI = process.env.AUTH_MICRO_URI;
     public async signUp(user: ISignUpModel) {
         try {
-            const res = await fetch(`${AuthAdapterFromMicro.AUTH_MICRO_URI}/v1/auth/signup`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(user),
-            });
+            const res = await fetch(
+                `${AuthAdapterFromMicro.AUTH_MICRO_URI}/v1/authentication/signup`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(user),
+                }
+            );
             return await this.getResponseData<ISessionResponseDTO>(res);
         } catch (e) {
             console.log(e);
@@ -29,7 +32,7 @@ export class AuthAdapterFromMicro implements IAuthGateway {
     public async signIn(userInfo: ISignInModel) {
         try {
             const res = await webRequest(
-                `${AuthAdapterFromMicro.AUTH_MICRO_URI}/v1/auth/login`
+                `${AuthAdapterFromMicro.AUTH_MICRO_URI}/v1/authentication/login`
             ).post(userInfo);
             return await this.getResponseData<ISignInDigitalSignDTO>(res);
         } catch (e) {
@@ -41,7 +44,7 @@ export class AuthAdapterFromMicro implements IAuthGateway {
     public async signInChallenge(user: ISignInChallengeModel) {
         try {
             const res = await webRequest(
-                `${AuthAdapterFromMicro.AUTH_MICRO_URI}/v1/auth/login-challenge`
+                `${AuthAdapterFromMicro.AUTH_MICRO_URI}/v1/authentication/login-challenge`
             ).post(user);
             return await this.getResponseData<ISessionResponseDTO>(res);
         } catch (e) {

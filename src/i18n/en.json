@@ -16,7 +16,11 @@
                         "placeholder": "Ex: user123 or user@mail.com"
                     },
                     "password": { "label": "Password", "placeholder": "" },
-                    "signup_button": "Sign Up"
+                    "signup_button": "Sign Up",
+                    "errorModal": {
+                        "title": "Invalid User or Password",
+                        "caption": "The username or password has not been validated correctly."
+                    }
                 },
                 "signup": {
                     "title": "Sign Up Form",

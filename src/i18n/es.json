@@ -16,7 +16,11 @@
                         "placeholder": "Ex: usuario123 or usuario@correo.com"
                     },
                     "password": { "label": "Contraseña", "placeholder": "" },
-                    "signup_button": "Registrarse"
+                    "signup_button": "Registrarse",
+                    "errorModal": {
+                        "title": "Usuario o Contraseña inválidos",
+                        "caption": "El usuario o la contraseña no han sido validados correctamente"
+                    }
                 },
                 "signup": {
                     "title": "Registro de Usuario",

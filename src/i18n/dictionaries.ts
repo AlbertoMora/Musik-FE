@@ -1,5 +1,8 @@
 import { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers';
 import 'server-only';
+import i18nTypesModel from './en.json';
+
+export type I18nTypes = typeof i18nTypesModel;
 
 export const DEFAULT_LANG = 'en';
 export const LOCALE_HEADER = 'x-locale';

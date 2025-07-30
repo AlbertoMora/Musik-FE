@@ -1,8 +1,9 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import H1 from '../../headings/H1';
-import { Button, TextInput, Divider, Image, PasswordInput } from '@mantine/core';
+import { Button, TextInput, Divider, Image, PasswordInput, Alert } from '@mantine/core';
 import {
+    IconAlertHexagon,
     IconBrandFacebook,
     IconBrandGoogle,
     IconBrandX,
@@ -10,31 +11,23 @@ import {
     IconUserPlus,
     IconX,
 } from '@tabler/icons-react';
-import { I18nInputText } from '@/types/format-types';
 import { useForm } from '@mantine/form';
 import { loginFormConfig } from './formConfig';
 import { generateKeyPair, signValue } from '@/utils/crypto-utils';
 import { signInAction, signInChallengeAction } from '@/infrastructure/adapters/auth/auth-actions';
 import { v4 as uuid } from 'uuid';
-
-export interface ILogin18nProps {
-    title: string;
-    button: string;
-    divider: string;
-    username: I18nInputText;
-    password: I18nInputText;
-    signup_button: string;
-}
+import { I18nTypes } from '@/i18n/dictionaries';
 
 interface ILoginModalProps {
     isOpen: boolean;
     setSignUpState: (value: boolean) => void;
     setOwnState: (value: boolean) => void;
-    i18n: ILogin18nProps;
+    i18n: I18nTypes['app']['navbar']['auth']['login'];
 }
 
 const LoginModal = ({ isOpen, setSignUpState, setOwnState, i18n }: ILoginModalProps) => {
     const form = useForm(loginFormConfig);
+    const [shouldShowAlert, setShouldShowAlert] = useState(false);
 
     const onFormSubmit = async () => {
         form.validate();
@@ -42,7 +35,7 @@ const LoginModal = ({ isOpen, setSignUpState, setOwnState, i18n }: ILoginModalPr
         if (form.isValid()) {
             const { username, password } = form.values;
             const loginRes = await signInAction({ username, password });
-            if (!loginRes) return alert('Username or Password not valid'); //TODO: Replace with an info tab
+            if (!loginRes) return setShouldShowAlert(true);
 
             const { pubKey } = await generateKeyPair();
             const signedNonce = await signValue(loginRes.nonce);
@@ -52,7 +45,7 @@ const LoginModal = ({ isOpen, setSignUpState, setOwnState, i18n }: ILoginModalPr
                 sessionId: loginRes.sessionId,
                 signedNonce,
             });
-            if (!challengeRes) return alert('Username or Password not valid'); //TODO: Replace with an info tab
+            if (!challengeRes) return setShouldShowAlert(true);
 
             location.reload();
         }
@@ -76,6 +69,9 @@ const LoginModal = ({ isOpen, setSignUpState, setOwnState, i18n }: ILoginModalPr
                         <IconX />
                     </button>
                     <H1>{i18n.title}</H1>
+                    {shouldShowAlert && (
+                        <LoginModalAlert i18n={i18n.errorModal} setIsActive={setShouldShowAlert} />
+                    )}
                     <TextInput
                         className='text-center w-full'
                         label={i18n.username.label}
@@ -128,6 +124,25 @@ const LoginModal = ({ isOpen, setSignUpState, setOwnState, i18n }: ILoginModalPr
                 </form>
             </div>
         )
+    );
+};
+
+interface ILoginModalAlertProps {
+    setIsActive: (value: boolean) => void;
+    i18n: ILoginModalProps['i18n']['errorModal'];
+}
+
+const LoginModalAlert = ({ setIsActive, i18n }: ILoginModalAlertProps) => {
+    return (
+        <Alert
+            variant='light'
+            title={i18n.title}
+            color='red'
+            withCloseButton
+            onClose={() => setIsActive(false)}
+            icon={<IconAlertHexagon />}>
+            {i18n.caption}
+        </Alert>
     );
 };
 

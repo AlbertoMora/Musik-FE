@@ -10,6 +10,7 @@ import { cookies } from 'next/headers';
 import { getTokenData } from '@/utils/jwt-utils';
 import { ISessionDataModel } from '@/infrastructure/models/SessionModel';
 import { ISignInModel } from '../../../domain/auth/auth-gateway';
+import { authConstants } from '@/constants/auth-constants';
 
 export const signUpAction = async (user: ISignUpModel) => {
     const authAdapter = new AuthAdapterFromMicro();
@@ -33,6 +34,7 @@ export const signInChallengeAction = async (challengeInfo: ISignInChallengeModel
     const data = await authAdapter.signInChallenge(challengeInfo);
     if (!data) return null;
 
+    console.log(data);
     if (!data.shouldVerifySession) {
         await setSessionCookie(data);
     }
@@ -41,9 +43,10 @@ export const signInChallengeAction = async (challengeInfo: ISignInChallengeModel
 
 const setSessionCookie = async (data: ISessionResponseDTO) => {
     const tokenData = getTokenData<ISessionDataModel>(data.accessToken);
+    console.log(data);
 
     const cookieStore = await cookies();
-    cookieStore.set('session', data.accessToken, {
+    cookieStore.set(authConstants.sessionCookieKey, data.accessToken, {
         httpOnly: true,
         secure: true,
         expires: tokenData.exp,

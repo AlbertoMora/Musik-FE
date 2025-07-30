@@ -6,6 +6,7 @@ import '../presentation/styles/common/global.sass';
 import { createTheme, MantineProvider } from '@mantine/core';
 import { cookies, headers } from 'next/headers';
 import { getI18n } from '@/i18n/dictionaries';
+import { authConstants } from '@/constants/auth-constants';
 
 const theme = createTheme({
     /** Put your mantine theme override here */
@@ -19,7 +20,8 @@ export default async function RootLayout({
     const {
         app: { navbar },
     } = (await getI18n(headers)) ?? {};
-    const sessionToken = (await cookies()).get('session')?.value;
+    const cookieStore = await cookies();
+    const sessionToken = cookieStore.get(authConstants.sessionCookieKey)?.value;
     return (
         <html lang='en' suppressHydrationWarning>
             <head></head>

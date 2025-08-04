@@ -1,6 +1,7 @@
 'use server';
 
 import {
+    ICheckMfaModel,
     ISessionResponseDTO,
     ISignInChallengeModel,
     ISignUpModel,
@@ -40,15 +41,28 @@ export const signInChallengeAction = async (challengeInfo: ISignInChallengeModel
     return data;
 };
 
-const setSessionCookie = async (data: ISessionResponseDTO) => {
+export const checkMfaAction = async (checkMfaInfo: ICheckMfaModel) => {
+    const authAdapter = new AuthAdapterFromMicro();
+    const data = await authAdapter.checkMfa(checkMfaInfo);
+    if (!data) return null;
+
+    if (data.accessToken) {
+        await setSessionCookie(data);
+    }
+
+    return data;
+};
+
+async function setSessionCookie(data: ISessionResponseDTO) {
+    'use server';
     const tokenData = getTokenData<ISessionDataModel>(data.accessToken);
 
     const cookieStore = await cookies();
     cookieStore.set(authConstants.sessionCookieKey, data.accessToken, {
         httpOnly: true,
         secure: true,
-        expires: tokenData.exp,
+        expires: new Date(tokenData.exp * 1000),
         sameSite: 'strict',
         path: '/',
     });
-};
+}

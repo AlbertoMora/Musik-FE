@@ -45,7 +45,8 @@
                 },
                 "dfa": {
                     "title": "Segundo Factor de Autenticación",
-                    "caption": "Hemos enviado un código secreto a la dirección de correo electrónico:"
+                    "caption": "Hemos enviado un código secreto a la dirección de correo electrónico:",
+                    "isSecure": "Guardar este dispositivo como confiable"
                 }
             }
         }

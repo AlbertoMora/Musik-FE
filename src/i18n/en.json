@@ -39,7 +39,8 @@
                 },
                 "dfa": {
                     "title": "Multifactor Authentication",
-                    "caption": "We have sent a secret code to the email address:"
+                    "caption": "We have sent a secret code to the email address:",
+                    "isSecure": "Save this device as trusted."
                 }
             }
         }

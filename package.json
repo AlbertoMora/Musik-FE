@@ -27,6 +27,7 @@
     "@tiptap/pm": "^2.14.0",
     "@tiptap/react": "^2.14.0",
     "@tiptap/starter-kit": "^2.14.0",
+    "animate.css": "^4.1.1",
     "dayjs": "^1.11.13",
     "jsonwebtoken": "^9.0.2",
     "mantine-form-yup-resolver": "^2.0.0",

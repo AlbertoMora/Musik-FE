@@ -1,5 +1,7 @@
 import {
     IAuthGateway,
+    ICheckMfaModel,
+    IGenericMfaResponse,
     ISessionResponseDTO,
     ISignInChallengeModel,
     ISignInDigitalSignDTO,
@@ -47,6 +49,21 @@ export class AuthAdapterFromMicro implements IAuthGateway {
                 `${AuthAdapterFromMicro.AUTH_MICRO_URI}/v1/authentication/login-challenge`
             ).post(user);
             return await this.getResponseData<ISessionResponseDTO>(res);
+        } catch (e) {
+            console.log(e);
+            return null;
+        }
+    }
+
+    public async checkMfa(checkMfaInfo: ICheckMfaModel) {
+        try {
+            const res = await webRequest(
+                `${AuthAdapterFromMicro.AUTH_MICRO_URI}/v1/authentication/check-mfa`
+            ).post(checkMfaInfo);
+            const data = (await res.json()) as ISessionResponseDTO & IGenericMfaResponse;
+            if (data.status !== responseCodes.ok && (!data.attempts || data.attempts < 3))
+                return null;
+            return data;
         } catch (e) {
             console.log(e);
             return null;

@@ -2,6 +2,9 @@ export interface IAuthGateway {
     signUp: (user: ISignUpModel) => Promise<ISessionResponseDTO | null>;
     signIn: (userInfo: ISignInModel) => Promise<ISignInDigitalSignDTO | ISessionResponseDTO | null>;
     signInChallenge?: (challengeInfo: ISignInChallengeModel) => Promise<ISessionResponseDTO | null>;
+    checkMfa: (
+        mfaInfo: ICheckMfaModel
+    ) => Promise<ISessionResponseDTO | IGenericMfaResponse | null>;
 }
 
 export interface ISignUpModel {
@@ -16,6 +19,13 @@ export interface ISignUpModel {
 export interface ISignInModel {
     username: string;
     password: string;
+}
+
+export interface ICheckMfaModel {
+    code: string;
+    signature: string;
+    sessionId: string;
+    shouldDeviceSafe: boolean;
 }
 
 export interface ISignInChallengeModel {
@@ -37,4 +47,9 @@ export interface ISessionResponseDTO {
     accessToken: string;
     refreshToken: string;
     sendTo?: string;
+}
+
+export interface IGenericMfaResponse {
+    status: string;
+    attempts: number;
 }

@@ -1,24 +1,38 @@
 const devicePK = 'device-pk';
 const devicePbK = 'device-pbk';
+const deviceIdKey = 'device-id';
 const algorithmConfig = {
     name: 'ECDSA',
     namedCurve: 'P-256',
 };
+import { v4 as uuid } from 'uuid';
 
 export const generateKeyPair = async () => {
+    const currentPbk = await getFromIndexedDB<CryptoKey>(devicePbK);
+
+    if (currentPbk) {
+        const pubKey64 = await getBase64PublicKey(currentPbk);
+        return { pubKey: pubKey64, keyPair: null };
+    }
+
     const keyPair = await crypto.subtle.generateKey(algorithmConfig, false, ['sign', 'verify']);
 
-    saveKeyToDB(keyPair.privateKey, devicePK);
-    saveKeyToDB(keyPair.publicKey, devicePbK);
+    saveToDB(keyPair.privateKey, devicePK);
+    saveToDB(keyPair.publicKey, devicePbK);
 
-    const pubKey = await crypto.subtle.exportKey('spki', keyPair.publicKey);
-    const pubKey64 = btoa(String.fromCharCode(...new Uint8Array(pubKey)));
+    const pubKey64 = await getBase64PublicKey(keyPair.publicKey);
 
     return { pubKey: pubKey64, keyPair };
 };
 
+const getBase64PublicKey = async (publicKey: CryptoKey) => {
+    const pubKey = await crypto.subtle.exportKey('spki', publicKey);
+    const pubKey64 = btoa(String.fromCharCode(...new Uint8Array(pubKey)));
+    return pubKey64;
+};
+
 export const signValue = async (value: string) => {
-    const key = await getKeyFromIndexedDB(devicePK);
+    const key = await getFromIndexedDB<CryptoKey>(devicePK);
     const encoder = new TextEncoder();
 
     const signature = await crypto.subtle.sign(
@@ -32,7 +46,7 @@ export const signValue = async (value: string) => {
     return btoa(String.fromCharCode(...derSign));
 };
 
-const saveKeyToDB = (key: CryptoKey, keyName: string) => {
+const saveToDB = <T>(value: T, key: string) => {
     return new Promise<void>((resolve, reject) => {
         const request = indexedDB.open('auth-db', 1);
         request.onupgradeneeded = () => {
@@ -40,23 +54,32 @@ const saveKeyToDB = (key: CryptoKey, keyName: string) => {
         };
         request.onsuccess = () => {
             const tx = request.result.transaction('keys', 'readwrite');
-            tx.objectStore('keys').put(key, keyName);
+            tx.objectStore('keys').put(value, key);
             tx.oncomplete = () => resolve();
             tx.onerror = () => reject(new Error(tx.error?.message ?? 'Transaction error'));
         };
     });
 };
 
-const getKeyFromIndexedDB = (keyName: string): Promise<CryptoKey> => {
+const getFromIndexedDB = <T>(keyName: string): Promise<T> => {
     return new Promise((resolve, reject) => {
         const request = indexedDB.open('auth-db', 1);
         request.onsuccess = () => {
             const tx = request.result.transaction('keys', 'readonly');
             const keyRequest = tx.objectStore('keys').get(keyName);
-            keyRequest.onsuccess = () => resolve(keyRequest.result);
+            keyRequest.onsuccess = () => resolve(keyRequest.result as T);
             keyRequest.onerror = () => reject(new Error(tx.error?.message ?? 'Transaction error'));
         };
     });
+};
+
+export const generateDeviceId = async () => {
+    const storedDeviceId = await getFromIndexedDB<string>(deviceIdKey);
+    if (storedDeviceId) return storedDeviceId;
+
+    const deviceId = uuid();
+    await saveToDB<string>(deviceId, deviceIdKey);
+    return deviceId;
 };
 
 const toDER = (rawSig: Uint8Array): Uint8Array => {

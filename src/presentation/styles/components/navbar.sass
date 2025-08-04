@@ -108,9 +108,9 @@
             width: 100vw
         &-dfa-form
             align-items: center
-            background-color: var(--foreground)
+            background-color: color-mix(in srgb, var(--background) 90%, var(--foreground));
             border-radius: 15px
-            color: var(--background)
+            color: var(--foreground)
             display: flex
             flex-direction: column
             justify-content: space-
@@ -121,9 +121,9 @@
             @include mixins.BoxShadow(5)
         &-form
             align-items: center
-            background-color: var(--foreground)
+            background-color: color-mix(in srgb, var(--background) 90%, var(--foreground));
             border-radius: 15px
-            color: var(--background)
+            color: var(--foreground)
             display: flex
             flex-direction: column
             justify-content: space-
@@ -145,7 +145,7 @@
         &-button
             align-items: center
             display: flex
-            background-color: #fff
+            background-color: var(--foreground)
             color: var(--background)
             border-radius: 50% 
             justify-content: center
@@ -153,6 +153,13 @@
             height: 2.5rem
             padding: 0 
             text-align: center
+            border: none;
+            font-weight: bold;
+            font-family: sans-serif;
+            cursor: pointer;
+            transition-property: background-color
+            transition-duration: 0.25s
+            transition-delay: 0.025s
             @include mixins.BoxShadow(1)
             &:hover
                 @include mixins.BoxShadow(2)
@@ -162,3 +169,22 @@
     top: 1rem
     right: 1rem
     left: auto
+
+
+.fb-btn
+    background-color: #1877f2;
+    color: #FFF;
+    &:hover
+        background-color: #156ad8;
+
+.x-btn
+    background-color: #000;
+    color: #FFF;
+    &:hover
+        background-color: #242424;
+
+.google-btn
+    background-color: #EA4335
+    color: #FFF
+    &:hover
+        background-color: #ce3c2f

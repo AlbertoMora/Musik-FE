@@ -62,6 +62,7 @@ const DefaultNavbar = ({ isLogged, i18n }: INavbarProps) => {
     const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(false);
     const [isDfaModalOpen, setIsDfaModalOpen] = useState(false);
     const [userMail, setUserMail] = useState('');
+    const [sessionId, setSessionId] = useState('');
 
     return (
         <nav className='navbar'>
@@ -96,6 +97,7 @@ const DefaultNavbar = ({ isLogged, i18n }: INavbarProps) => {
                 setOwnState={setIsLoginModalOpen}
                 setUserMail={setUserMail}
                 setDfaModalState={setIsDfaModalOpen}
+                setSessionId={setSessionId}
             />
             <SignUpModal
                 i18n={i18n.auth.signup}
@@ -109,6 +111,8 @@ const DefaultNavbar = ({ isLogged, i18n }: INavbarProps) => {
                 setUserMail={setUserMail}
                 active={isDfaModalOpen}
                 setOwnState={setIsDfaModalOpen}
+                sessionId={sessionId}
+                setSessionId={setSessionId}
             />
         </nav>
     );

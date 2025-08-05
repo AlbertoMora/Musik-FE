@@ -58,7 +58,7 @@ async function setSessionCookie(data: ISessionResponseDTO) {
     const tokenData = getTokenData<ISessionDataModel>(data.accessToken);
 
     const cookieStore = await cookies();
-    cookieStore.set(authConstants.sessionCookieKey, data.accessToken, {
+    cookieStore.set(authConstants.sessionCookieKey, `${data.accessToken}:${data.refreshToken}`, {
         httpOnly: true,
         secure: true,
         expires: new Date(tokenData.exp * 1000),
@@ -66,3 +66,28 @@ async function setSessionCookie(data: ISessionResponseDTO) {
         path: '/',
     });
 }
+
+export const isSessionActive = async () => {
+    'use server';
+
+    const cookieStore = await cookies();
+    const tokenData = cookieStore.get(authConstants.sessionCookieKey);
+
+    const [accessToken, refreshToken] = tokenData?.value.split(':') ?? [];
+
+    if (!accessToken || !refreshToken) return false;
+
+    const authAdapter = new AuthAdapterFromMicro();
+
+    const isSessionActive = await authAdapter.checkSession(accessToken);
+
+    if (isSessionActive) return true;
+
+    const refreshTokenRes = await authAdapter.refreshSession(refreshToken);
+
+    if (!refreshTokenRes) return false;
+
+    setSessionCookie(refreshTokenRes);
+
+    return true;
+};

@@ -5,6 +5,8 @@ export interface IAuthGateway {
     checkMfa: (
         mfaInfo: ICheckMfaModel
     ) => Promise<ISessionResponseDTO | IGenericMfaResponse | null>;
+    checkSession?: (accessToken: string) => Promise<boolean>;
+    refreshSession?: (refreshToken: string) => Promise<ISessionResponseDTO | null>;
 }
 
 export interface ISignUpModel {

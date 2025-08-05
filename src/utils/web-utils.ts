@@ -1,10 +1,11 @@
 export const webRequest = (url: string) => {
     return {
-        post: async <Q>(body: Q) => {
+        post: async <Q>(body: Q, headers?: HeadersInit) => {
             const res = await fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    ...headers,
                 },
                 body: JSON.stringify(body),
             });

@@ -14,16 +14,9 @@ export class AuthAdapterFromMicro implements IAuthGateway {
     public static readonly AUTH_MICRO_URI = process.env.AUTH_MICRO_URI;
     public async signUp(user: ISignUpModel) {
         try {
-            const res = await fetch(
-                `${AuthAdapterFromMicro.AUTH_MICRO_URI}/v1/authentication/signup`,
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(user),
-                }
-            );
+            const res = await webRequest(
+                `${AuthAdapterFromMicro.AUTH_MICRO_URI}/v1/authentication/signup`
+            ).post(user);
             return await this.getResponseData<ISessionResponseDTO>(res);
         } catch (e) {
             console.log(e);
@@ -64,6 +57,34 @@ export class AuthAdapterFromMicro implements IAuthGateway {
             if (data.status !== responseCodes.ok && (!data.attempts || data.attempts < 3))
                 return null;
             return data;
+        } catch (e) {
+            console.log(e);
+            return null;
+        }
+    }
+
+    public async checkSession(accessToken: string) {
+        try {
+            const res = await webRequest(
+                `${AuthAdapterFromMicro.AUTH_MICRO_URI}/v1/authentication/check-session-token`
+            ).post({}, { authorization: `Bearer ${accessToken}` });
+            const data = await this.getResponseData(res);
+
+            if (!data || data?.status !== responseCodes.ok) return false;
+
+            return true;
+        } catch (e) {
+            console.log(e);
+            return false;
+        }
+    }
+
+    public async refreshSession(refreshToken: string) {
+        try {
+            const res = await webRequest(
+                `${AuthAdapterFromMicro.AUTH_MICRO_URI}/v1/authentication/refresh-session`
+            ).post({}, { authorization: `Bearer ${refreshToken}` });
+            return await this.getResponseData<ISessionResponseDTO>(res);
         } catch (e) {
             console.log(e);
             return null;

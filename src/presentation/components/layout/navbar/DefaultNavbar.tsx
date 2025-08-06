@@ -23,39 +23,40 @@ interface INavigationConfigItems {
     requiredRole?: string;
 }
 
-const navigationConfig: INavigationConfigItems[] = [
+const navigationConfig = (i18n: I18nTypes['app']['navbar']): INavigationConfigItems[] => [
     {
-        title: 'Lyrics',
+        title: i18n.lyrics.title,
         children: [
             {
-                title: 'Create Lyrics',
-                url: '/create-lyrics',
+                title: i18n.lyrics.children.createLyrics,
+                url: '/lyrics/create',
             },
             {
-                title: 'Stats',
+                title: i18n.lyrics.children.stats,
                 url: '/lyrics/statistics',
             },
         ],
     },
 ];
 
-const navbarLinks = navigationConfig.map((n, i) => (
-    <Menu key={`${i}-${n.title}`}>
-        <MenuTarget>
-            <div className='navbar-item'>{n.title}</div>
-        </MenuTarget>
+const navbarLinks = (i18n: I18nTypes['app']['navbar']) =>
+    navigationConfig(i18n).map((n, i) => (
+        <Menu key={`${i}-${n.title}`}>
+            <MenuTarget>
+                <div className='navbar-item'>{n.title}</div>
+            </MenuTarget>
 
-        <MenuDropdown>
-            {n.children?.map((r, ix) => {
-                return r.url ? (
-                    <Anchor key={`${ix}${r.title}`} href={r.url}>
-                        <MenuItem>{r.title}</MenuItem>
-                    </Anchor>
-                ) : null;
-            })}
-        </MenuDropdown>
-    </Menu>
-));
+            <MenuDropdown>
+                {n.children?.map((r, ix) => {
+                    return r.url ? (
+                        <Anchor key={`${ix}${r.title}`} href={r.url}>
+                            <MenuItem>{r.title}</MenuItem>
+                        </Anchor>
+                    ) : null;
+                })}
+            </MenuDropdown>
+        </Menu>
+    ));
 
 const DefaultNavbar = ({ isLogged, i18n }: INavbarProps) => {
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
@@ -67,7 +68,7 @@ const DefaultNavbar = ({ isLogged, i18n }: INavbarProps) => {
     return (
         <nav className='navbar'>
             <div className='navbar-container'>
-                <Anchor className='logo-link'>
+                <Anchor href='/' className='logo-link'>
                     <Image
                         className='navbar-logo'
                         src='/resources/musik-logo1.png'
@@ -76,7 +77,7 @@ const DefaultNavbar = ({ isLogged, i18n }: INavbarProps) => {
                 </Anchor>
                 <div className='j-right'>
                     {isLogged ? (
-                        <>{navbarLinks}</>
+                        <>{navbarLinks(i18n)}</>
                     ) : (
                         <Button
                             size='sm'

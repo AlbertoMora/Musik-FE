@@ -42,9 +42,9 @@ const DfaModal = ({
             shouldDeviceSafe,
         });
 
-        if (!res) return setValue('');
+        if (res?.data?.attempts && res?.data?.attempts < 3) return setValue('');
 
-        if (res?.attempts && res?.attempts <= 3) return closeForm();
+        if (res?.data?.attempts && res?.data?.attempts >= 3) return closeForm();
 
         location.reload();
     };

@@ -31,7 +31,7 @@ const SignUpModal = ({ isOpen, setLoginModalState, setOwnState, i18n }: ISignUpM
             };
             form.setFieldValue('isFormLoading', true);
             const res = await signUpAction(signUpData);
-            if (!res) {
+            if (!res?.success) {
                 form.reset();
                 return alert('Session data was wrong');
             }

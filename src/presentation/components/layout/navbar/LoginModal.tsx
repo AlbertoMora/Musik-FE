@@ -48,22 +48,22 @@ const LoginModal = ({
         if (form.isValid()) {
             const { username, password } = form.values;
             const loginRes = await signInAction({ username, password });
-            if (!loginRes) return setShouldShowAlert(true);
+            if (!loginRes?.success || !loginRes?.data) return setShouldShowAlert(true);
 
             const { pubKey } = await generateKeyPair();
-            const signedNonce = await signValue(loginRes.nonce);
+            const signedNonce = await signValue(loginRes.data.nonce);
             const deviceId = await generateDeviceId();
             const challengeRes = await signInChallengeAction({
                 deviceId,
                 rsaPubKey: pubKey,
-                sessionId: loginRes.sessionId,
+                sessionId: loginRes.data.sessionId,
                 signedNonce,
             });
-            if (!challengeRes) return setShouldShowAlert(true);
+            if (!challengeRes?.success || !challengeRes?.data) return setShouldShowAlert(true);
 
-            if (challengeRes.shouldVerifySession) {
-                setUserMail(challengeRes.sendTo ?? '');
-                setSessionId(loginRes.sessionId);
+            if (challengeRes.data.shouldVerifySession) {
+                setUserMail(challengeRes.data.sendTo ?? '');
+                setSessionId(loginRes.data.sessionId);
                 setDfaModalState(true);
                 form.reset();
                 closeForm();
@@ -74,9 +74,6 @@ const LoginModal = ({
     };
 
     const closeForm = () => {
-        //TODO: Hacer que este manejo de las animaciones sea más genérico
-        /*TODO: Gestionar que cuando una animación se está ejecutando, no pueda ser redisparado el 
-        cambio de estado*/
         form.reset();
         setShouldClose(true);
     };

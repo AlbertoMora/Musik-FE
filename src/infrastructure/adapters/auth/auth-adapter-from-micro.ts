@@ -1,4 +1,5 @@
 import {
+    IActionResponse,
     IAuthGateway,
     ICheckMfaModel,
     IGenericMfaResponse,
@@ -9,7 +10,7 @@ import {
     ISignUpModel,
 } from '@/domain/auth/auth-gateway';
 import { IBasicWebResponse, responseCodes } from '@/types/web-types';
-import { webRequest } from '@/utils/web-utils';
+import { webErrors, webRequest } from '@/utils/web-utils';
 export class AuthAdapterFromMicro implements IAuthGateway {
     public static readonly AUTH_MICRO_URI = process.env.AUTH_MICRO_URI;
     public async signUp(user: ISignUpModel) {
@@ -17,10 +18,10 @@ export class AuthAdapterFromMicro implements IAuthGateway {
             const res = await webRequest(
                 `${AuthAdapterFromMicro.AUTH_MICRO_URI}/v1/authentication/signup`
             ).post(user);
-            return await this.getResponseData<ISessionResponseDTO>(res);
+            return await this.getResponseData<ISessionResponseDTO>(res, webErrors.auth01.id);
         } catch (e) {
             console.log(e);
-            return null;
+            return { success: false, reason: webErrors.srv01.id };
         }
     }
 
@@ -29,10 +30,10 @@ export class AuthAdapterFromMicro implements IAuthGateway {
             const res = await webRequest(
                 `${AuthAdapterFromMicro.AUTH_MICRO_URI}/v1/authentication/login`
             ).post(userInfo);
-            return await this.getResponseData<ISignInDigitalSignDTO>(res);
+            return await this.getResponseData<ISignInDigitalSignDTO>(res, webErrors.auth02.id);
         } catch (e) {
             console.log(e);
-            return null;
+            return { success: false, reason: webErrors.srv01.id };
         }
     }
 
@@ -41,10 +42,10 @@ export class AuthAdapterFromMicro implements IAuthGateway {
             const res = await webRequest(
                 `${AuthAdapterFromMicro.AUTH_MICRO_URI}/v1/authentication/login-challenge`
             ).post(user);
-            return await this.getResponseData<ISessionResponseDTO>(res);
+            return await this.getResponseData<ISessionResponseDTO>(res, webErrors.auth03.id);
         } catch (e) {
             console.log(e);
-            return null;
+            return { success: false, reason: webErrors.srv01.id };
         }
     }
 
@@ -55,11 +56,11 @@ export class AuthAdapterFromMicro implements IAuthGateway {
             ).post(checkMfaInfo);
             const data = (await res.json()) as ISessionResponseDTO & IGenericMfaResponse;
             if (data.status !== responseCodes.ok && (!data.attempts || data.attempts < 3))
-                return null;
-            return data;
+                return { success: false, data };
+            return { success: true, data };
         } catch (e) {
             console.log(e);
-            return null;
+            return { success: false, reason: webErrors.srv01.id };
         }
     }
 
@@ -68,14 +69,10 @@ export class AuthAdapterFromMicro implements IAuthGateway {
             const res = await webRequest(
                 `${AuthAdapterFromMicro.AUTH_MICRO_URI}/v1/authentication/check-session-token`
             ).post({}, { authorization: `Bearer ${accessToken}` });
-            const data = await this.getResponseData(res);
-
-            if (!data || data?.status !== responseCodes.ok) return false;
-
-            return true;
+            return await this.getResponseData(res, webErrors.auth05.id);
         } catch (e) {
             console.log(e);
-            return false;
+            return { success: false, reason: webErrors.srv01.id };
         }
     }
 
@@ -84,18 +81,22 @@ export class AuthAdapterFromMicro implements IAuthGateway {
             const res = await webRequest(
                 `${AuthAdapterFromMicro.AUTH_MICRO_URI}/v1/authentication/refresh-session`
             ).post({}, { authorization: `Bearer ${refreshToken}` });
-            return await this.getResponseData<ISessionResponseDTO>(res);
+            return await this.getResponseData<ISessionResponseDTO>(res, webErrors.auth05.id);
         } catch (e) {
             console.log(e);
-            return null;
+            return { success: false, reason: webErrors.srv01.id };
         }
     }
 
-    async getResponseData<T extends IBasicWebResponse>(res: Response) {
-        if (!res.ok) return null;
+    async getResponseData<T extends IBasicWebResponse>(
+        res: Response,
+        webError: string
+    ): Promise<IActionResponse<T>> {
+        if (!res.ok) return { success: false, reason: webErrors.srv01.id };
+
         const data = (await res.json()) as T;
-        if (data.status !== responseCodes.ok) return null;
-        return data;
+        if (data.status !== responseCodes.ok) return { success: false, reason: webError, data };
+        return { success: true, data };
     }
 }
 

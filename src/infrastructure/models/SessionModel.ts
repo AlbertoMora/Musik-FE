@@ -10,3 +10,10 @@ export interface ISessionDataModel {
     sessionId: string;
     exp: number;
 }
+
+export interface IRefreshTokenDataModel {
+    userId: string;
+    sessionId: string;
+    exp: number;
+    deviceId: string;
+}

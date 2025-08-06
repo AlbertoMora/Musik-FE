@@ -2,6 +2,13 @@
     "app": {
         "title": "Musik",
         "navbar": {
+            "lyrics": {
+                "title": "Letras",
+                "children": {
+                    "createLyrics": "Publicar Letra",
+                    "stats": "Estadísticas"
+                }
+            },
             "searchbar": {
                 "placeholder": "Busca canciones, artistas o géneros..."
             },

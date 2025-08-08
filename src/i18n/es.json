@@ -9,6 +9,14 @@
                     "stats": "Estadísticas"
                 }
             },
+            "account": {
+                "children": {
+                    "myAccount": "Mi Cuenta",
+                    "signout": {
+                        "button": "Cerrar Sesión"
+                    }
+                }
+            },
             "searchbar": {
                 "placeholder": "Busca canciones, artistas o géneros..."
             },

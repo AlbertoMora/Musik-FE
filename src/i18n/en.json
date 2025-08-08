@@ -9,6 +9,14 @@
                     "stats": "Stats"
                 }
             },
+            "account": {
+                "children": {
+                    "myAccount": "My Account",
+                    "signout": {
+                        "button": "Sign Out"
+                    }
+                }
+            },
             "searchbar": {
                 "placeholder": "Search songs, artists, genres..."
             },

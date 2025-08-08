@@ -21,9 +21,26 @@
             display: flex
             @include mixins.BoxShadow(3)
             height: 4rem
-            padding: 0 3rem
+            padding: 0 10rem
             width: 100%
-        
+
+        &-item
+            cursor: pointer
+            transition-property: background-color
+            transition-duration: 0.25s
+            &:hover
+                background-color: color-mix(in srgb,rgba(0, 0, 0, 0.5), black 5%)
+            &-dropdown
+                background-color: var(--background) !important
+                color: var(--foreground) !important
+            &-child
+                color: var(--foreground) !important
+                text-decoration: none
+                padding: 3rem 0
+                & button:hover
+                    background-color: color-mix(in srgb,var(--background), white 5%)
+                & *
+                    color: var(--foreground) !important
 
         &-logo 
             align-items: center
@@ -188,3 +205,19 @@
     color: #FFF
     &:hover
         background-color: #ce3c2f
+
+.account-menu
+    &-item
+        text-align: center !important
+    &-signout
+        display: flex
+        align-items: center
+        justify-content: center
+        padding: 2rem 
+        & button
+            background-color: settings.$danger-color
+            color: #FFF !important
+            transition-duration: 0.25s
+            transition-property: background-color
+            &:hover
+                background-color: color.adjust($color: settings.$danger-color, $lightness: -5%)

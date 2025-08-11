@@ -2,8 +2,8 @@
 
 import { ArtistsFromMicroAdapter } from './artists-from-micro-adapter';
 
-export const getArtistsAction = async (name: string) => {
+export const getArtistsAction = async (name: string, ammount: number, page: number) => {
     const artistAdapter = new ArtistsFromMicroAdapter();
-    const data = await artistAdapter.getArtists(name);
-    return data ?? [];
+    const data = await artistAdapter.getArtists(name, ammount, page);
+    return data;
 };

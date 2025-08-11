@@ -1,34 +1,21 @@
-import { IArtistGateway } from '@/domain/artists/artist-gateway';
-import { IArtistModel } from '@/infrastructure/models/ArtistModel';
+import { IArtistGateway, IGetArtistResponse } from '@/domain/artists/artist-gateway';
+import { SongsFromMicroAdapter } from '../songs/songs-from-micro-adapter';
+import { getResponseData, webRequest } from '@/utils/web-utils';
 
 export class ArtistsFromMicroAdapter implements IArtistGateway {
     public static readonly ARTIST_API_URI = process.env.SONG_MICRO_URI;
 
-    public async getArtists(name: string): Promise<IArtistModel[] | null> {
+    public async getArtists(name: string, ammount: number, page: number) {
         try {
-            const response = await fetch(
-                `${ArtistsFromMicroAdapter.ARTIST_API_URI}/v1/artists?name=${encodeURIComponent(
-                    name
-                )}`
-            );
-            const artists = await response.json();
-            if (!response.ok || !artists) {
-                return null;
-            }
-            return artists.map((artist: ArtistFromMicroDTO) => ({
-                id: artist.id,
-                name: artist.name,
-                imageUrl: artist.photo || '',
-            }));
+            const res = await webRequest(`${SongsFromMicroAdapter.SONG_API_URI}/v1/artists`).get({
+                name,
+                ammount: ammount.toString(),
+                page: page.toString(),
+            });
+            return await getResponseData<IGetArtistResponse>(res, 'art01');
         } catch (error) {
             console.error('Error fetching artists:', error);
-            return null;
+            return { success: false, reason: 'art01' };
         }
     }
-}
-
-interface ArtistFromMicroDTO {
-    id: string;
-    name: string;
-    photo: string;
 }

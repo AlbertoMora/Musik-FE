@@ -1,3 +1,6 @@
+import { IActionResponse } from '@/domain/auth/auth-gateway';
+import { DictionaryItem } from '@/types/format-types';
+import { IBasicWebResponse, responseCodes } from '@/types/web-types';
 export interface ErrorType {
     msg: string;
     id: string;
@@ -13,6 +16,34 @@ export const webRequest = (url: string) => {
                     ...headers,
                 },
                 body: JSON.stringify(body),
+            });
+            return res;
+        },
+        delete: async (id?: string | null, headers?: HeadersInit) => {
+            const composedUrl = id ? `${url}/${id}` : url;
+            const res = await fetch(composedUrl, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...headers,
+                },
+            });
+            return res;
+        },
+        get: async (params?: DictionaryItem<string>, headers?: HeadersInit) => {
+            const getUrl = new URL(url);
+
+            if (params)
+                Object.keys(params).forEach(key => {
+                    getUrl.searchParams.append(key, params[key]);
+                });
+
+            const res = await fetch(getUrl.toString(), {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...headers,
+                },
             });
             return res;
         },
@@ -129,3 +160,14 @@ export const webErrors = {
         id: 'srv01',
     },
 } as const satisfies Record<string, ErrorType>;
+
+export const getResponseData = async <T extends IBasicWebResponse>(
+    res: Response,
+    webError: string
+): Promise<IActionResponse<T>> => {
+    if (!res.ok) return { success: false, reason: webErrors.srv01.id };
+
+    const data = (await res.json()) as T;
+    if (data.status !== responseCodes.ok) return { success: false, reason: webError, data };
+    return { success: true, data };
+};

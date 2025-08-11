@@ -1,16 +1,24 @@
+import { IBasicWebResponse } from '@/types/web-types';
+
 export interface IAuthGateway {
     signUp: (user: ISignUpModel) => Promise<IActionResponse<ISessionResponseDTO>>;
     signIn: (
-        userInfo: ISignInModel
+        userInfo: ISignInModel,
+        userAgent: string
     ) => Promise<IActionResponse<ISignInDigitalSignDTO | ISessionResponseDTO>>;
     signInChallenge?: (
-        challengeInfo: ISignInChallengeModel
+        challengeInfo: ISignInChallengeModel,
+        userAgent: string
     ) => Promise<IActionResponse<ISessionResponseDTO>>;
     checkMfa: (
         mfaInfo: ICheckMfaModel
     ) => Promise<IActionResponse<ISessionResponseDTO & IGenericMfaResponse>>;
-    checkSession?: (accessToken: string) => Promise<IActionResponse<unknown>>;
-    refreshSession?: (refreshToken: string) => Promise<IActionResponse<ISessionResponseDTO>>;
+    checkSession?: (accessToken: string, userAgent: string) => Promise<IActionResponse<unknown>>;
+    refreshSession?: (
+        refreshToken: string,
+        userAgent: string
+    ) => Promise<IActionResponse<ISessionResponseDTO>>;
+    signOut: (accessToken: string) => Promise<IActionResponse<IBasicWebResponse>>;
 }
 
 export interface ISignUpModel {

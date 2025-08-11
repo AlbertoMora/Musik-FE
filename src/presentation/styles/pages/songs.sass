@@ -1,19 +1,29 @@
 @use '../common/mixins'
+@use '../common/settings'
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap')
 
-@include mixins.md 
-    .song-container 
-        align-items: stretch
-        display: flex
-        flex-direction: column
-        justify-content: stretch
-        padding: 4rem 20rem
+@include mixins.md
+    .song 
+        &-container 
+            align-items: stretch
+            font-family: 'Roboto Mono', 'Courier New', Courier, monospace
+            display: flex
+            flex-direction: column
+            justify-content: stretch
+            padding: 4rem 20rem
     
-    .song-info-layout
-        align-items: flex-start
-        display: flex
-        justify-content: space-between
+        &-info-layout
+            align-items: flex-start
+            display: flex
+            justify-content: space-between
+            gap: 2rem
 
-    .song-title-container 
-        display: flex
-        align-items: center
-        justify-content: space-between
+        &-title-container 
+            display: flex
+            align-items: center
+            justify-content: space-between
+            margin-bottom: 4rem
+        &-chord-container
+            background-color: settings.$info-color
+            border-radius: 0.2rem
+            

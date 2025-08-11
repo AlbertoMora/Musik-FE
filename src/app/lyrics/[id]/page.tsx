@@ -1,4 +1,4 @@
-import { SongsFromMicroAdapter } from '@/infrastructure/adapters/songs/songs-from-micro-adapter';
+import { getSongAction } from '@/infrastructure/adapters/songs/songs-actions';
 import { ISongModel } from '@/infrastructure/models/SongModel';
 import SongText from '@/presentation/components/SongText';
 
@@ -24,25 +24,10 @@ const defaultData: ISongModel = {
 const SongPage = async ({ params }: PageParams) => {
     const { id } = await params;
 
-    const songData: ISongModel = await (async () => {
-        if (!id) {
-            return defaultData;
-        }
+    const res = await getSongAction(id);
+    const songData: ISongModel = res.data ?? defaultData;
 
-        const songAdapter = new SongsFromMicroAdapter();
-
-        const song = await songAdapter.getSong(id);
-        if (!song) {
-            return defaultData;
-        }
-        return song;
-    })();
-
-    return (
-        <div>
-            <SongText {...songData} />
-        </div>
-    );
+    return <SongText {...songData} />;
 };
 
 export default SongPage;

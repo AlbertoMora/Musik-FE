@@ -55,13 +55,13 @@ const CreateSongForm = ({ forkedFrom, i18n }: ICreateSongFormProps) => {
         }
         setValue(true, artistLoadingKey);
 
-        const data = await getArtistsAction(value);
-        if (!data) {
+        const res = await getArtistsAction(value, 10, 1);
+        if (!res?.success || !res?.data) {
             setArtistList([]);
             return;
         }
         setValue(false, artistLoadingKey);
-        setArtistList(data);
+        setArtistList(res.data.artists);
     };
 
     const getRythmsList = async (value: string) => {
@@ -85,7 +85,6 @@ const CreateSongForm = ({ forkedFrom, i18n }: ICreateSongFormProps) => {
     };
 
     const submitForm = async () => {
-        console.log({ validate: form.validate(), isvalid: form.isValid() });
         if (!form.isValid()) {
             return;
         }
@@ -97,14 +96,13 @@ const CreateSongForm = ({ forkedFrom, i18n }: ICreateSongFormProps) => {
             genre: form.values.genre,
             bpm: form.values.bpm ? parseInt(form.values.bpm, 10) : 0,
             lyrics: form.values.lyrics || '',
-            sampleUri: undefined, // This can be set based on your logic
+            sampleUri: undefined,
         };
         const submitFormResponse = await postSongAction(songData);
-        if (!submitFormResponse) {
-            console.error('Failed to submit the form');
+        if (!submitFormResponse.success || !submitFormResponse?.data) {
+            alert('Failed to submit the form');
         } else {
-            console.log('Form submitted successfully');
-            // Optionally, reset the form or redirect the user
+            alert('Form submitted successfully');
             form.reset();
         }
     };
@@ -141,7 +139,6 @@ const CreateSongForm = ({ forkedFrom, i18n }: ICreateSongFormProps) => {
                     data={artistList.map((item: IArtistModel) => ({
                         value: item.id,
                         label: item.name,
-                        imageUrl: item.imageUrl,
                     }))}
                     value={form.values.artist}
                     loading={form.values.artistListLoading}

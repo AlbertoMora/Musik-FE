@@ -7,11 +7,12 @@ import {
     ISignUpModel,
 } from '@/domain/auth/auth-gateway';
 import { AuthAdapterFromMicro } from './auth-adapter-from-micro';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { getTokenData } from '@/utils/jwt-utils';
 import { IRefreshTokenDataModel } from '@/infrastructure/models/SessionModel';
 import { ISignInModel } from '../../../domain/auth/auth-gateway';
 import { authConstants } from '@/constants/auth-constants';
+import { commonsConstants } from '@/constants/commons-constants';
 
 export const signUpAction = async (user: ISignUpModel) => {
     const authAdapter = new AuthAdapterFromMicro();
@@ -24,7 +25,8 @@ export const signUpAction = async (user: ISignUpModel) => {
 
 export const signInAction = async (userInfo: ISignInModel) => {
     const authAdapter = new AuthAdapterFromMicro();
-    const res = await authAdapter.signIn(userInfo);
+    const userAgent = (await headers()).get('user-agent') ?? commonsConstants.unknown;
+    const res = await authAdapter.signIn(userInfo, userAgent);
     if (!res) return null;
 
     return res;
@@ -32,7 +34,8 @@ export const signInAction = async (userInfo: ISignInModel) => {
 
 export const signInChallengeAction = async (challengeInfo: ISignInChallengeModel) => {
     const authAdapter = new AuthAdapterFromMicro();
-    const res = await authAdapter.signInChallenge(challengeInfo);
+    const userAgent = (await headers()).get('user-agent') ?? commonsConstants.unknown;
+    const res = await authAdapter.signInChallenge(challengeInfo, userAgent);
     if (!res?.data) return null;
 
     if (!res.data.shouldVerifySession) {
@@ -53,7 +56,17 @@ export const checkMfaAction = async (checkMfaInfo: ICheckMfaModel) => {
     return res;
 };
 
-async function setSessionCookie(data: ISessionResponseDTO) {
+export const signOutAction = async () => {
+    const authAdapter = new AuthAdapterFromMicro();
+
+    const [accessToken] = await getSessionCookieValues();
+
+    const res = await authAdapter.signOut(accessToken);
+
+    return res.data;
+};
+
+export async function setSessionCookie(data: ISessionResponseDTO) {
     'use server';
     const refreshTokenData = getTokenData<IRefreshTokenDataModel>(data.refreshToken);
 
@@ -70,24 +83,18 @@ async function setSessionCookie(data: ISessionResponseDTO) {
 export const isSessionActive = async () => {
     'use server';
 
-    const cookieStore = await cookies();
-    const tokenData = cookieStore.get(authConstants.sessionCookieKey);
-
-    const [accessToken, refreshToken] = tokenData?.value.split(':') ?? [];
+    const [accessToken, refreshToken] = await getSessionCookieValues();
 
     if (!accessToken || !refreshToken) return false;
 
-    const authAdapter = new AuthAdapterFromMicro();
-
-    const isSessionActive = await authAdapter.checkSession(accessToken);
-
-    if (isSessionActive) return true;
-
-    const refreshTokenRes = await authAdapter.refreshSession(refreshToken);
-
-    if (!refreshTokenRes?.data) return false;
-
-    await setSessionCookie(refreshTokenRes.data);
-
     return true;
+};
+
+export const getSessionCookieValues = async () => {
+    const cookieStore = await cookies();
+    const tokenData = cookieStore.get(authConstants.sessionCookieKey);
+
+    const tokens = tokenData?.value?.split(':') ?? [];
+
+    return tokens;
 };

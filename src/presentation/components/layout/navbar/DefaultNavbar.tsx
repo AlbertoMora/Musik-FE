@@ -18,6 +18,8 @@ import { IconLogin2, IconUser } from '@tabler/icons-react';
 import SignUpModal from './SignUpModal';
 import DfaModal from './DfaModal';
 import { I18nTypes } from '@/i18n/dictionaries';
+import { signOutAction } from '@/infrastructure/adapters/auth/auth-actions';
+import { responseCodes } from '@/types/web-types';
 
 interface INavbarProps {
     isLogged: boolean;
@@ -100,8 +102,15 @@ interface IAccountMenuProps {
 }
 
 const AccountMenu = ({ i18n }: IAccountMenuProps) => {
+    const signOut = async () => {
+        const res = await signOutAction();
+        if (res?.status !== responseCodes.ok) return alert('Session not closed');
+
+        location.reload();
+    };
+
     return (
-        <Menu>
+        <Menu withArrow>
             <MenuTarget>
                 <Avatar color='grape' className='cursor-pointer'>
                     A
@@ -118,7 +127,9 @@ const AccountMenu = ({ i18n }: IAccountMenuProps) => {
                     </MenuItem>
                 </a>
                 <div className='account-menu-signout'>
-                    <Button type='button'>{i18n.children.signout.button}</Button>
+                    <Button type='button' onClick={signOut}>
+                        {i18n.children.signout.button}
+                    </Button>
                 </div>
             </MenuDropdown>
         </Menu>
@@ -143,7 +154,7 @@ const navigationConfig = (i18n: INavbarProps['i18n']): INavigationConfigItems[] 
 
 const navbarLinks = (i18n: INavbarProps['i18n']) =>
     navigationConfig(i18n).map((n, i) => (
-        <Menu key={`${i}-${n.title}`}>
+        <Menu withArrow key={`${i}-${n.title}`}>
             <MenuTarget>
                 <div className='navbar-item'>{n.title}</div>
             </MenuTarget>

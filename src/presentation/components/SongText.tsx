@@ -1,12 +1,11 @@
 'use client';
 import { ISongModel } from '@/infrastructure/models/SongModel';
-import React from 'react';
+import React, { useState } from 'react';
 import { v4 as uuid } from 'uuid';
 
 import '../styles/pages/songs.sass';
 import H1 from './headings/H1';
-import { Badge } from '@mantine/core';
-import { extractBracedValues } from '@/utils/text-utils';
+import { removeChords } from '../../utils/text-utils';
 
 const SongText = ({
     postedBy,
@@ -19,8 +18,12 @@ const SongText = ({
     sampleUri,
     bpm,
     songKey,
+    chords,
 }: ISongModel) => {
-    const lyricsByLine = lyrics.split('%%').map(e => ({ id: uuid(), value: e }));
+    const [fontSize, setFontSize] = useState(16);
+    const lyricsByLine = removeChords(lyrics)
+        .split('\n')
+        .map(e => ({ id: uuid(), value: e }));
 
     return (
         <div className='song-container'>
@@ -33,7 +36,8 @@ const SongText = ({
                 </div>
             </div>
             <div className='song-info-layout'>
-                <p>Tonalidad: {songKey}</p> <p>Ritmo: {genre}</p> <p>Tempo: {bpm}</p>
+                {songKey && <p>Tonalidad: {songKey}</p>} {genre && <p> Ritmo: {genre}</p>}{' '}
+                {bpm !== 0 && <p>Tempo: {bpm}</p>}
             </div>
 
             {sampleUri ? (
@@ -43,11 +47,14 @@ const SongText = ({
                 return (
                     <React.Fragment key={e.id}>
                         <p>
-                            {extractBracedValues(lyrics)
+                            {chords
                                 .filter(x => x.line === i)
                                 .map(c => (
-                                    <button style={getPadding(c.position)} key={c.value}>
-                                        <Badge>{c.value}</Badge>
+                                    <button
+                                        style={getPadding(c.position)}
+                                        key={`${c.key}-${c.line}-${c.position}`}
+                                        type='button'>
+                                        <span className='song-chord-container'>{c.key}</span>
                                     </button>
                                 ))}
                         </p>
@@ -57,13 +64,14 @@ const SongText = ({
             })}
             <br />
             {averageScore}
+            <div className='song-tools'></div>
         </div>
     );
 };
 
-const getPadding = (padding: number) => {
-    const finalPadding = padding - 2;
-    return { paddingLeft: `${finalPadding}rem` };
+const getPadding = (position: number) => {
+    const padding = position * 0.6;
+    return { paddingLeft: `${padding}rem` };
 };
 
 export default SongText;

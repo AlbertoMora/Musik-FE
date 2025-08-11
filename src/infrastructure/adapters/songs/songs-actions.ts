@@ -1,19 +1,18 @@
 'use server';
 import { ICreateSongViewModel } from '@/presentation/viewmodels/CreateSongViewModel';
-import { SongFromMicroDTO, SongsFromMicroAdapter } from './songs-from-micro-adapter';
+import { SongsFromMicroAdapter } from './songs-from-micro-adapter';
+import { getSessionCookieValues } from '../auth/auth-actions';
 
-export const postSongAction = async (song: ICreateSongViewModel): Promise<boolean> => {
-    const songDTO: Omit<SongFromMicroDTO, 'id' | 'posted_by'> = {
-        average_score: 0,
-        artist: song.artist,
-        fork_of: song.forkOf,
-        lyrics: song.lyrics,
-        name: song.title,
-        genre: song.genre,
-        sample_uri: song.sampleUri,
-        bpm: song.bpm,
-        key: song.key,
-    };
+export const postSongAction = async (song: ICreateSongViewModel) => {
     const songsAdapter = new SongsFromMicroAdapter();
-    return await songsAdapter.postSong(songDTO);
+    const [accessToken] = await getSessionCookieValues();
+
+    return await songsAdapter.postSong(song, accessToken);
+};
+
+export const getSongAction = async (id: string) => {
+    const songAdapter = new SongsFromMicroAdapter();
+    const res = await songAdapter.getSong(id);
+
+    return res;
 };

@@ -1,6 +1,9 @@
 import { IKey, ISongModel } from '@/infrastructure/models/SongModel';
-import { ISongGateway } from '../../../domain/songs/song-gateway';
+import { IGetSongResponseDTO, ISongGateway } from '../../../domain/songs/song-gateway';
 import { extractBracedValues } from '@/utils/text-utils';
+import { ICreateSongViewModel } from '@/presentation/viewmodels/CreateSongViewModel';
+import { getResponseData, webRequest } from '@/utils/web-utils';
+import { IBasicWebResponse } from '@/types/web-types';
 
 export class SongsFromMicroAdapter implements ISongGateway {
     public static readonly SONG_API_URI = process.env.SONG_MICRO_URI;
@@ -11,61 +14,39 @@ export class SongsFromMicroAdapter implements ISongGateway {
 
     public async getSong(id: string) {
         try {
-            const data = await fetch(`${SongsFromMicroAdapter.SONG_API_URI}/v1/songs/${id}`);
-            const song = await data.json();
-            if (!data.ok || !song) {
-                return null;
-            }
-            return this.wrapSongDTO(song as SongFromMicroDTO);
+            const res = await webRequest(
+                `${SongsFromMicroAdapter.SONG_API_URI}/v1/songs/${id}`
+            ).get();
+            const data = await getResponseData<IGetSongResponseDTO>(res, 'sng02');
+            if (!data.data || !data.success) return { success: false, reason: 'sng02' };
+            return { success: true, data: this.wrapSongDTO(data.data?.song) };
         } catch (e) {
             console.log(e);
-            return null;
+            return { success: false, reason: 'sng02' };
         }
     }
 
-    public async postSong(song: Omit<SongFromMicroDTO, 'id' | 'posted_by'>) {
+    public async postSong(song: ICreateSongViewModel, accessToken: string) {
         try {
-            const res = await fetch(`${SongsFromMicroAdapter.SONG_API_URI}/v1/songs`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(song),
-            });
-            if (!res.ok) {
-                console.error('Failed to post song:', res.statusText);
-                return false;
-            }
-            return true;
+            const res = await webRequest(`${SongsFromMicroAdapter.SONG_API_URI}/v1/songs`).post(
+                song,
+                { Authorization: `Bearer ${accessToken}` }
+            );
+            return getResponseData<IBasicWebResponse>(res, 'sng01');
         } catch (error) {
             console.error('Error posting song:', error);
-            return false;
+            return { success: false, reason: 'sng01' };
         }
     }
 
-    public async getArtists(name: string) {
-        try {
-            const data = await fetch(
-                `${SongsFromMicroAdapter.SONG_API_URI}/v1/artists?name=${encodeURIComponent(name)}`
-            );
-            const artists = await data.json();
-            if (!data.ok || !artists) {
-                return null;
-            }
-        } catch (error) {
-            console.error('Error fetching artists:', error);
-            return null;
-        }
-    }
-
-    private wrapSongDTO(song: SongFromMicroDTO): ISongModel {
+    private wrapSongDTO(song: IGetSongResponseDTO['song']): ISongModel {
         const songModel: ISongModel = {
-            postedBy: song.posted_by,
-            averageScore: song.average_score ?? 0,
-            artist: song.artist,
+            postedBy: song.posted_by ?? '',
+            averageScore: song.avg_rate ?? 0,
+            artist: song.artist_name,
             forkOf: song.fork_of,
             id: song.id,
-            chords: extractBracedValues(song.lyrics).map(
+            chords: extractBracedValues(song.lyrics_text).map(
                 key =>
                     ({
                         position: key.position,
@@ -73,27 +54,13 @@ export class SongsFromMicroAdapter implements ISongGateway {
                         line: key.line,
                     } as IKey)
             ),
-            lyrics: song.lyrics,
+            lyrics: song.lyrics_text,
             title: song.name,
-            genre: song.genre,
+            genre: song.genre ?? '',
             sampleUri: song.sample_uri,
-            bpm: song.bpm,
-            songKey: song.key,
+            bpm: song.bpm ?? 0,
+            songKey: song.key ?? '',
         };
         return songModel;
     }
-}
-
-export interface SongFromMicroDTO {
-    posted_by: string;
-    average_score?: number;
-    artist: string;
-    fork_of?: string;
-    id: string;
-    lyrics: string;
-    name: string;
-    genre: string;
-    sample_uri?: string;
-    bpm: number;
-    key: string;
 }

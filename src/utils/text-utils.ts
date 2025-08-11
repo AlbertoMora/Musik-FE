@@ -3,22 +3,28 @@ export const extractBracedValues = (text: string): IBracedValue[] => {
     const results: IBracedValue[] = [];
 
     lines.forEach((line, lineIndex) => {
-        const regex = /\{(.*?)\}/g;
+        const regex = /\[(.*?)\]/g;
         let match;
         let lastIndex = 0;
+        let lastMatchSize = 0;
+        let lastMatchInnerSize = 0;
         while ((match = regex.exec(line)) !== null) {
-            const currentIndex = match.index;
-            const position = currentIndex - lastIndex;
+            const position = match.index - lastIndex - lastMatchSize - lastMatchInnerSize;
             results.push({
                 value: match[1],
                 line: lineIndex,
-                position: position,
+                position,
             });
-            lastIndex = currentIndex;
+            lastIndex = match.index;
+            lastMatchSize = match[1].length + 2;
+            lastMatchInnerSize = match[1].length;
         }
     });
 
     return results;
+};
+export const removeChords = (lyrics: string) => {
+    return lyrics.replace(/\[[^\]]*\]/g, '').trim();
 };
 
 export interface IBracedValue {

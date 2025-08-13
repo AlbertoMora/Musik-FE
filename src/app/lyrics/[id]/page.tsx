@@ -1,6 +1,6 @@
 import { getSongAction } from '@/infrastructure/adapters/songs/songs-actions';
 import { ISongModel } from '@/infrastructure/models/SongModel';
-import SongText from '@/presentation/components/SongText';
+import SongText from '@/presentation/components/songs/SongText/SongText';
 
 interface PageParams {
     params: Promise<{ id: string }>;

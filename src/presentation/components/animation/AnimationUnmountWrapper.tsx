@@ -7,14 +7,18 @@ interface AnimatedUnmountProps {
     onUnmount?: () => void; // opcional
     enter?: string;
     exit?: string;
+    customClass?: string;
+    duration?: string;
 }
 
 export const AnimatedUnmountWrapper: React.FC<AnimatedUnmountProps> = ({
     show,
     children,
     onUnmount,
+    customClass,
     enter = 'animate__fadeIn',
     exit = 'animate__fadeOut',
+    duration = 'animate__fast',
 }) => {
     const [shouldRender, setShouldRender] = useState(show);
     const [animation, setAnimation] = useState(enter);
@@ -53,7 +57,7 @@ export const AnimatedUnmountWrapper: React.FC<AnimatedUnmountProps> = ({
     if (!shouldRender) return null;
 
     return (
-        <div ref={nodeRef} className={`animate__animated animate__fast ${animation}`}>
+        <div ref={nodeRef} className={`animate__animated ${duration} ${animation} ${customClass}`}>
             {children}
         </div>
     );

@@ -24,7 +24,11 @@ export default async function RootLayout({
     const isLogged = await isSessionActive();
     return (
         <html lang='en' suppressHydrationWarning>
-            <head></head>
+            <head>
+                <meta charSet='UTF-8'></meta>
+                <meta name='viewport' content='width=device-width, initial-scale=1.0'></meta>
+                <link rel='shortcut icon' href='/resources/musik-logo1.png' type='image/x-icon' />
+            </head>
             <body>
                 <MantineProvider theme={theme}>
                     <DefaultNavbar i18n={navbar} isLogged={!!isLogged} />

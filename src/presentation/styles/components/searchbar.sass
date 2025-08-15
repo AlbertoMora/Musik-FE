@@ -1,0 +1,57 @@
+.searchbar
+    &-container
+        display: flex
+        background-color: #FFF
+        border-radius: 2rem
+        border-color: var(--foreground)
+        position: relative
+        user-select: none
+        outline: none
+    &-input
+        color: #050a1d
+        width: 100%
+        user-select: none
+        outline: none
+        text-align: center
+        font-weight: 500
+    &-icon
+        color: #050a1d
+        position: absolute
+        top: 50%
+        right: 1rem
+        transform: translateY(-50%)
+    &-results
+        border: var(--foreground) 1px solid
+        position: absolute
+        background-color: color-mix(in srgb,var(--background), var(--foreground) 5%)
+        z-index: 3
+        padding: 2rem 1rem
+        width: 100%
+    &-sm 
+        height: 2.4rem
+        width: 20rem
+        & > .searchbar-results
+            top: 2.9rem
+        & > .searchbar-input
+            font-size: 0.9rem
+    &-md
+        height: 2.6rem
+        width: 25rem
+        & > .searchbar-results
+            top: 3.1rem
+        & > .searchbar-input
+            font-size: 1.1rem
+    &-lg
+        height: 2.8rem
+        width: 30rem
+        & > .searchbar-results
+            top: 3.3rem
+        & > .searchbar-input
+            font-size: 1.3rem
+    &-xl
+        height: 3rem
+        width: 35rem
+        & > .searchbar-results
+            top: 3.5rem
+        & > .searchbar-input
+            font-size: 1.5rem

@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import 'animate.css';
+import { animatedComponent, animations } from '@/constants/animation-constants';
 
 interface AnimatedUnmountProps {
     show: boolean;
@@ -16,9 +17,9 @@ export const AnimatedUnmountWrapper: React.FC<AnimatedUnmountProps> = ({
     children,
     onUnmount,
     customClass,
-    enter = 'animate__fadeIn',
-    exit = 'animate__fadeOut',
-    duration = 'animate__fast',
+    enter = animations.entrances.fadeIn,
+    exit = animations.exits.fadeOut,
+    duration,
 }) => {
     const [shouldRender, setShouldRender] = useState(show);
     const [animation, setAnimation] = useState(enter);
@@ -57,7 +58,9 @@ export const AnimatedUnmountWrapper: React.FC<AnimatedUnmountProps> = ({
     if (!shouldRender) return null;
 
     return (
-        <div ref={nodeRef} className={`animate__animated ${duration} ${animation} ${customClass}`}>
+        <div
+            ref={nodeRef}
+            className={`${animatedComponent} ${duration ?? ''} ${animation} ${customClass ?? ''}`}>
             {children}
         </div>
     );

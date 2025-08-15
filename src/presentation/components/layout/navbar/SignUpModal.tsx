@@ -8,6 +8,7 @@ import { signUpFormConfig } from './formConfig';
 import { signUpAction } from '@/infrastructure/adapters/auth/auth-actions';
 import { AnimatedUnmountWrapper } from '../../animation/AnimationUnmountWrapper';
 import { I18nTypes } from '@/i18n/dictionaries';
+import { animations } from '@/constants/animation-constants';
 
 interface ISignUpModalProps {
     isOpen: boolean;
@@ -55,8 +56,8 @@ const SignUpModal = ({ isOpen, setLoginModalState, setOwnState, i18n }: ISignUpM
                 <AnimatedUnmountWrapper
                     show={!shouldClose}
                     onUnmount={unmountAction}
-                    enter='animate__bounceInLeft'
-                    exit='animate__backOutRight'>
+                    enter={animations.entrances.bounceInUp}
+                    exit={animations.exits.backOutDown}>
                     <form className='login-modal-form'>
                         <Image
                             src='/resources/musik-logo1.png'

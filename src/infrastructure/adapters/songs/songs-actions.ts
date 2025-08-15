@@ -16,3 +16,7 @@ export const getSongAction = async (id: string) => {
 
     return res;
 };
+
+export const getSongsByNameAction = async (name: string) => {
+    return { success: true, data: [] };
+};

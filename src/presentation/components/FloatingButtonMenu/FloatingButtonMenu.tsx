@@ -4,6 +4,7 @@ import React, { ReactElement, useRef, useState } from 'react';
 import '../../styles/components/floating-button-menu.sass';
 import FloatingButtonItem from './FloatingButtonItem';
 import { AnimatedUnmountWrapper } from '../animation/AnimationUnmountWrapper';
+import { animations, animationSpeeds } from '@/constants/animation-constants';
 
 interface IFloatingButtonMenuProps {
     children: ReactElement<typeof FloatingButtonItem> | ReactElement<typeof FloatingButtonItem>[];
@@ -26,9 +27,9 @@ const FloatingButtonMenu = ({
             <AnimatedUnmountWrapper
                 show={show}
                 customClass='absolute'
-                enter='animate__bounceInUp'
-                exit='animate__backOutDown'
-                duration='animate__faster'>
+                enter={animations.entrances.bounceInUp}
+                exit={animations.exits.backOutDown}
+                duration={animationSpeeds.fastest}>
                 <div className='fbm-content'>{children}</div>
             </AnimatedUnmountWrapper>
             <Button

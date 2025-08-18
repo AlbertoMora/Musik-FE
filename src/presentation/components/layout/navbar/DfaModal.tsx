@@ -7,7 +7,7 @@ import { I18nTypes } from '@/i18n/dictionaries';
 import { AnimatedUnmountWrapper } from '../../animation/AnimationUnmountWrapper';
 import { signValue } from '@/utils/crypto-utils';
 import { checkMfaAction } from '@/infrastructure/adapters/auth/auth-actions';
-import { animations } from '@/constants/animation-constants';
+import { animations, animationSpeeds } from '@/constants/animation-constants';
 interface IDfaModalProps {
     i18n: I18nTypes['app']['navbar']['auth']['dfa'];
     userMail: string;
@@ -68,8 +68,9 @@ const DfaModal = ({
                 <AnimatedUnmountWrapper
                     show={!shouldClose}
                     onUnmount={unmountAction}
-                    enter={animations.entrances.bounceInUp}
-                    exit={animations.exits.backOutDown}>
+                    enter={animations.entrances.bounceInLeft}
+                    exit={animations.exits.backOutRight}
+                    duration={animationSpeeds.fast}>
                     <form className='login-modal-dfa-form'>
                         <button
                             type='button'

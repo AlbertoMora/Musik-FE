@@ -95,5 +95,23 @@
                 "cancel": "Cancelar"
             }
         }
+    },
+    "main": {
+        "searchbar": {
+            "label": "Busca una canción, artista o editor",
+            "results": {
+                "songs": {
+                    "title": "Canciones",
+                    "templateReplacement": "de"
+                },
+                "artists": {
+                    "title": "Artistas"
+                },
+                "users": {
+                    "title": "Editores"
+                },
+                "not_found": "No se han encontrado resultados"
+            }
+        }
     }
 }

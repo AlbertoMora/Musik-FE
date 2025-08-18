@@ -7,3 +7,7 @@ export const responseCodes = {
     clientError: 'REJECTED',
     serverError: 'ERROR',
 };
+
+export type HasIdType = {
+    id: string;
+};

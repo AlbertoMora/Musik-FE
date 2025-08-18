@@ -1,3 +1,4 @@
+import slugify from 'slugify';
 import { IKey } from '@/infrastructure/models/SongModel';
 
 export const extractBracedValues = (text: string): IBracedValue[] => {
@@ -80,6 +81,44 @@ export const replaceTones = (ammount: number, chords: IKey[]) => {
 
 export const removeChords = (lyrics: string) => {
     return lyrics.replace(/\[[^\]]*\]/g, '').trim();
+};
+
+export const getTemplateResult = <T extends Record<string, unknown>>(
+    template: string,
+    replacements: string[],
+    data: T
+) => {
+    let text = template;
+    replacements.forEach(r => {
+        text = text.replace('?', String(data[r]));
+    });
+    return text;
+};
+
+export const getLinkTemplateResult = <T extends Record<string, unknown>>(
+    template: string,
+    replacements: string[],
+    data: T
+) => {
+    let text = template;
+    replacements.forEach(r => {
+        const innerReplacements = r.split(',').map(re => String(data[re]));
+        const textToReplace = getSlugifiedValue(innerReplacements);
+        text = text.replace('?', textToReplace);
+    });
+    return text;
+};
+
+export const getSlugifiedValue = (props: string[]) => {
+    let text = '';
+    props.forEach((e, i) => {
+        text += `${e}${i !== props.length - 1 ? '-' : ''}`;
+    });
+    return slugify(text, {
+        strict: true,
+        trim: true,
+        lower: true,
+    });
 };
 
 export interface IBracedValue {

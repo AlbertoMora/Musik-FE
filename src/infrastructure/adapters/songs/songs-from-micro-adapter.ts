@@ -1,5 +1,9 @@
 import { IKey, ISongModel } from '@/infrastructure/models/SongModel';
-import { IGetSongResponseDTO, ISongGateway } from '../../../domain/songs/song-gateway';
+import {
+    IGetSongResponseDTO,
+    IGetSongsListResponseDTO,
+    ISongGateway,
+} from '../../../domain/songs/song-gateway';
 import { extractBracedValues } from '@/utils/text-utils';
 import { ICreateSongViewModel } from '@/presentation/viewmodels/CreateSongViewModel';
 import { getResponseData, webRequest } from '@/utils/web-utils';
@@ -36,6 +40,18 @@ export class SongsFromMicroAdapter implements ISongGateway {
         } catch (error) {
             console.error('Error posting song:', error);
             return { success: false, reason: 'sng01' };
+        }
+    }
+
+    public async getSongByName(name: string, limit: number, offset: number) {
+        try {
+            const res = await webRequest(
+                `${SongsFromMicroAdapter.SONG_API_URI}/v1/songs/by-name`
+            ).get({ name, limit: limit.toString(), offset: offset.toString() });
+            return getResponseData<IGetSongsListResponseDTO>(res, 'sng04');
+        } catch (error) {
+            console.error('Error posting song:', error);
+            return { success: false, reason: 'sng04' };
         }
     }
 

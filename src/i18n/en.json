@@ -80,5 +80,23 @@
                 "cancel": "Cancel"
             }
         }
+    },
+    "main": {
+        "searchbar": {
+            "label": "Search for a song, artist, or editor",
+            "results": {
+                "songs": {
+                    "title": "Songs",
+                    "templateReplacement": "by"
+                },
+                "artists": {
+                    "title": "Artists"
+                },
+                "users": {
+                    "title": "Editors"
+                },
+                "not_found": "No results found"
+            }
+        }
     }
 }

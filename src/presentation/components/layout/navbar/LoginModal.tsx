@@ -18,7 +18,7 @@ import { signInAction, signInChallengeAction } from '@/infrastructure/adapters/a
 
 import { I18nTypes } from '@/i18n/dictionaries';
 import { AnimatedUnmountWrapper } from '../../animation/AnimationUnmountWrapper';
-import { animations } from '@/constants/animation-constants';
+import { animations, animationSpeeds } from '@/constants/animation-constants';
 
 interface ILoginModalProps {
     isOpen: boolean;
@@ -89,8 +89,9 @@ const LoginModal = ({
                 <AnimatedUnmountWrapper
                     show={!shouldClose}
                     onUnmount={unmountAction}
-                    enter={animations.entrances.bounceInUp}
-                    exit={animations.exits.backOutDown}>
+                    enter={animations.entrances.bounceInLeft}
+                    exit={animations.exits.backOutRight}
+                    duration={animationSpeeds.fast}>
                     <form className='login-modal-form'>
                         <Image
                             src='/resources/musik-logo1.png'

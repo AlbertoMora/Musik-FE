@@ -1,4 +1,5 @@
 import { IActionResponse } from '@/domain/auth/auth-gateway';
+import { getSessionCookieValues } from '@/infrastructure/adapters/auth/auth-actions';
 import { DictionaryItem } from '@/types/format-types';
 import { IBasicWebResponse, responseCodes } from '@/types/web-types';
 export interface ErrorType {
@@ -8,12 +9,19 @@ export interface ErrorType {
 
 export const webRequest = (url: string) => {
     return {
-        post: async <Q>(body: Q, headers?: HeadersInit) => {
+        post: async <Q>(body: Q, headers?: HeadersInit, isAuth?: boolean) => {
+            let authHeaders = {};
+            if (isAuth) {
+                const [accessToken] = await getSessionCookieValues();
+                authHeaders = { authorization: `Bearer ${accessToken}` };
+            }
+
             const res = await fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     ...headers,
+                    ...authHeaders,
                 },
                 body: JSON.stringify(body),
             });

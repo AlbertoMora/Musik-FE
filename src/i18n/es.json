@@ -79,7 +79,9 @@
                 "title": { "label": "Título", "placeholder": "Digita el título de la canción" },
                 "artist": {
                     "label": "Artista",
-                    "placeholder": "Selecciona el artista de la canción"
+                    "placeholder": "Selecciona el artista de la canción",
+                    "not_found_create": "no existe, clic para crearlo",
+                    "typeToFind": "Digita para encontrar el artista"
                 },
                 "key": {
                     "label": "Tonalidad",
@@ -97,6 +99,10 @@
         }
     },
     "main": {
+        "head": {
+            "title": "Musik | Inicio",
+            "description": "Página de inicio de la web Musik"
+        },
         "searchbar": {
             "label": "Busca una canción, artista o editor",
             "results": {

@@ -7,12 +7,12 @@ import {
     ISignUpModel,
 } from '@/domain/auth/auth-gateway';
 import { AuthAdapterFromMicro } from './auth-adapter-from-micro';
-import { cookies, headers } from 'next/headers';
+import { cookies } from 'next/headers';
 import { getTokenData } from '@/utils/jwt-utils';
 import { IRefreshTokenDataModel } from '@/infrastructure/models/SessionModel';
 import { ISignInModel } from '../../../domain/auth/auth-gateway';
 import { authConstants } from '@/constants/auth-constants';
-import { commonsConstants } from '@/constants/commons-constants';
+import { getUserAgent } from '@/utils/server/request-utils';
 
 export const signUpAction = async (user: ISignUpModel) => {
     const authAdapter = new AuthAdapterFromMicro();
@@ -25,7 +25,7 @@ export const signUpAction = async (user: ISignUpModel) => {
 
 export const signInAction = async (userInfo: ISignInModel) => {
     const authAdapter = new AuthAdapterFromMicro();
-    const userAgent = (await headers()).get('user-agent') ?? commonsConstants.unknown;
+    const userAgent = await getUserAgent();
     const res = await authAdapter.signIn(userInfo, userAgent);
     if (!res) return null;
 
@@ -34,7 +34,7 @@ export const signInAction = async (userInfo: ISignInModel) => {
 
 export const signInChallengeAction = async (challengeInfo: ISignInChallengeModel) => {
     const authAdapter = new AuthAdapterFromMicro();
-    const userAgent = (await headers()).get('user-agent') ?? commonsConstants.unknown;
+    const userAgent = await getUserAgent();
     const res = await authAdapter.signInChallenge(challengeInfo, userAgent);
     if (!res?.data) return null;
 

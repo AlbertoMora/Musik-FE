@@ -1,5 +1,6 @@
 import { IKey, ISongModel } from '@/infrastructure/models/SongModel';
 import {
+    ICreateSongResponseDTO,
     IGetSongResponseDTO,
     IGetSongsListResponseDTO,
     ISongGateway,
@@ -7,7 +8,6 @@ import {
 import { extractBracedValues } from '@/utils/text-utils';
 import { ICreateSongViewModel } from '@/presentation/viewmodels/CreateSongViewModel';
 import { getResponseData, webRequest } from '@/utils/web-utils';
-import { IBasicWebResponse } from '@/types/web-types';
 
 export class SongsFromMicroAdapter implements ISongGateway {
     public static readonly SONG_API_URI = process.env.SONG_MICRO_URI;
@@ -36,7 +36,7 @@ export class SongsFromMicroAdapter implements ISongGateway {
                 song,
                 { Authorization: `Bearer ${accessToken}` }
             );
-            return getResponseData<IBasicWebResponse>(res, 'sng01');
+            return getResponseData<ICreateSongResponseDTO>(res, 'sng01');
         } catch (error) {
             console.error('Error posting song:', error);
             return { success: false, reason: 'sng01' };

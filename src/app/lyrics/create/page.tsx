@@ -6,6 +6,7 @@ import H1 from '@/presentation/components/headings/H1';
 
 import '@/presentation/styles/pages/create-song.sass';
 import '@/presentation/styles/components/forms.sass';
+import '@/presentation/styles/components/asyncacomplete.sass';
 import CreateSongForm from './CreateSongForm';
 import { headers } from 'next/headers';
 import { getI18n } from '@/i18n/dictionaries';

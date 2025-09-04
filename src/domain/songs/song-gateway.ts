@@ -14,12 +14,16 @@ export interface ISongGateway {
     postSong: (
         song: ICreateSongViewModel,
         accessToken: string
-    ) => Promise<IActionResponse<IBasicWebResponse>>;
+    ) => Promise<IActionResponse<ICreateSongResponseDTO>>;
 }
 
 export interface IGetSongResponseDTO {
     status: string;
     song: ISongRes;
+}
+
+export interface ICreateSongResponseDTO extends IBasicWebResponse {
+    slug: string;
 }
 
 export interface ISongRes {

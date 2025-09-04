@@ -6,12 +6,19 @@ import { headers } from 'next/headers';
 
 export default async function Home() {
     const { main } = (await getI18n(headers)) ?? {};
+
     return (
-        <div className='main-container'>
-            <Image src='/resources/musik-logo1.png' alt='Musik logo' width={150} height={150} />
-            <MusikSearchBar i18n={main} />
-            <div>Artist Section</div>
-            <div>Ad banner</div>
-        </div>
+        <>
+            <head>
+                <meta name='description' content={main.head.description} />
+                <title>{main.head.title}</title>
+            </head>
+            <div className='main-container'>
+                <Image src='/resources/musik-logo1.png' alt='Musik logo' width={150} height={150} />
+                <MusikSearchBar i18n={main} />
+                <div>Artist Section</div>
+                <div>Ad banner</div>
+            </div>
+        </>
     );
 }

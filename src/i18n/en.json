@@ -71,7 +71,12 @@
             },
             "form": {
                 "title": { "label": "Title", "placeholder": "Enter song title" },
-                "artist": { "label": "Artist", "placeholder": "Enter artist name" },
+                "artist": {
+                    "label": "Artist",
+                    "placeholder": "Enter artist name",
+                    "not_found_create": "not found, clic to create it",
+                    "typeToFind": "Type to find the artist"
+                },
                 "key": { "label": "Key", "placeholder": "Enter musical key" },
                 "genre": { "label": "Genre", "placeholder": "Enter genre" },
                 "bpm": { "label": "BPM", "placeholder": "Enter beats per minute" },
@@ -82,6 +87,10 @@
         }
     },
     "main": {
+        "head": {
+            "title": "Musik | Home",
+            "description": "Home page of Musik"
+        },
         "searchbar": {
             "label": "Search for a song, artist, or editor",
             "results": {

@@ -14,7 +14,10 @@ import {
     IconUser,
 } from '@tabler/icons-react';
 import { IArtistModel } from '@/infrastructure/models/ArtistModel';
-import { getArtistsAction } from '@/infrastructure/adapters/artists/artists-actions';
+import {
+    createArtistAction,
+    getArtistsAction,
+} from '@/infrastructure/adapters/artists/artists-actions';
 import AsyncAutocomplete from '@/presentation/components/forms/AsyncAutocomplete';
 import { formConfig } from './formConfig';
 import CommonCombobox from '@/presentation/components/forms/CommonCombobox';
@@ -55,7 +58,7 @@ const CreateSongForm = ({ forkedFrom, i18n }: ICreateSongFormProps) => {
         }
         setValue(true, artistLoadingKey);
 
-        const res = await getArtistsAction(value, 10, 1);
+        const res = await getArtistsAction(value, 10, 0);
         if (!res?.success || !res?.data) {
             setArtistList([]);
             return;
@@ -85,6 +88,7 @@ const CreateSongForm = ({ forkedFrom, i18n }: ICreateSongFormProps) => {
     };
 
     const submitForm = async () => {
+        form.validate();
         if (!form.isValid()) {
             return;
         }
@@ -102,8 +106,8 @@ const CreateSongForm = ({ forkedFrom, i18n }: ICreateSongFormProps) => {
         if (!submitFormResponse.success || !submitFormResponse?.data) {
             alert('Failed to submit the form');
         } else {
-            alert('Form submitted successfully');
             form.reset();
+            location.href = `/lyrics/${submitFormResponse.data.slug}`;
         }
     };
 
@@ -114,7 +118,7 @@ const CreateSongForm = ({ forkedFrom, i18n }: ICreateSongFormProps) => {
                     className='input-background'
                     label={
                         <div className='flex items-center gap-2'>
-                            <IconHeadphones size={15} /> {i18n.title.label}
+                            <IconHeadphones size={15} /> {i18n.title.label}*
                         </div>
                     }
                     id='name'
@@ -128,20 +132,26 @@ const CreateSongForm = ({ forkedFrom, i18n }: ICreateSongFormProps) => {
                     className='input-background'
                     label={
                         <div className='flex items-center gap-2'>
-                            <IconUser size={15} /> {i18n.artist.label}
+                            <IconUser size={15} /> {i18n.artist.label}*
                         </div>
                     }
                     id='artist'
                     type='text'
                     setValue={(newValue: string) => setValue(newValue, 'artist')}
                     fetchData={getArtistList}
-                    placeholder={i18n.artist.placeholder}
+                    i18n={i18n.artist}
                     data={artistList.map((item: IArtistModel) => ({
                         value: item.id,
                         label: item.name,
                     }))}
                     value={form.values.artist}
                     loading={form.values.artistListLoading}
+                    error={form.getInputProps('artist').error}
+                    dynamicCreate={{
+                        format: 'name',
+                        createAction: createArtistAction,
+                        property: 'artist',
+                    }}
                 />
                 <CommonCombobox
                     options={songKeyOptions}
@@ -165,7 +175,7 @@ const CreateSongForm = ({ forkedFrom, i18n }: ICreateSongFormProps) => {
                     }
                     id='genre'
                     type='text'
-                    placeholder={i18n.genre.placeholder}
+                    i18n={i18n.genre}
                     setValue={(newValue: string) => setValue(newValue, 'genre')}
                     fetchData={getRythmsList}
                     data={rythmList.map((item: IRythmModel) => ({

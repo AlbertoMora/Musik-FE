@@ -9,6 +9,27 @@
                     "stats": "Estadísticas"
                 }
             },
+            "repertoires": {
+                "title": "Repertorios",
+                "children": {
+                    "createRepertoire": "Crear Repertorio",
+                    "myRepertoires": "Mis Repertorios"
+                }
+            },
+            "books": {
+                "title": "Libros",
+                "children": {
+                    "createBook": "Crear Libro",
+                    "myBooks": "Mis Libros"
+                }
+            },
+            "folders": {
+                "title": "Colecciones",
+                "children": {
+                    "createFolder": "Crear Colección",
+                    "myFolders": "Mis Colecciones"
+                }
+            },
             "account": {
                 "children": {
                     "myAccount": "Mi Cuenta",

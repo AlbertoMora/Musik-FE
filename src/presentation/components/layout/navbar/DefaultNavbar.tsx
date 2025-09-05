@@ -150,6 +150,45 @@ const navigationConfig = (i18n: INavbarProps['i18n']): INavigationConfigItems[] 
             },
         ],
     },
+    {
+        title: i18n.repertoires.title,
+        children: [
+            {
+                title: i18n.repertoires.children.createRepertoire,
+                url: '/repertoires/create',
+            },
+            {
+                title: i18n.repertoires.children.myRepertoires,
+                url: '/repertoires/my-repertoires',
+            },
+        ],
+    },
+    {
+        title: i18n.folders.title,
+        children: [
+            {
+                title: i18n.folders.children.createFolder,
+                url: '/folders/create',
+            },
+            {
+                title: i18n.folders.children.myFolders,
+                url: '/folders/my-folders',
+            },
+        ],
+    },
+    {
+        title: i18n.books.title,
+        children: [
+            {
+                title: i18n.books.children.createBook,
+                url: '/books/create',
+            },
+            {
+                title: i18n.books.children.myBooks,
+                url: '/books/my-books',
+            },
+        ],
+    },
 ];
 
 const navbarLinks = (i18n: INavbarProps['i18n']) =>

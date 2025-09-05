@@ -9,6 +9,27 @@
                     "stats": "Stats"
                 }
             },
+            "repertoires": {
+                "title": "Repertoires",
+                "children": {
+                    "createRepertoire": "Create Repertoire",
+                    "myRepertoires": "My Repertoires"
+                }
+            },
+            "books": {
+                "title": "Books",
+                "children": {
+                    "createBook": "Create Book",
+                    "myBooks": "My Books"
+                }
+            },
+            "folders": {
+                "title": "Folders",
+                "children": {
+                    "createFolder": "Create Book",
+                    "myFolders": "My Folders"
+                }
+            },
             "account": {
                 "children": {
                     "myAccount": "My Account",

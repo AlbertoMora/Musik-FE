@@ -43,11 +43,11 @@ export class SongsFromMicroAdapter implements ISongGateway {
         }
     }
 
-    public async getSongByName(name: string, limit: number, offset: number) {
+    public async getSongByName(name: string, limit: number, offset: number, type?: string) {
         try {
             const res = await webRequest(
                 `${SongsFromMicroAdapter.SONG_API_URI}/v1/songs/by-name`
-            ).get({ name, limit: limit.toString(), offset: offset.toString() });
+            ).get({ name, limit: limit.toString(), offset: offset.toString(), type: type ?? '' });
             return getResponseData<IGetSongsListResponseDTO>(res, 'sng04');
         } catch (error) {
             console.error('Error posting song:', error);

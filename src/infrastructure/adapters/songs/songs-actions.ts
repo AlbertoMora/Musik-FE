@@ -17,7 +17,12 @@ export const getSongAction = async (id: string) => {
     return res;
 };
 
-export const getSongsByNameAction = async (name: string, limit: number, offset: number = 0) => {
+export const getSongsByNameAction = async (
+    name: string,
+    limit: number,
+    offset: number = 0,
+    type?: string
+) => {
     const songAdapter = new SongsFromMicroAdapter();
-    return await songAdapter.getSongByName(name, limit, offset);
+    return await songAdapter.getSongByName(name, limit, offset, type);
 };

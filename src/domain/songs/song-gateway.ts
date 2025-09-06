@@ -9,7 +9,8 @@ export interface ISongGateway {
     getSongByName: (
         name: string,
         limit: number,
-        offset: number
+        offset: number,
+        type?: string
     ) => Promise<IActionResponse<IGetSongsListResponseDTO>>;
     postSong: (
         song: ICreateSongViewModel,

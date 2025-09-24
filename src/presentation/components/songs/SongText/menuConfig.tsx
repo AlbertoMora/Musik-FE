@@ -1,31 +1,44 @@
-import { UseCounterHandlers } from '@mantine/hooks';
 import {
     IconCaretDown,
     IconCaretUp,
     IconLetterCase,
     IconMath1Divide2,
+    IconMicrophone2,
     IconMusic,
     IconMusicMinus,
     IconMusicPlus,
+    IconPlayerRecordFilled,
+    IconRefresh,
     IconTextGrammar,
+    IconUpload,
 } from '@tabler/icons-react';
+import { ISongtextStore } from './songTextStore';
 
-export const menuItems = (
-    fontSizeHandlers: UseCounterHandlers,
-    setChords: (ammount: number) => void
-) => [
+export const menuItems = ({
+    setCurrentTone,
+    increaseFontSize,
+    decreaseFontSize,
+    toggleRecordModal,
+    toggleUploadModal,
+    resetToneVariation,
+}: ISongtextStore) => [
     {
         Label: IconMusic,
-        name: 'MusicButton',
+        name: 'musicOptions',
         children: [
+            {
+                Label: <IconRefresh />,
+                name: 'resetTone',
+                onClick: resetToneVariation,
+            },
             {
                 Label: (
                     <>
                         <IconMusicPlus />1
                     </>
                 ),
-                name: 'oneToneUp',
-                onClick: () => setChords(2),
+                name: 'toneUp',
+                onClick: () => setCurrentTone(2),
             },
             {
                 Label: (
@@ -35,7 +48,7 @@ export const menuItems = (
                     </>
                 ),
                 name: 'halfToneUp',
-                onClick: () => setChords(1),
+                onClick: () => setCurrentTone(1),
             },
 
             {
@@ -46,7 +59,7 @@ export const menuItems = (
                     </>
                 ),
                 name: 'halfToneDown',
-                onClick: () => setChords(-1),
+                onClick: () => setCurrentTone(-1),
             },
             {
                 Label: (
@@ -54,8 +67,8 @@ export const menuItems = (
                         <IconMusicMinus />1
                     </>
                 ),
-                name: 'oneToneDown',
-                onClick: () => setChords(-2),
+                name: 'toneDown',
+                onClick: () => setCurrentTone(-2),
             },
         ],
     },
@@ -70,8 +83,8 @@ export const menuItems = (
                         <IconCaretUp size={15} />
                     </>
                 ),
-                name: 'FontSizeUp',
-                onClick: fontSizeHandlers.increment,
+                name: 'increaseFont',
+                onClick: increaseFontSize,
             },
             {
                 Label: (
@@ -80,8 +93,26 @@ export const menuItems = (
                         <IconCaretDown size={15} />
                     </>
                 ),
-                name: 'FontSizeDown',
-                onClick: fontSizeHandlers.decrement,
+                name: 'decreaseFont',
+                onClick: decreaseFontSize,
+            },
+        ],
+    },
+    {
+        Label: IconMicrophone2,
+        name: 'recordOptions',
+        children: [
+            {
+                Label: <IconPlayerRecordFilled />,
+                name: 'recordSample',
+                permissionsToShow: ['can_edit'],
+                onClick: toggleRecordModal,
+            },
+            {
+                Label: <IconUpload />,
+                name: 'uploadSample',
+                permissionsToShow: ['can_edit'],
+                onClick: toggleUploadModal,
             },
         ],
     },

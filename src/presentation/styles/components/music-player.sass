@@ -1,0 +1,33 @@
+.music-player
+    &-container
+        align-items: center
+        align-self: center
+        background-color: color-mix(in srgb,var(--background), var(--foreground) 5%)
+        border-radius: 15px
+        display: flex
+        gap: 1rem
+        justify-content: stretch
+        padding: 0.5em 1rem
+        position: relative
+        overflow: hidden
+        width: 40rem
+    &-stop-bottom
+        position: absolute !important
+        background-color: var(--foreground)
+        border-radius: 50%
+        bottom: -0.5rem
+        right: -0.2rem
+        z-index: 2
+        &:hover
+            background-color: color-mix(in srgb,var(--foreground), var(--background) 10%)
+    &-no-player
+        align-items: center
+        background-color: rgba(0,0,0,0.7)
+        backdrop-filter: blur(3px)
+        display: flex
+        height: 100%
+        justify-content: center
+        left: 0
+        position: absolute
+        width: 100%
+        z-index: 90

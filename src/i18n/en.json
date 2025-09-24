@@ -105,6 +105,37 @@
                 "save": "Save",
                 "cancel": "Cancel"
             }
+        },
+        "text": {
+            "labels": {
+                "postedBy": "Posted by",
+                "artist": "Artist",
+                "forkOf": "Fork of",
+                "key": "Key",
+                "rythm": "Rythm",
+                "bpm": "Beats per Minute"
+            },
+            "menuLabels": {
+                "musicOptions": "Music Options",
+                "toneUp": "Tone up",
+                "halfToneUp": "Half-tone up",
+                "halfToneDown": "Half-tone down",
+                "toneDown": "Tone down",
+                "textOptions": "Text Options",
+                "increaseFont": "Increase font size",
+                "decreaseFont": "Decrease font size",
+                "recordOptions": "Record Options",
+                "recordSample": "Record new sample",
+                "uploadSample": "Upload sample"
+            },
+            "musicPlayer": {
+                "noUrl": "This song doesn't have any sample",
+                "play": "Play",
+                "stop": "Stop",
+                "pause": "Pause",
+                "tenSecondsForward": "",
+                "tenSecondsBackward": ""
+            }
         }
     },
     "main": {

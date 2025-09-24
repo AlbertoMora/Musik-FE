@@ -131,7 +131,7 @@ const SectionMapper = ({ data, type }: ISectionMapperProps) => {
 
 const ArtistSkeleton = () => {
     return (
-        <div className='flex flex-col gap-y-1.5'>
+        <div className='flex flex-col gap-y-1.5 items-stretch justify-stretch w-full'>
             <Skeleton type={skeletonTypes.text} />
             <Skeleton type={skeletonTypes.text} />
             <Skeleton type={skeletonTypes.text} />

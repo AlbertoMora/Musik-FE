@@ -1,4 +1,4 @@
-import { Button } from '@mantine/core';
+import { ActionIcon, Tooltip } from '@mantine/core';
 import React, { ReactElement, useRef, useState } from 'react';
 
 import '../../styles/components/floating-button-menu.sass';
@@ -8,6 +8,7 @@ import { animations, animationSpeeds } from '@/constants/animation-constants';
 
 interface IFloatingButtonMenuProps {
     children: ReactElement<typeof FloatingButtonItem> | ReactElement<typeof FloatingButtonItem>[];
+    name: string;
     className?: string;
     buttonClassname?: string;
     buttonLabel?: React.ReactNode | string;
@@ -18,6 +19,7 @@ const FloatingButtonMenu = ({
     className,
     buttonClassname,
     buttonLabel,
+    name,
 }: IFloatingButtonMenuProps) => {
     const buttonRef = useRef(null);
     const [show, setShow] = useState(false);
@@ -32,13 +34,16 @@ const FloatingButtonMenu = ({
                 duration={animationSpeeds.fastest}>
                 <div className='fbm-content'>{children}</div>
             </AnimatedUnmountWrapper>
-            <Button
-                onClick={() => setShow(!show)}
-                className={`fbm-button ${buttonClassname}`}
-                type='button'
-                ref={buttonRef}>
-                {buttonLabel}
-            </Button>
+            <Tooltip label={name}>
+                <ActionIcon
+                    aria-label={name}
+                    onClick={() => setShow(!show)}
+                    className={`fbm-button ${buttonClassname}`}
+                    type='button'
+                    ref={buttonRef}>
+                    {buttonLabel}
+                </ActionIcon>
+            </Tooltip>
         </div>
     );
 };

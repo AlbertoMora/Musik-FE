@@ -1,17 +1,22 @@
 'use client';
 import { ISongModel } from '@/infrastructure/models/SongModel';
-import React, { useState } from 'react';
+import React, { useMemo } from 'react';
 import { v4 as uuid } from 'uuid';
 
 import '../../../styles/pages/songs.sass';
 import H1 from '../../headings/H1';
-import { removeChords, replaceTones } from '../../../../utils/text-utils';
-import FloatingButtonMenu from '../../FloatingButtonMenu/FloatingButtonMenu';
-import FloatingButtonItem from '../../FloatingButtonMenu/FloatingButtonItem';
-import { useCounter } from '@mantine/hooks';
-import { menuItems } from './menuConfig';
+import { removeChords } from '../../../../utils/text-utils';
+import { I18nTypes } from '@/i18n/dictionaries';
+import MusicPlayer from '../MusicPlayer';
+import SongTools from './SongTools';
+import { createSongtextStore, StoreContext } from './songTextStore';
+
+interface ISongTextProps extends ISongModel {
+    i18n: I18nTypes['lyrics']['text'];
+}
 
 const SongText = ({
+    id,
     postedBy,
     averageScore,
     artist,
@@ -23,76 +28,84 @@ const SongText = ({
     bpm,
     songKey,
     chords,
-}: ISongModel) => {
-    const [fontSize, handlers] = useCounter(16, { min: 8, max: 20 });
-    const [currentChords, setCurrentChords] = useState(chords);
-    const [currentTone, setCurrentTone] = useState(0);
+    i18n,
+}: ISongTextProps) => {
+    const useSongTextStore = useMemo(() => createSongtextStore(chords, id), [chords, id]);
+    const store = useSongTextStore();
 
     const lyricsByLine = removeChords(lyrics)
         .split('\n')
         .map(e => ({ id: uuid(), value: e }));
 
-    const changeTone = (ammount: number) => {
-        const newChords = replaceTones(ammount, currentChords);
-        setCurrentTone(currentTone + ammount);
-        setCurrentChords(newChords);
-    };
-
-    //TODO: Add i18n
     return (
-        <div className='song-container'>
-            <div className='song-title-container'>
-                <H1>{title}</H1>
-                <div className='song-info-layout'>
-                    <p>Subido por: {postedBy}</p>
-                    {forkOf ? <p>Versión de: {forkOf}</p> : null}
-                    {artist ? <p>Compositor: {artist}</p> : null}
-                </div>
-            </div>
-            <div className='song-info-layout'>
-                {songKey && <p>Tonalidad: {songKey}</p>} {genre && <p> Ritmo: {genre}</p>}{' '}
-                {bpm !== 0 && <p>Tempo: {bpm}</p>}
-            </div>
-
-            {sampleUri ? (
-                <div className='sample-container'>Reproductor multimedia con el sample</div>
-            ) : null}
-            <div className='song-lyrics-container' style={{ fontSize }}>
-                {lyricsByLine.map((e, i) => {
-                    return (
-                        <div key={e.id}>
+        <StoreContext.Provider value={store}>
+            <div className='song-container'>
+                <div className='song-title-container'>
+                    <H1>{title}</H1>
+                    <div className='song-info-layout'>
+                        <p>
+                            {i18n.labels.postedBy}: {postedBy}
+                        </p>
+                        {forkOf ? (
                             <p>
-                                {currentChords
-                                    .filter(x => x.line === i)
-                                    .map(c => (
-                                        <button
-                                            style={getPadding(c.position)}
-                                            key={`${uuid()}`}
-                                            type='button'>
-                                            <span className='song-chord-container'>{c.key}</span>
-                                        </button>
-                                    ))}
+                                {i18n.labels.forkOf}: {forkOf}
                             </p>
-                            <p>{e.value}</p>
-                        </div>
-                    );
-                })}
+                        ) : null}
+                        {artist ? (
+                            <p>
+                                {i18n.labels.artist}: {artist}
+                            </p>
+                        ) : null}
+                    </div>
+                </div>
+                <div className='song-info-layout'>
+                    {songKey && (
+                        <p>
+                            {i18n.labels.key}: {songKey}
+                        </p>
+                    )}{' '}
+                    {genre && (
+                        <p>
+                            {' '}
+                            {i18n.labels.rythm}: {genre}
+                        </p>
+                    )}{' '}
+                    {bpm !== 0 && (
+                        <p>
+                            {i18n.labels.bpm}: {bpm}
+                        </p>
+                    )}
+                </div>
+
+                <MusicPlayer i18n={i18n.musicPlayer} url={sampleUri} />
+                <div className='song-lyrics-container' style={{ fontSize: store.fontSize }}>
+                    {lyricsByLine.map((e, i) => {
+                        return (
+                            <div key={e.id}>
+                                <p>
+                                    {store.chords
+                                        .filter(x => x.line === i)
+                                        .map(c => (
+                                            <button
+                                                style={getPadding(c.position)}
+                                                key={`${uuid()}`}
+                                                type='button'>
+                                                <span className='song-chord-container'>
+                                                    {c.key}
+                                                </span>
+                                            </button>
+                                        ))}
+                                </p>
+                                <p>{e.value}</p>
+                            </div>
+                        );
+                    })}
+                </div>
+                <br />
+                {averageScore !== 0 && averageScore}
+                <SongTools i18n={i18n.menuLabels} />
             </div>
-            <br />
-            {averageScore !== 0 && averageScore}
-            <div className='song-tools'>
-                {menuItems(handlers, changeTone).map(i => (
-                    <FloatingButtonMenu
-                        key={i.name}
-                        buttonClassname='fbm-sm'
-                        buttonLabel={<i.Label />}>
-                        {i.children.map(c => (
-                            <FloatingButtonItem icon={c.Label} key={c.name} onClick={c.onClick} />
-                        ))}
-                    </FloatingButtonMenu>
-                ))}
-            </div>
-        </div>
+        </StoreContext.Provider>
     );
 };
 

@@ -1,16 +1,19 @@
-import { Button } from '@mantine/core';
+import { ActionIcon, Tooltip } from '@mantine/core';
 import React from 'react';
 
 interface IFloatingButtonItemProps {
     icon: React.ReactNode;
     onClick?: React.MouseEventHandler<HTMLButtonElement>;
+    name: string;
 }
 
-const FloatingButtonItem = ({ icon, onClick }: IFloatingButtonItemProps) => {
+const FloatingButtonItem = ({ icon, onClick, name }: IFloatingButtonItemProps) => {
     return (
-        <Button className='fbm-button' onClick={onClick}>
-            {icon}
-        </Button>
+        <Tooltip label={name}>
+            <ActionIcon className='fbm-button' onClick={onClick}>
+                {icon}
+            </ActionIcon>
+        </Tooltip>
     );
 };
 

@@ -117,6 +117,37 @@
                 "save": "Guardar",
                 "cancel": "Cancelar"
             }
+        },
+        "text": {
+            "labels": {
+                "postedBy": "Publicado por",
+                "artist": "Artista",
+                "forkOf": "A partir de",
+                "key": "Tono",
+                "rythm": "Ritmo",
+                "bpm": "BPM"
+            },
+            "menuLabels": {
+                "musicOptions": "Opciones Musicales",
+                "toneUp": "Aumentar un tono",
+                "halfToneUp": "Aumentar un semitono",
+                "halfToneDown": "Disminuir un semitono",
+                "toneDown": "Disminuir un tono",
+                "textOptions": "Opciones de Texto",
+                "increaseFont": "Incrementar tamaño de fuente",
+                "decreaseFont": "Disminuir tamaño de fuente",
+                "recordOptions": "Opciones de Grabación",
+                "recordSample": "Crear nueva grabación",
+                "uploadSample": "Subir grabación"
+            },
+            "musicPlayer": {
+                "noUrl": "Esta canción no cuenta con una grabación asociada",
+                "play": "Reproducir",
+                "stop": "Detener",
+                "pause": "Pausar",
+                "tenSecondsForward": "Avanzar 10 segundos",
+                "tenSecondsBackward": "Retroceder 10 segundos"
+            }
         }
     },
     "main": {

@@ -5,7 +5,7 @@ export const extractBracedValues = (text: string): IBracedValue[] => {
     const lines = text.split('\n');
     const results: IBracedValue[] = [];
 
-    lines.forEach((line, lineIndex) => {
+    for (const [lineIndex, line] of lines.entries()) {
         const regex = /\[(.*?)\]/g;
         let match;
         let lastIndex = 0;
@@ -22,7 +22,7 @@ export const extractBracedValues = (text: string): IBracedValue[] => {
             lastMatchSize = match[1].length + 2;
             lastMatchInnerSize = match[1].length;
         }
-    });
+    }
 
     return results;
 };
@@ -55,7 +55,7 @@ const getChordIndex = (chord: IKey) => {
         chordKey = flatsToSharps[chordKey];
     }
 
-    const chordIndex = tones.findIndex(e => e === chordKey);
+    const chordIndex = tones.indexOf(chordKey);
 
     return { chordIndex, chordOffset };
 };
@@ -80,7 +80,20 @@ export const replaceTones = (ammount: number, chords: IKey[]) => {
 };
 
 export const removeChords = (lyrics: string) => {
-    return lyrics.replace(/\[[^\]]*\]/g, '').trim();
+    return lyrics.replaceAll(/\[[^\]]*\]/g, '').trim();
+};
+
+export const getChordsFromText = (lyrics: string) => {
+    return [...new Set(lyrics.matchAll(/\[[^\]]*\]/g).map(r => r[0]))];
+};
+
+export const insertAtIndex = (text: string, injection: string, index: number) => {
+    if (index < 0 || index > text.length) return text;
+
+    const preInjectionText = text.slice(0, index);
+    const postInjectionText = text.slice(index);
+
+    return `${preInjectionText}${injection}${postInjectionText}`;
 };
 
 export const getTemplateResult = <T extends Record<string, unknown>>(
@@ -89,31 +102,33 @@ export const getTemplateResult = <T extends Record<string, unknown>>(
     data: T
 ) => {
     let text = template;
-    replacements.forEach(r => {
-        text = text.replace('?', String(data[r]));
-    });
+
+    for (const replacement in replacements) {
+        text = text.replace('?', String(data[replacement]));
+    }
     return text;
 };
 
 export const getLinkTemplateResult = <T extends Record<string, unknown>>(
     template: string,
     replacements: string[],
+
     data: T
 ) => {
     let text = template;
-    replacements.forEach(r => {
+    for (const r of replacements) {
         const innerReplacements = r.split(',').map(re => String(data[re]));
         const textToReplace = getSlugifiedValue(innerReplacements);
         text = text.replace('?', textToReplace);
-    });
+    }
     return text;
 };
 
 export const getSlugifiedValue = (props: string[]) => {
     let text = '';
-    props.forEach((e, i) => {
-        text += `${e}${i !== props.length - 1 ? '-' : ''}`;
-    });
+    for (const [i, e] of props.entries()) {
+        text += `${e}${i < props.length - 1 ? '-' : ''}`;
+    }
     return slugify(text, {
         strict: true,
         trim: true,

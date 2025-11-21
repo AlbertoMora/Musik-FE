@@ -7,7 +7,10 @@ import { AnimatedUnmountWrapper } from '../animation/AnimationUnmountWrapper';
 import { animations, animationSpeeds } from '@/constants/animation-constants';
 
 interface IFloatingButtonMenuProps {
-    children: ReactElement<typeof FloatingButtonItem> | ReactElement<typeof FloatingButtonItem>[];
+    children?:
+        | ReactElement<typeof FloatingButtonItem>
+        | ReactElement<typeof FloatingButtonItem>[]
+        | null[];
     name: string;
     className?: string;
     buttonClassname?: string;

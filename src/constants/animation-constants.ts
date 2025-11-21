@@ -14,6 +14,13 @@ export const animationDelays = {
     delay5: 'animate__delay-5s',
 };
 
+export const animationDuration = {
+    repeat1: 'animate__repeat-1',
+    repeat2: 'animate__repeat-2',
+    repeat3: 'animate__repeat-3',
+    infinite: 'animate__infinite',
+};
+
 export const animations = {
     specials: {
         hinge: 'animate__hinge',

@@ -2,10 +2,8 @@ import React, { useContext } from 'react';
 import FloatingButtonMenu from '../../FloatingButtonMenu/FloatingButtonMenu';
 import { I18nTypes } from '@/i18n/dictionaries';
 import FloatingButtonItem from '../../FloatingButtonMenu/FloatingButtonItem';
-import { AnimatedUnmountWrapper } from '../../animation/AnimationUnmountWrapper';
-import UploadSampleForm from './UploadSampleForm';
-import { StoreContext } from './songTextStore';
-import { menuItems } from './menuConfig';
+import { ISongtextStore, StoreContext } from './songTextStore';
+import { IMenuCommonProps, menuItems } from './menuConfig';
 
 interface ISongToolsProps {
     i18n: I18nTypes['lyrics']['text']['menuLabels'];
@@ -17,27 +15,35 @@ const SongTools = ({ i18n }: ISongToolsProps) => {
     return (
         store && (
             <div className='song-tools'>
-                <AnimatedUnmountWrapper show={store.shouldShowUploadModal}>
-                    <UploadSampleForm />
-                </AnimatedUnmountWrapper>
-                {menuItems(store).map(i => (
-                    <FloatingButtonMenu
-                        name={i18n[i.name as keyof typeof i18n]}
-                        key={i.name}
-                        buttonClassname='fbm-sm'
-                        buttonLabel={<i.Label />}>
-                        {i.children.map(c => (
-                            <FloatingButtonItem
-                                icon={c.Label}
-                                key={c.name}
-                                onClick={c.onClick}
-                                name={i18n[c.name as keyof typeof i18n]}
-                            />
-                        ))}
-                    </FloatingButtonMenu>
-                ))}
+                {menuItems(store)
+                    .filter(i => checkPermission(i, store.permissions))
+                    ?.map(i => (
+                        <FloatingButtonMenu
+                            name={i18n[i.name as keyof typeof i18n]}
+                            key={i.name}
+                            buttonClassname='fbm-sm'
+                            buttonLabel={i.Label}>
+                            {i.children
+                                ?.filter(c => checkPermission(c, store.permissions))
+                                .map(c => (
+                                    <FloatingButtonItem
+                                        icon={c.Label}
+                                        key={c.name}
+                                        onClick={c.onClick}
+                                        name={i18n[c.name as keyof typeof i18n]}
+                                    />
+                                ))}
+                        </FloatingButtonMenu>
+                    ))}
             </div>
         )
+    );
+};
+
+const checkPermission = (i: IMenuCommonProps, permissions: ISongtextStore['permissions']) => {
+    return (
+        !i.permissionsToShow ||
+        permissions?.find(p => i.permissionsToShow?.find(pt => pt === p.correlationId) && p.allowed)
     );
 };
 

@@ -56,6 +56,14 @@
                     "errorModal": {
                         "title": "Invalid User or Password",
                         "caption": "The username or password has not been validated correctly."
+                    },
+                    "oauth": {
+                        "google": "Login with Google",
+                        "googleInitiErr": "Cannot stablish connection with Google Server",
+                        "sessionErr": "Cannot complete the login action, please try again later",
+                        "fb": "Login with Facebook",
+                        "fbInitiErr": "Cannot stablish connection with Facebook Server",
+                        "validating": "We're checking session info, please wait..."
                     }
                 },
                 "signup": {
@@ -113,10 +121,12 @@
                 "forkOf": "Fork of",
                 "key": "Key",
                 "rythm": "Rythm",
-                "bpm": "Beats per Minute"
+                "bpm": "Beats per Minute",
+                "by": "by"
             },
             "menuLabels": {
                 "musicOptions": "Music Options",
+                "resetTone": "Reset Tone",
                 "toneUp": "Tone up",
                 "halfToneUp": "Half-tone up",
                 "halfToneDown": "Half-tone down",
@@ -130,11 +140,33 @@
             },
             "musicPlayer": {
                 "noUrl": "This song doesn't have any sample",
+                "isLoading": "Sample is loading, please wait",
                 "play": "Play",
                 "stop": "Stop",
                 "pause": "Pause",
                 "tenSecondsForward": "",
                 "tenSecondsBackward": ""
+            },
+            "uploadModal": {
+                "caption": "Drag mp3, wav or ogg record here to preview",
+                "clickCaption": "Or just click here to open file selector",
+                "leaveCaption": "Leave to preview the record",
+                "badFileType": "File type not allowed",
+                "songName": "Record Name",
+                "uploadCaption": "Click upload button to complete the record uploading process",
+                "cancelButton": "Cancel",
+                "uploadButton": "Upload",
+                "uploadProcess": {
+                    "ok": "File posted successfully",
+                    "okTitle": "Success!",
+                    "errTitle": "Error",
+                    "serverErr": "Cannot connect with server, please try again later",
+                    "clientErr": "Something went wrong, please try again later.",
+                    "uploading": "Record is uploading, please wait...",
+                    "cancelButton": "Cancel",
+                    "okButton": "Ok",
+                    "retryButton": "Retry"
+                }
             }
         }
     },

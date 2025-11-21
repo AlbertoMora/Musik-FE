@@ -1,5 +1,6 @@
 import DefaultNavbar from '@/presentation/components/layout/navbar/DefaultNavbar';
 import '@mantine/core/styles.css';
+import '@mantine/notifications/styles.css';
 import './globals.css';
 import '../presentation/styles/common/global.sass';
 
@@ -7,6 +8,7 @@ import { createTheme, MantineProvider } from '@mantine/core';
 import { headers } from 'next/headers';
 import { getI18n } from '@/i18n/dictionaries';
 import { isSessionActive } from '@/infrastructure/adapters/auth/auth-actions';
+import { Notifications } from '@mantine/notifications';
 
 const theme = createTheme({
     /** Put your mantine theme override here */
@@ -31,6 +33,7 @@ export default async function RootLayout({
             </head>
             <body>
                 <MantineProvider theme={theme}>
+                    <Notifications />
                     <DefaultNavbar i18n={navbar} isLogged={!!isLogged} />
                     {children}
                 </MantineProvider>

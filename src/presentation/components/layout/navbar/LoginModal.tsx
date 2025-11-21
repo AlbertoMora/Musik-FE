@@ -6,7 +6,6 @@ import {
     IconAlertHexagon,
     IconBrandFacebook,
     IconBrandGoogle,
-    IconBrandX,
     IconKey,
     IconUserPlus,
     IconX,
@@ -14,11 +13,21 @@ import {
 import { useForm } from '@mantine/form';
 import { loginFormConfig } from './formConfig';
 import { generateDeviceId, generateKeyPair, signValue } from '@/utils/crypto-utils';
-import { signInAction, signInChallengeAction } from '@/infrastructure/adapters/auth/auth-actions';
+import {
+    getGoogleKeyAction,
+    signInAction,
+    signInChallengeAction,
+} from '@/infrastructure/adapters/auth/auth-actions';
 
 import { I18nTypes } from '@/i18n/dictionaries';
 import { AnimatedUnmountWrapper } from '../../animation/AnimationUnmountWrapper';
 import { animations, animationSpeeds } from '@/constants/animation-constants';
+import { responseCodes } from '@/types/web-types';
+import {
+    NotificationService,
+    NotificationTypes,
+} from '@/presentation/services/notification-service';
+import { authConstants } from '@/constants/auth-constants';
 
 interface ILoginModalProps {
     isOpen: boolean;
@@ -72,6 +81,20 @@ const LoginModal = ({
                 location.reload();
             }
         }
+    };
+
+    const onGoogleLogin = async () => {
+        const googleOAuthInfo = await getGoogleKeyAction();
+        if (googleOAuthInfo?.status !== responseCodes.ok)
+            return NotificationService.showMessage(
+                i18n.oauth.googleInitiErr,
+                NotificationTypes.error,
+                'Error',
+                'top-center'
+            );
+
+        const url = authConstants.getGoogleLoginUrl(googleOAuthInfo.clientId);
+        window.open(url, 'Google Login', 'width=500,heigth=600');
     };
 
     const closeForm = () => {
@@ -137,14 +160,14 @@ const LoginModal = ({
 
                         <Divider className='w-full' />
                         <div className='w-full ssnn-container'>
-                            <button type='button' className='ssnn-button fb-btn'>
-                                <IconBrandFacebook size={25} />
+                            <button
+                                type='button'
+                                onClick={onGoogleLogin}
+                                className='ssnn-btn google-btn'>
+                                <IconBrandGoogle size={25} /> {i18n.oauth.google}
                             </button>
-                            <button type='button' className='ssnn-button x-btn'>
-                                <IconBrandX size={25} />
-                            </button>
-                            <button type='button' className='ssnn-button google-btn'>
-                                <IconBrandGoogle size={25} />
+                            <button type='button' className='ssnn-btn fb-btn'>
+                                <IconBrandFacebook size={25} /> {i18n.oauth.fb}
                             </button>
                         </div>
                         <span>{i18n.divider}</span>

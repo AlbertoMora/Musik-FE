@@ -8,26 +8,30 @@ const algorithmConfig = {
 import { v4 as uuid } from 'uuid';
 
 export const generateKeyPair = async () => {
-    const currentPbk = await getFromIndexedDB<CryptoKey>(devicePbK);
+    try {
+        const currentPbk = await getFromIndexedDB<CryptoKey>(devicePbK);
 
-    if (currentPbk) {
-        const pubKey64 = await getBase64PublicKey(currentPbk);
-        return { pubKey: pubKey64, keyPair: null };
+        if (currentPbk) {
+            const pubKey64 = await getBase64PublicKey(currentPbk);
+            return { pubKey: pubKey64, keyPair: null };
+        } else {
+            return { pubKey: '' };
+        }
+    } catch {
+        const keyPair = await crypto.subtle.generateKey(algorithmConfig, false, ['sign', 'verify']);
+
+        saveToDB(keyPair.privateKey, devicePK);
+        saveToDB(keyPair.publicKey, devicePbK);
+
+        const pubKey64 = await getBase64PublicKey(keyPair.publicKey);
+
+        return { pubKey: pubKey64, keyPair };
     }
-
-    const keyPair = await crypto.subtle.generateKey(algorithmConfig, false, ['sign', 'verify']);
-
-    saveToDB(keyPair.privateKey, devicePK);
-    saveToDB(keyPair.publicKey, devicePbK);
-
-    const pubKey64 = await getBase64PublicKey(keyPair.publicKey);
-
-    return { pubKey: pubKey64, keyPair };
 };
 
 const getBase64PublicKey = async (publicKey: CryptoKey) => {
     const pubKey = await crypto.subtle.exportKey('spki', publicKey);
-    const pubKey64 = btoa(String.fromCharCode(...new Uint8Array(pubKey)));
+    const pubKey64 = btoa(String.fromCodePoint(...new Uint8Array(pubKey)));
     return pubKey64;
 };
 
@@ -43,7 +47,7 @@ export const signValue = async (value: string) => {
 
     const derSign = toDER(new Uint8Array(signature));
 
-    return btoa(String.fromCharCode(...derSign));
+    return btoa(String.fromCodePoint(...derSign));
 };
 
 const saveToDB = <T>(value: T, key: string) => {
@@ -65,6 +69,10 @@ const getFromIndexedDB = <T>(keyName: string): Promise<T> => {
     return new Promise((resolve, reject) => {
         const request = indexedDB.open('auth-db', 1);
         request.onsuccess = () => {
+            if (!request.result.objectStoreNames.contains('keys')) {
+                indexedDB.deleteDatabase('auth-db');
+                return reject(new Error('NOT_FOUND'));
+            }
             const tx = request.result.transaction('keys', 'readonly');
             const keyRequest = tx.objectStore('keys').get(keyName);
             keyRequest.onsuccess = () => resolve(keyRequest.result as T);

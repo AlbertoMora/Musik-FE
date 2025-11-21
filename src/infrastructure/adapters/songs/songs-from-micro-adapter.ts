@@ -1,9 +1,11 @@
-import { IKey, ISongModel } from '@/infrastructure/models/SongModel';
+import { IKey, ISongModel, ISongPermission } from '@/infrastructure/models/SongModel';
 import {
     ICreateSongResponseDTO,
     IGetSongResponseDTO,
     IGetSongsListResponseDTO,
+    IPostRecordResDTO,
     ISongGateway,
+    IUpdateSongSampleResDTO,
 } from '../../../domain/songs/song-gateway';
 import { extractBracedValues } from '@/utils/text-utils';
 import { ICreateSongViewModel } from '@/presentation/viewmodels/CreateSongViewModel';
@@ -16,14 +18,23 @@ export class SongsFromMicroAdapter implements ISongGateway {
         return null;
     }
 
-    public async getSong(id: string) {
+    public async getSong(id: string, accessToken?: string) {
         try {
+            const headers: HeadersInit = {};
+            if (accessToken) headers.Authorization = `Bearer ${accessToken}`;
             const res = await webRequest(
                 `${SongsFromMicroAdapter.SONG_API_URI}/v1/songs/${id}`
-            ).get();
-            const data = await getResponseData<IGetSongResponseDTO>(res, 'sng02');
-            if (!data.data || !data.success) return { success: false, reason: 'sng02' };
-            return { success: true, data: this.wrapSongDTO(data.data?.song) };
+            ).get(undefined, headers);
+            const songInfo = await getResponseData<IGetSongResponseDTO>(res, 'sng02');
+            if (!songInfo.data || !songInfo.success) return { success: false, reason: 'sng02' };
+            return {
+                success: true,
+                data: this.wrapSongDTO(
+                    songInfo.data?.song,
+                    songInfo.data?.permissions,
+                    songInfo.data.url
+                ),
+            };
         } catch (e) {
             console.log(e);
             return { success: false, reason: 'sng02' };
@@ -55,7 +66,40 @@ export class SongsFromMicroAdapter implements ISongGateway {
         }
     }
 
-    private wrapSongDTO(song: IGetSongResponseDTO['song']): ISongModel {
+    public async postRecord(
+        filename: string,
+        contentType: string,
+        id: string,
+        accessToken: string
+    ) {
+        try {
+            const res = await webRequest(
+                `${SongsFromMicroAdapter.SONG_API_URI}/v1/songs/presigned-upload`
+            ).get({ filename, contentType, id }, { Authorization: `Bearer ${accessToken}` });
+            return getResponseData<IPostRecordResDTO>(res, 'sng05');
+        } catch (error) {
+            console.error('Error posting song:', error);
+            return { success: false, reason: 'sng05' };
+        }
+    }
+
+    public async updateSongSample(key: string, id: string, accessToken: string) {
+        try {
+            const res = await webRequest(
+                `${SongsFromMicroAdapter.SONG_API_URI}/v1/songs/song-sample`
+            ).put({ key, id }, { Authorization: `Bearer ${accessToken}` });
+            return getResponseData<IUpdateSongSampleResDTO>(res, 'sng01');
+        } catch (error) {
+            console.error('Error posting song:', error);
+            return { success: false, reason: 'sng01' };
+        }
+    }
+
+    private wrapSongDTO(
+        song: IGetSongResponseDTO['song'],
+        permissions: ISongPermission[] | null,
+        url: string | null
+    ): ISongModel {
         const songModel: ISongModel = {
             postedBy: song.posted_by ?? '',
             averageScore: song.avg_rate ?? 0,
@@ -73,9 +117,10 @@ export class SongsFromMicroAdapter implements ISongGateway {
             lyrics: song.lyrics_text,
             title: song.name,
             genre: song.genre ?? '',
-            sampleUri: song.sample_uri,
+            sampleUri: url,
             bpm: song.bpm ?? 0,
             songKey: song.key ?? '',
+            permissions,
         };
         return songModel;
     }

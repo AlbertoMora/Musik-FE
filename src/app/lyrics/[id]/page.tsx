@@ -21,6 +21,7 @@ const defaultData: ISongModel = {
     forkOf: '',
     artist: '',
     songKey: '',
+    permissions: null,
 };
 
 const SongPage = async ({ params }: PageParams) => {
@@ -33,7 +34,15 @@ const SongPage = async ({ params }: PageParams) => {
     const res = await getSongAction(id);
     const songData: ISongModel = res.data ?? defaultData;
 
-    return <SongText i18n={text} {...songData} />;
+    return (
+        <>
+            <head>
+                <meta name='description' content={songData.title} />
+                <title>{`${songData.title} ${text.labels.by} ${songData.artist} | Sonnetia`}</title>
+            </head>
+            <SongText i18n={text} {...songData} />
+        </>
+    );
 };
 
 export default SongPage;

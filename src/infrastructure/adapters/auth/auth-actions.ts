@@ -56,6 +56,14 @@ export const checkMfaAction = async (checkMfaInfo: ICheckMfaModel) => {
     return res;
 };
 
+export const getGoogleKeyAction = async () => {
+    const authAdapter = new AuthAdapterFromMicro();
+
+    const res = await authAdapter.getGoogleKey();
+
+    return res.data;
+};
+
 export const signOutAction = async () => {
     const authAdapter = new AuthAdapterFromMicro();
 

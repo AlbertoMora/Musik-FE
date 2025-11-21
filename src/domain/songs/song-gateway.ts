@@ -1,11 +1,11 @@
-import { ISongModel } from '@/infrastructure/models/SongModel';
+import { ISongModel, ISongPermission } from '@/infrastructure/models/SongModel';
 import { ICreateSongViewModel } from '@/presentation/viewmodels/CreateSongViewModel';
 import { IActionResponse } from '../auth/auth-gateway';
 import { IBasicWebResponse } from '@/types/web-types';
 
 export interface ISongGateway {
     getSongs: () => Promise<ISongModel[] | null>;
-    getSong: (id: string) => Promise<IActionResponse<ISongModel>>;
+    getSong: (id: string, accessToken?: string) => Promise<IActionResponse<ISongModel>>;
     getSongByName: (
         name: string,
         limit: number,
@@ -16,11 +16,33 @@ export interface ISongGateway {
         song: ICreateSongViewModel,
         accessToken: string
     ) => Promise<IActionResponse<ICreateSongResponseDTO>>;
+    postRecord: (
+        filename: string,
+        contentType: string,
+        id: string,
+        accessToken: string
+    ) => Promise<IActionResponse<IPostRecordResDTO>>;
+    updateSongSample: (
+        key: string,
+        id: string,
+        accessToken: string
+    ) => Promise<IActionResponse<IUpdateSongSampleResDTO>>;
 }
 
+export interface IPostRecordResDTO extends IBasicWebResponse {
+    url: string;
+    key: string;
+}
+
+export interface IUpdateSongSampleResDTO extends IBasicWebResponse {
+    url: string;
+}
 export interface IGetSongResponseDTO {
     status: string;
     song: ISongRes;
+    slug?: string;
+    url: string | null;
+    permissions: ISongPermission[] | null;
 }
 
 export interface ICreateSongResponseDTO extends IBasicWebResponse {

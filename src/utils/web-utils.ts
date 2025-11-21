@@ -7,6 +7,13 @@ export interface ErrorType {
     id: string;
 }
 
+export interface UploadResponse {
+    success: boolean;
+    message?: string;
+    url?: string;
+    statusCode: number;
+}
+
 export const webRequest = (url: string) => {
     return {
         post: async <Q>(body: Q, headers?: HeadersInit, isAuth?: boolean) => {
@@ -42,9 +49,9 @@ export const webRequest = (url: string) => {
             const getUrl = new URL(url);
 
             if (params)
-                Object.keys(params).forEach(key => {
+                for (const key of Object.keys(params)) {
                     getUrl.searchParams.append(key, params[key]);
-                });
+                }
 
             const res = await fetch(getUrl.toString(), {
                 method: 'GET',
@@ -55,7 +62,61 @@ export const webRequest = (url: string) => {
             });
             return res;
         },
+        put: async <Q>(body: Q, headers?: HeadersInit, isAuth?: boolean) => {
+            let authHeaders = {};
+            if (isAuth) {
+                const [accessToken] = await getSessionCookieValues();
+                authHeaders = { authorization: `Bearer ${accessToken}` };
+            }
+
+            const res = await fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...headers,
+                    ...authHeaders,
+                },
+                body: JSON.stringify(body),
+            });
+            return res;
+        },
     };
+};
+
+export const controlledFileUploadRequest = (
+    signedUrl: string,
+    file: File,
+    onProgressCallback: (process: number) => void
+): Promise<UploadResponse> => {
+    return new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+
+        xhr.upload.onprogress = event => {
+            if (event.lengthComputable) {
+                const percentComplete = (event.loaded / event.total) * 100;
+                onProgressCallback(percentComplete);
+            }
+        };
+
+        xhr.onload = () => {
+            if (xhr.status === 200) {
+                const res = {
+                    success: true,
+                    message: xhr.response,
+                    url: signedUrl.split('?')[0],
+                    statusCode: 200,
+                };
+                resolve(res);
+            } else {
+                reject(new Error('Upload failed.'));
+            }
+        };
+        xhr.onerror = () => reject(new Error('Upload failed.'));
+
+        xhr.open('PUT', signedUrl);
+        xhr.setRequestHeader('Content-Type', file.type);
+        xhr.send(file);
+    });
 };
 
 export const webErrors = {

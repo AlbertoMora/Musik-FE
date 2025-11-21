@@ -1,3 +1,4 @@
+'use-client';
 import { I18nTypes } from '@/i18n/dictionaries';
 import { ActionIcon, Group, Slider, Text } from '@mantine/core';
 import {
@@ -8,6 +9,8 @@ import {
     IconRewindForward10,
 } from '@tabler/icons-react';
 
+import dynamic from 'next/dynamic';
+
 import React, { useEffect, useRef, useState } from 'react';
 import '@/presentation/styles/components/music-player.sass';
 
@@ -16,14 +19,12 @@ interface IMusicPlayerProps {
     i18n: I18nTypes['lyrics']['text']['musicPlayer'];
 }
 
-const MusicPlayer = ({ i18n, url }: IMusicPlayerProps) => {
+const MusicPlayerComponent = ({ i18n, url }: IMusicPlayerProps) => {
+    const [isLoading, setIsLoading] = useState(true);
     const [isPlaying, setIsPlaying] = useState<boolean>(false);
     const [currentTime, setCurrentTime] = useState<number>(0);
     const [duration, setDuration] = useState<number>(0);
     const audioRef = useRef<HTMLAudioElement>(null);
-
-    // URL de un audio de ejemplo (puedes reemplazarlo)
-    const audioUrl = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3';
 
     useEffect(() => {
         const audio = audioRef.current;
@@ -34,15 +35,16 @@ const MusicPlayer = ({ i18n, url }: IMusicPlayerProps) => {
 
         const updateTime = () => setCurrentTime(audio.currentTime);
         const setAudioData = () => {
+            setIsLoading(false);
             setDuration(audio.duration);
             setCurrentTime(audio.currentTime);
         };
 
-        audio.addEventListener('loadeddata', setAudioData);
+        audio.addEventListener('loadedmetadata', setAudioData);
         audio.addEventListener('timeupdate', updateTime);
 
         return () => {
-            audio.removeEventListener('loadeddata', setAudioData);
+            audio.removeEventListener('loadedmetadata', setAudioData);
             audio.removeEventListener('timeupdate', updateTime);
         };
     }, []);
@@ -91,16 +93,15 @@ const MusicPlayer = ({ i18n, url }: IMusicPlayerProps) => {
         const secs = Math.floor(seconds % 60);
         return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
     };
-    return url ? (
-        <div>MusicPlayer</div>
-    ) : (
+    return (
         <div className='music-player-container'>
-            <div className='music-player-no-player'>{i18n.noUrl}</div>
+            {!url && <div className='music-player-no-player'>{i18n.noUrl}</div>}
+            {isLoading && url && <div className='music-player-no-player'>{i18n.isLoading}</div>}
             {url && (
-                <audio ref={audioRef} src={audioUrl}>
+                <audio ref={audioRef} src={url}>
                     <track
                         kind='captions'
-                        src='' // Puedes añadir un archivo .vtt aquí si tienes subtítulos
+                        //src={url} // Puedes añadir un archivo .vtt aquí si tienes subtítulos
                         label='Sample Music Player'
                         default
                     />
@@ -143,7 +144,6 @@ const MusicPlayer = ({ i18n, url }: IMusicPlayerProps) => {
                     <IconRewindForward10 size={15} />
                 </ActionIcon>
             </div>
-            {/* Barra de progreso */}
             <div className='flex flex-col flex-1 pt-5 justify-center items-stretch'>
                 <Slider
                     value={currentTime}
@@ -166,5 +166,7 @@ const MusicPlayer = ({ i18n, url }: IMusicPlayerProps) => {
         </div>
     );
 };
+
+const MusicPlayer = dynamic(() => Promise.resolve(MusicPlayerComponent), { ssr: false });
 
 export default MusicPlayer;

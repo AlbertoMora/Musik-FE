@@ -12,8 +12,26 @@ export const postSongAction = async (song: ICreateSongViewModel) => {
 
 export const getSongAction = async (id: string) => {
     const songAdapter = new SongsFromMicroAdapter();
-    const res = await songAdapter.getSong(id);
+    const [accessToken] = await getSessionCookieValues();
 
+    const res = await songAdapter.getSong(id, accessToken);
+
+    return res;
+};
+
+export const postRecordAction = async (filename: string, contentType: string, id: string) => {
+    const songAdapter = new SongsFromMicroAdapter();
+    const [accessToken] = await getSessionCookieValues();
+
+    const res = await songAdapter.postRecord(filename, contentType, id, accessToken);
+    return res;
+};
+
+export const updateSongSampleAction = async (key: string, id: string) => {
+    const songAdapter = new SongsFromMicroAdapter();
+    const [accessToken] = await getSessionCookieValues();
+
+    const res = await songAdapter.updateSongSample(key, id, accessToken);
     return res;
 };
 

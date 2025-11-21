@@ -19,6 +19,8 @@ export interface IAuthGateway {
         userAgent: string
     ) => Promise<IActionResponse<ISessionResponseDTO>>;
     signOut: (accessToken: string) => Promise<IActionResponse<IBasicWebResponse>>;
+    getGoogleKey: () => Promise<IActionResponse<IGetGoogleKeyModel>>;
+    checkGoogleSession: (code: string) => Promise<IActionResponse<ISessionResponseDTO>>;
 }
 
 export interface ISignUpModel {
@@ -28,6 +30,10 @@ export interface ISignUpModel {
     email: string;
     password: string;
     profile_pic?: string;
+}
+
+export interface IGetGoogleKeyModel extends IBasicWebResponse {
+    clientId: string;
 }
 
 export interface ISignInModel {

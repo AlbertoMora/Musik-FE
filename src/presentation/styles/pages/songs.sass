@@ -10,7 +10,7 @@
             display: flex
             flex-direction: column
             justify-content: stretch
-            padding: 4rem 20rem
+            padding: 4rem 10rem
     
         &-info-layout
             align-items: flex-start
@@ -39,6 +39,78 @@
             bottom: 2rem
         &-lyrics-container
             display: flex
+            flex-direction: row
+            gap: 3rem
+            margin-top: 2rem
+            overflow-x: auto
+            white-space: nowrap
+        &-upload-container
+            background-color: color-mix(in srgb,var(--background), var(--foreground) 10%)
+            border-radius: 15px
+            display: flex
             flex-direction: column
+            justify-content: center
+            position: absolute
+            width: 50vw
+            min-height: fit-content
+            padding: 3rem 4rem
+            top: 10rem
+            left: 25vw
+            z-index: 190
+            .dragzone
+                align-items: center
+                cursor: pointer
+                display: flex
+                flex-direction: column
+                justify-content: center
+                border: 1px dashed var(--foreground)
+                margin-top: 1rem
+                height: calc( 100% - 2rem )
+            .preview-zone
+                align-items: center
+                display: flex
+                flex-direction: column
+                justify-content: center
+                gap: 1rem
+                border: 1px dashed var(--foreground)
+                margin-top: 1rem
+                height: calc( 100% - 2rem )
+            .loading-container
+                align-items: center
+                display: flex
+                flex-direction: column
+                column-gap: 2rem
+                justify-content: center
+                width: 100%
+                .loading-bar
+                    align-self: stretch
+                    margin: 1rem 10rem
+                    cursor: wait
+                    &-track
+                        height: 0.8rem
+                    &-content
+                        background: repeating-linear-gradient(
+                        45deg,
+                        settings.$secondary-color,
+                        settings.$secondary-color 10px,
+                        settings.$dark-gray-color 10px,
+                        settings.$dark-gray-color 20px
+                        )
+                        background-size: 60px 100%
+                        animation: conveyor 1.5s linear infinite
+                    &-no-thumb
+                        display: none
+                    @keyframes conveyor 
+                        0%
+                            background-position: 0 0,    
+                        
+                        100%
+                            background-position: 60px 0
+
+                    
+
+        &-upload-animator
+            position: absolute
+            z-index: 190
 
 

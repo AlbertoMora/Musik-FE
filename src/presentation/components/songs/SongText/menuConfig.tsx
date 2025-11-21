@@ -13,6 +13,7 @@ import {
     IconUpload,
 } from '@tabler/icons-react';
 import { ISongtextStore } from './songTextStore';
+import { ReactNode } from 'react';
 
 export const menuItems = ({
     setCurrentTone,
@@ -21,9 +22,9 @@ export const menuItems = ({
     toggleRecordModal,
     toggleUploadModal,
     resetToneVariation,
-}: ISongtextStore) => [
+}: ISongtextStore): IMenuItem[] => [
     {
-        Label: IconMusic,
+        Label: <IconMusic />,
         name: 'musicOptions',
         children: [
             {
@@ -73,7 +74,7 @@ export const menuItems = ({
         ],
     },
     {
-        Label: IconTextGrammar,
+        Label: <IconTextGrammar />,
         name: 'textOptions',
         children: [
             {
@@ -99,7 +100,7 @@ export const menuItems = ({
         ],
     },
     {
-        Label: IconMicrophone2,
+        Label: <IconMicrophone2 />,
         name: 'recordOptions',
         children: [
             {
@@ -117,3 +118,17 @@ export const menuItems = ({
         ],
     },
 ];
+
+export interface IMenuCommonProps {
+    name: string;
+    permissionsToShow?: string[] | null;
+}
+interface IMenuItem extends IMenuCommonProps {
+    Label: ReactNode;
+    children?: IMenuChild[] | null;
+}
+
+interface IMenuChild extends IMenuCommonProps {
+    Label: ReactNode;
+    onClick: (e: unknown) => unknown;
+}

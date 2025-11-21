@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { ChangeEvent, useRef, useState } from 'react';
 import FormGroup from '@/presentation/components/forms/FormGroup';
 import { Button, Textarea, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
@@ -26,6 +26,7 @@ import { getRythmsAction } from '@/infrastructure/adapters/rythms/rythms-actions
 import { IRythmModel } from '@/infrastructure/models/RythmModel';
 import { ICreateSongViewModel } from '@/presentation/viewmodels/CreateSongViewModel';
 import { postSongAction } from '@/infrastructure/adapters/songs/songs-actions';
+import { getChordsFromText, insertAtIndex } from '@/utils/text-utils';
 
 interface ICSInput {
     label: string;
@@ -49,6 +50,8 @@ const CreateSongForm = ({ forkedFrom, i18n }: ICreateSongFormProps) => {
     const form = useForm(formConfig);
     const [artistList, setArtistList] = useState<IArtistModel[]>([]);
     const [rythmList, setRythmList] = useState<IRythmModel[]>([]);
+    const [chordsToInsert, setChordsToInsert] = useState<string[]>([]);
+    const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
 
     const getArtistList = async (value: string) => {
         const artistLoadingKey = 'artistListLoading';
@@ -87,6 +90,25 @@ const CreateSongForm = ({ forkedFrom, i18n }: ICreateSongFormProps) => {
         form.setFieldValue(key, value);
     };
 
+    const onLyricsChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+        e.preventDefault();
+        const text = e.currentTarget.value;
+        const chords = getChordsFromText(text) || [];
+        console.log(chords);
+        if (JSON.stringify(chordsToInsert) !== JSON.stringify(chords)) {
+            setChordsToInsert(chords);
+        }
+        form.setFieldValue('lyrics', text);
+    };
+
+    const insertChord = (chord: string) => {
+        if (!textAreaRef.current) return;
+
+        const cursorPosition = textAreaRef.current.selectionStart;
+        const newText = insertAtIndex(form.values.lyrics, chord, cursorPosition);
+        form.setFieldValue('lyrics', newText);
+    };
+
     const submitForm = async () => {
         form.validate();
         if (!form.isValid()) {
@@ -98,7 +120,7 @@ const CreateSongForm = ({ forkedFrom, i18n }: ICreateSongFormProps) => {
             artist: form.values.artist,
             forkOf: forkedFrom,
             genre: form.values.genre,
-            bpm: form.values.bpm ? parseInt(form.values.bpm, 10) : 0,
+            bpm: form.values.bpm ? Number.parseInt(form.values.bpm, 10) : 0,
             lyrics: form.values.lyrics || '',
             sampleUri: undefined,
         };
@@ -199,10 +221,19 @@ const CreateSongForm = ({ forkedFrom, i18n }: ICreateSongFormProps) => {
                 />
             </FormGroup>
             <FormGroup>
+                {chordsToInsert.map(c => (
+                    <Button key={c} onClick={() => insertChord(c)}>
+                        {c}
+                    </Button>
+                ))}
+            </FormGroup>
+            <FormGroup>
                 <Textarea
+                    ref={textAreaRef}
                     className=' input-background lyrics-textarea'
                     placeholder={i18n.lyrics.placeholder}
-                    {...form.getInputProps('lyrics')}></Textarea>
+                    {...form.getInputProps('lyrics')}
+                    onChange={onLyricsChange}></Textarea>
             </FormGroup>
             <FormGroup>
                 <Button

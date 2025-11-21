@@ -1,7 +1,9 @@
 import {
+    IActionResponse,
     IAuthGateway,
     ICheckMfaModel,
     IGenericMfaResponse,
+    IGetGoogleKeyModel,
     ISessionResponseDTO,
     ISignInChallengeModel,
     ISignInDigitalSignDTO,
@@ -84,6 +86,31 @@ export class AuthAdapterFromMicro implements IAuthGateway {
             return await getResponseData<ISessionResponseDTO>(res, webErrors.auth05.id);
         } catch (e) {
             console.log(e);
+            return { success: false, reason: webErrors.srv01.id };
+        }
+    }
+
+    public async getGoogleKey(): Promise<IActionResponse<IGetGoogleKeyModel>> {
+        try {
+            const res = await webRequest(
+                `${AuthAdapterFromMicro.AUTH_MICRO_URI}/v1/oauth/google/key`
+            ).get();
+            return await getResponseData<IGetGoogleKeyModel>(res, webErrors.srv01.id);
+        } catch (e) {
+            console.log(e);
+            return { success: false, reason: webErrors.srv01.id };
+        }
+    }
+
+    public async checkGoogleSession(code: string) {
+        try {
+            const res = await webRequest(
+                `${AuthAdapterFromMicro.AUTH_MICRO_URI}/v1/oauth/google/callback`
+            ).post({ code });
+            return await getResponseData<ISessionResponseDTO>(res, webErrors.srv01.id);
+        } catch (e) {
+            const err = e instanceof Error ? e : new Error(String(e));
+            console.log(`Error: ${err.cause ? JSON.stringify(err.cause) : err.message}`);
             return { success: false, reason: webErrors.srv01.id };
         }
     }

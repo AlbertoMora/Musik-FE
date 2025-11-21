@@ -56,6 +56,14 @@
                     "errorModal": {
                         "title": "Usuario o Contraseña inválidos",
                         "caption": "El usuario o la contraseña no han sido validados correctamente"
+                    },
+                    "oauth": {
+                        "google": "Inicia Sesión con Google",
+                        "googleInitiErr": "No se ha logrado establecer conexión con el servidor de Google",
+                        "sessionErr": "No fue posible completar el inicio de sesión, por favor inténtalo de nuevo más tarde",
+                        "fb": "Inicia Sesión con Facebook",
+                        "fbInitiErr": "No se ha logrado establecer conexión con el servidor de Facebook",
+                        "validating": "Estamos verificando la información de la sesión, por favor espera..."
                     }
                 },
                 "signup": {
@@ -125,10 +133,12 @@
                 "forkOf": "A partir de",
                 "key": "Tono",
                 "rythm": "Ritmo",
-                "bpm": "BPM"
+                "bpm": "BPM",
+                "by": "de"
             },
             "menuLabels": {
                 "musicOptions": "Opciones Musicales",
+                "resetTone": "Restablecer tono",
                 "toneUp": "Aumentar un tono",
                 "halfToneUp": "Aumentar un semitono",
                 "halfToneDown": "Disminuir un semitono",
@@ -142,11 +152,33 @@
             },
             "musicPlayer": {
                 "noUrl": "Esta canción no cuenta con una grabación asociada",
+                "isLoading": "La grabación está cargando, por favor espera",
                 "play": "Reproducir",
                 "stop": "Detener",
                 "pause": "Pausar",
                 "tenSecondsForward": "Avanzar 10 segundos",
                 "tenSecondsBackward": "Retroceder 10 segundos"
+            },
+            "uploadModal": {
+                "caption": "Arrastra una grabación mp3, wav u ogg hasta aquí para previsualizarla",
+                "clickCaption": "O haz clic aquí para abrir el selector de archivos",
+                "leaveCaption": "Suelta la grabación para previsualizar",
+                "badFileType": "No se admite ese tipo de archivo",
+                "songName": "Nombre de la grabación",
+                "uploadCaption": "Haz clic en el botón \"Publicar\" para finalizar el proceso de publicación",
+                "cancelButton": "Cancelar",
+                "uploadButton": "Publicar",
+                "uploadProcess": {
+                    "ok": "Archivo publicado con éxito",
+                    "okTitle": "¡Éxito!",
+                    "errTitle": "Error",
+                    "serverErr": "No hemos logrado conectar con el servidor, por favor inténtalo más tarde",
+                    "clientErr": "Algo ha salido mal, por favor inténtalo más tarde",
+                    "uploading": "La grabación se está publicando, por favor, espera...",
+                    "cancelButton": "Cancel",
+                    "okButton": "Ok",
+                    "retryButton": "Retry"
+                }
             }
         }
     },

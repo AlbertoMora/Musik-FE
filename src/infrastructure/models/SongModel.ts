@@ -6,7 +6,7 @@ export interface IKey {
 export interface ISongModel {
     id: string;
     title: string;
-    sampleUri?: string;
+    sampleUri?: string | null;
     averageScore: number;
     lyrics: string;
     genre: string;
@@ -16,4 +16,10 @@ export interface ISongModel {
     forkOf?: string;
     artist: string;
     songKey: string;
+    permissions: ISongPermission[] | null;
+}
+
+export interface ISongPermission {
+    allowed: boolean;
+    correlationId: string;
 }

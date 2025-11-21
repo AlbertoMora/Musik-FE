@@ -12,7 +12,7 @@
         position: sticky
         top: 0
         left: 0
-        z-index: 999
+        z-index: 299
 
         &-container 
             align-items: center
@@ -156,6 +156,7 @@
         &-container
             align-items: center
             display: flex
+            flex-direction: column
             justify-content: center
             gap: 2rem
             padding: 0
@@ -180,6 +181,16 @@
             @include mixins.BoxShadow(1)
             &:hover
                 @include mixins.BoxShadow(2)
+        &-btn
+            align-items: center
+            border-radius: 25px
+            cursor: pointer
+            display: flex
+            padding: 0.5rem 0.7rem
+            width: 100%
+            gap: 0.2rem
+            justify-content: center
+
 
 .right-floating-button
     position: absolute

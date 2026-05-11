@@ -35,7 +35,7 @@ const UploadSampleFormLoading = ({ i18n, cancelProcessAction }: UploadSampleForm
     return (
         <div className='loading-container'>
             <DotLottieReact
-                key={key} // 🔑 Key única fuerza re-mount cuando cambia el estado
+                key={key} // Key única fuerza re-mount cuando cambia el estado
                 src={src}
                 autoplay
                 loop={loop}

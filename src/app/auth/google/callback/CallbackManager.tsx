@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect } from 'react';
 import { I18nTypes } from '../../../../i18n/dictionaries';
-import { IBasicWebResponse, responseCodes } from '@/types/web-types';
+import { IBasicWebResponse, responseCodes } from '@/utils/server/web-types';
 import {
     NotificationService,
     NotificationTypes,
@@ -25,7 +25,7 @@ const CallbackManager = ({ i18n, code }: ICallbackManagerProps) => {
                     i18n.sessionErr,
                     NotificationTypes.error,
                     'Error',
-                    'top-center'
+                    'top-center',
                 );
             }
 

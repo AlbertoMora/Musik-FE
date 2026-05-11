@@ -22,7 +22,7 @@ import {
 import { I18nTypes } from '@/i18n/dictionaries';
 import { AnimatedUnmountWrapper } from '../../animation/AnimationUnmountWrapper';
 import { animations, animationSpeeds } from '@/constants/animation-constants';
-import { responseCodes } from '@/types/web-types';
+import { responseCodes } from '@/utils/server/web-types';
 import {
     NotificationService,
     NotificationTypes,
@@ -90,7 +90,7 @@ const LoginModal = ({
                 i18n.oauth.googleInitiErr,
                 NotificationTypes.error,
                 'Error',
-                'top-center'
+                'top-center',
             );
 
         const url = authConstants.getGoogleLoginUrl(googleOAuthInfo.clientId);

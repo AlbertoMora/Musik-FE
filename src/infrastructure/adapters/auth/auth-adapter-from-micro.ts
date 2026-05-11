@@ -10,7 +10,7 @@ import {
     ISignInModel,
     ISignUpModel,
 } from '@/domain/auth/auth-gateway';
-import { IBasicWebResponse, responseCodes } from '@/types/web-types';
+import { IBasicWebResponse, responseCodes } from '@/utils/server/web-types';
 import { webErrors, webRequest } from '@/utils/web-utils';
 import { getResponseData } from '../../../utils/web-utils';
 export class AuthAdapterFromMicro implements IAuthGateway {
@@ -18,7 +18,7 @@ export class AuthAdapterFromMicro implements IAuthGateway {
     public async signUp(user: ISignUpModel) {
         try {
             const res = await webRequest(
-                `${AuthAdapterFromMicro.AUTH_MICRO_URI}/v1/authentication/signup`
+                `${AuthAdapterFromMicro.AUTH_MICRO_URI}/v1/authentication/signup`,
             ).post(user);
             return await getResponseData<ISessionResponseDTO>(res, webErrors.auth01.id);
         } catch (e) {
@@ -30,7 +30,7 @@ export class AuthAdapterFromMicro implements IAuthGateway {
     public async signIn(userInfo: ISignInModel, userAgent: string) {
         try {
             const res = await webRequest(
-                `${AuthAdapterFromMicro.AUTH_MICRO_URI}/v1/authentication/login`
+                `${AuthAdapterFromMicro.AUTH_MICRO_URI}/v1/authentication/login`,
             ).post(userInfo, { 'User-Agent': userAgent });
             return await getResponseData<ISignInDigitalSignDTO>(res, webErrors.auth02.id);
         } catch (e) {
@@ -42,7 +42,7 @@ export class AuthAdapterFromMicro implements IAuthGateway {
     public async signInChallenge(user: ISignInChallengeModel, userAgent: string) {
         try {
             const res = await webRequest(
-                `${AuthAdapterFromMicro.AUTH_MICRO_URI}/v1/authentication/login-challenge`
+                `${AuthAdapterFromMicro.AUTH_MICRO_URI}/v1/authentication/login-challenge`,
             ).post(user, { 'User-Agent': userAgent });
             return await getResponseData<ISessionResponseDTO>(res, webErrors.auth03.id);
         } catch (e) {
@@ -54,7 +54,7 @@ export class AuthAdapterFromMicro implements IAuthGateway {
     public async checkMfa(checkMfaInfo: ICheckMfaModel) {
         try {
             const res = await webRequest(
-                `${AuthAdapterFromMicro.AUTH_MICRO_URI}/v1/authentication/check-mfa`
+                `${AuthAdapterFromMicro.AUTH_MICRO_URI}/v1/authentication/check-mfa`,
             ).post(checkMfaInfo);
             const data = (await res.json()) as ISessionResponseDTO & IGenericMfaResponse;
             if (data.status !== responseCodes.ok && (!data.attempts || data.attempts < 3))
@@ -69,7 +69,7 @@ export class AuthAdapterFromMicro implements IAuthGateway {
     public async checkSession(accessToken: string, userAgent: string) {
         try {
             const res = await webRequest(
-                `${AuthAdapterFromMicro.AUTH_MICRO_URI}/v1/authentication/check-session-token`
+                `${AuthAdapterFromMicro.AUTH_MICRO_URI}/v1/authentication/check-session-token`,
             ).post({}, { authorization: `Bearer ${accessToken}`, 'User-Agent': userAgent });
             return await getResponseData(res, webErrors.auth05.id);
         } catch (e) {
@@ -81,7 +81,7 @@ export class AuthAdapterFromMicro implements IAuthGateway {
     public async refreshSession(refreshToken: string, userAgent: string) {
         try {
             const res = await webRequest(
-                `${AuthAdapterFromMicro.AUTH_MICRO_URI}/v1/authentication/refresh-session`
+                `${AuthAdapterFromMicro.AUTH_MICRO_URI}/v1/authentication/refresh-session`,
             ).post({}, { authorization: `Bearer ${refreshToken}`, 'User-Agent': userAgent });
             return await getResponseData<ISessionResponseDTO>(res, webErrors.auth05.id);
         } catch (e) {
@@ -93,7 +93,7 @@ export class AuthAdapterFromMicro implements IAuthGateway {
     public async getGoogleKey(): Promise<IActionResponse<IGetGoogleKeyModel>> {
         try {
             const res = await webRequest(
-                `${AuthAdapterFromMicro.AUTH_MICRO_URI}/v1/oauth/google/key`
+                `${AuthAdapterFromMicro.AUTH_MICRO_URI}/v1/oauth/google/key`,
             ).get();
             return await getResponseData<IGetGoogleKeyModel>(res, webErrors.srv01.id);
         } catch (e) {
@@ -105,7 +105,7 @@ export class AuthAdapterFromMicro implements IAuthGateway {
     public async checkGoogleSession(code: string) {
         try {
             const res = await webRequest(
-                `${AuthAdapterFromMicro.AUTH_MICRO_URI}/v1/oauth/google/callback`
+                `${AuthAdapterFromMicro.AUTH_MICRO_URI}/v1/oauth/google/callback`,
             ).post({ code });
             return await getResponseData<ISessionResponseDTO>(res, webErrors.srv01.id);
         } catch (e) {
@@ -118,7 +118,7 @@ export class AuthAdapterFromMicro implements IAuthGateway {
     public async signOut(accessToken: string) {
         try {
             const res = await webRequest(
-                `${AuthAdapterFromMicro.AUTH_MICRO_URI}/v1/authentication/signout`
+                `${AuthAdapterFromMicro.AUTH_MICRO_URI}/v1/authentication/signout`,
             ).delete(null, { authorization: `Bearer ${accessToken}` });
             return await getResponseData<IBasicWebResponse>(res, webErrors.auth05.id);
         } catch (e) {

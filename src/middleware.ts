@@ -9,14 +9,14 @@ import { IRefreshTokenDataModel } from './infrastructure/models/SessionModel';
 import { commonsConstants } from './constants/commons-constants';
 
 const getLocaleFromBrowser = (request: NextRequest): string | null => {
-    const supportedLocales = ['en', 'es'];
+    const supportedLocales = new Set(['en', 'es']);
     const acceptLanguage = request.headers.get('accept-language');
 
     if (!acceptLanguage) return DEFAULT_LANG;
 
     const languages = acceptLanguage.split(',').map(lang => lang.split(';')[0]);
     for (const lang of languages) {
-        if (supportedLocales.includes(lang)) {
+        if (supportedLocales.has(lang)) {
             return lang;
         }
     }

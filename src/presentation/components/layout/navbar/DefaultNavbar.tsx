@@ -19,7 +19,7 @@ import SignUpModal from './SignUpModal';
 import DfaModal from './DfaModal';
 import { I18nTypes } from '@/i18n/dictionaries';
 import { signOutAction } from '@/infrastructure/adapters/auth/auth-actions';
-import { responseCodes } from '@/types/web-types';
+import { responseCodes } from '@/utils/server/web-types';
 
 interface INavbarProps {
     isLogged: boolean;

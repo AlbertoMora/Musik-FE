@@ -54,13 +54,13 @@ export const createSongtextStore = (
             set(state => ({
                 fontSize: state.fontSize >= 24 ? state.fontSize : state.fontSize + 1,
                 paragraphSplit:
-                    state.fontSize >= 25 ? state.paragraphSplit : state.paragraphSplit - 2,
+                    state.paragraphSplit <= 10 ? state.paragraphSplit : state.paragraphSplit - 2,
             })),
         decreaseFontSize: () =>
             set(state => ({
                 fontSize: state.fontSize <= 11 ? state.fontSize : state.fontSize - 1,
                 paragraphSplit:
-                    state.fontSize <= 10 ? state.paragraphSplit : state.paragraphSplit + 2,
+                    state.paragraphSplit >= 26 ? state.paragraphSplit : state.paragraphSplit + 2,
             })),
 
         originalChords: chords,

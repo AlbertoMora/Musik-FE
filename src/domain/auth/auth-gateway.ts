@@ -1,22 +1,22 @@
-import { IBasicWebResponse } from '@/types/web-types';
+import { IBasicWebResponse } from '@/utils/server/web-types';
 
 export interface IAuthGateway {
     signUp: (user: ISignUpModel) => Promise<IActionResponse<ISessionResponseDTO>>;
     signIn: (
         userInfo: ISignInModel,
-        userAgent: string
+        userAgent: string,
     ) => Promise<IActionResponse<ISignInDigitalSignDTO | ISessionResponseDTO>>;
     signInChallenge?: (
         challengeInfo: ISignInChallengeModel,
-        userAgent: string
+        userAgent: string,
     ) => Promise<IActionResponse<ISessionResponseDTO>>;
     checkMfa: (
-        mfaInfo: ICheckMfaModel
+        mfaInfo: ICheckMfaModel,
     ) => Promise<IActionResponse<ISessionResponseDTO & IGenericMfaResponse>>;
     checkSession?: (accessToken: string, userAgent: string) => Promise<IActionResponse<unknown>>;
     refreshSession?: (
         refreshToken: string,
-        userAgent: string
+        userAgent: string,
     ) => Promise<IActionResponse<ISessionResponseDTO>>;
     signOut: (accessToken: string) => Promise<IActionResponse<IBasicWebResponse>>;
     getGoogleKey: () => Promise<IActionResponse<IGetGoogleKeyModel>>;

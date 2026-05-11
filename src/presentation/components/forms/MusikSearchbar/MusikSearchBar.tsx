@@ -10,7 +10,7 @@ import { AnimatedUnmountWrapper } from '../../animation/AnimationUnmountWrapper'
 import { animations, animationSpeeds } from '@/constants/animation-constants';
 import { ISongRes } from '@/domain/songs/song-gateway';
 import { getLinkTemplateResult, getTemplateResult } from '@/utils/text-utils';
-import { HasIdType } from '@/types/web-types';
+import { HasIdType } from '@/utils/server/web-types';
 import { getArtistsAction } from '@/infrastructure/adapters/artists/artists-actions';
 import { IArtistModel } from '@/infrastructure/models/ArtistModel';
 import { IUserResponseDTO } from '@/domain/users/users-gateway';
@@ -165,12 +165,12 @@ const MusikBarResultsSection = <T extends HasIdType>({
                             href={getLinkTemplateResult<T>(
                                 linkTemplate.template,
                                 linkTemplate.replaceProperties,
-                                s
+                                s,
                             )}>
                             {getTemplateResult<T>(
                                 textTemplate.template,
                                 textTemplate.replaceProperties,
-                                s
+                                s,
                             )}
                         </a>
                     </div>

@@ -2,6 +2,7 @@ import { IActionResponse } from '@/domain/auth/auth-gateway';
 import { getSessionCookieValues } from '@/infrastructure/adapters/auth/auth-actions';
 import { DictionaryItem } from '@/types/format-types';
 import { IBasicWebResponse, responseCodes } from '@/types/web-types';
+
 export interface ErrorType {
     msg: string;
     id: string;
@@ -86,7 +87,7 @@ export const webRequest = (url: string) => {
 export const controlledFileUploadRequest = (
     signedUrl: string,
     file: File,
-    onProgressCallback: (process: number) => void
+    onProgressCallback: (process: number) => void,
 ): Promise<UploadResponse> => {
     return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
@@ -232,7 +233,7 @@ export const webErrors = {
 
 export const getResponseData = async <T extends IBasicWebResponse>(
     res: Response,
-    webError: string
+    webError: string,
 ): Promise<IActionResponse<T>> => {
     if (!res.ok) return { success: false, reason: webErrors.srv01.id };
 

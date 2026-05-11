@@ -1,16 +1,16 @@
 import { IActionResponse } from '../auth/auth-gateway';
-import { IBasicWebResponse } from '@/types/web-types';
+import { IBasicWebResponse } from '@/utils/server/web-types';
 import { ICreateArtistViewModel } from '@/presentation/viewmodels/CreateArtistViewModel';
 
 export interface IArtistGateway {
     getArtists: (
         name: string,
         ammount: number,
-        page: number
+        page: number,
     ) => Promise<IActionResponse<IGetArtistResponse>>;
     createArtist: (
         artist: ICreateArtistViewModel,
-        userAgent: string
+        userAgent: string,
     ) => Promise<IActionResponse<ICreateArtistResponse>>;
 }
 

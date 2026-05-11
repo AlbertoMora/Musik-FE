@@ -1,11 +1,11 @@
-import { IBasicWebResponse } from '@/types/web-types';
+import { IBasicWebResponse } from '@/utils/server/web-types';
 import { IActionResponse } from '../auth/auth-gateway';
 
 export interface IUsersGateway {
     getUsers: (
         username: string,
         limit?: number,
-        offset?: number
+        offset?: number,
     ) => Promise<IActionResponse<IUserListResponseDTO>>;
 }
 

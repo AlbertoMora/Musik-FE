@@ -1,7 +1,7 @@
 import { ISongModel, ISongPermission } from '@/infrastructure/models/SongModel';
 import { ICreateSongViewModel } from '@/presentation/viewmodels/CreateSongViewModel';
 import { IActionResponse } from '../auth/auth-gateway';
-import { IBasicWebResponse } from '@/types/web-types';
+import { IBasicWebResponse } from '@/utils/server/web-types';
 
 export interface ISongGateway {
     getSongs: () => Promise<ISongModel[] | null>;
@@ -10,22 +10,22 @@ export interface ISongGateway {
         name: string,
         limit: number,
         offset: number,
-        type?: string
+        type?: string,
     ) => Promise<IActionResponse<IGetSongsListResponseDTO>>;
     postSong: (
         song: ICreateSongViewModel,
-        accessToken: string
+        accessToken: string,
     ) => Promise<IActionResponse<ICreateSongResponseDTO>>;
     postRecord: (
         filename: string,
         contentType: string,
         id: string,
-        accessToken: string
+        accessToken: string,
     ) => Promise<IActionResponse<IPostRecordResDTO>>;
     updateSongSample: (
         key: string,
         id: string,
-        accessToken: string
+        accessToken: string,
     ) => Promise<IActionResponse<IUpdateSongSampleResDTO>>;
 }
 

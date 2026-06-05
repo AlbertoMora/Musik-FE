@@ -10,12 +10,13 @@ import { AnimatedUnmountWrapper } from '../../animation/AnimationUnmountWrapper'
 import { animations, animationSpeeds } from '@/constants/animation-constants';
 import { ISongRes } from '@/domain/songs/song-gateway';
 import { getLinkTemplateResult, getTemplateResult } from '@/utils/text-utils';
-import { HasIdType } from '@/utils/server/web-types';
+
 import { getArtistsAction } from '@/infrastructure/adapters/artists/artists-actions';
 import { IArtistModel } from '@/infrastructure/models/ArtistModel';
 import { IUserResponseDTO } from '@/domain/users/users-gateway';
 import { getUsers } from '@/infrastructure/adapters/users/users-actions';
 import { I18nTypes } from '@/i18n/dictionaries';
+import { HasIdType } from '@/types/web-types';
 
 const MusikSearchBar = ({ i18n }: { i18n: I18nTypes['main'] }) => {
     const [value, setValue] = useState('');

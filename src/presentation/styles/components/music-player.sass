@@ -2,32 +2,39 @@
     &-container
         align-items: center
         align-self: center
-        background-color: color-mix(in srgb,var(--background), var(--foreground) 5%)
-        border-radius: 15px
+        background: var(--music-player-bg)
+        border: 1px solid var(--music-player-border)
+        border-radius: 10px
         display: flex
         gap: 1rem
         justify-content: stretch
-        padding: 0.5em 1rem
+        padding: 0.75rem 1rem
         position: relative
         overflow: hidden
-        width: 40rem
+        width: min(100%, 46rem)
+
     &-stop-bottom
-        position: absolute !important
-        background-color: var(--foreground)
+        background: linear-gradient(120deg, #065fd4, #ff0033)
         border-radius: 50%
+        color: #ffffff !important
         bottom: -0.5rem
+        position: absolute !important
         right: -0.2rem
         z-index: 2
+
         &:hover
-            background-color: color-mix(in srgb,var(--foreground), var(--background) 10%)
+            filter: brightness(1.08)
+
     &-no-player
         align-items: center
-        background-color: rgba(0,0,0,0.7)
-        backdrop-filter: blur(3px)
+        backdrop-filter: blur(4px)
+        background-color: var(--music-player-noplayer-bg)
+        border-radius: 10px
         display: flex
         height: 100%
         justify-content: center
         left: 0
         position: absolute
+        text-align: center
         width: 100%
         z-index: 90

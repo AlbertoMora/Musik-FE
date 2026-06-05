@@ -1,11 +1,39 @@
 
+@use '../common/mixins'
+
 .main
     &-container
         align-items: center
         display: flex
         flex-direction: column
         justify-content: flex-start
-        gap: 3rem
-        min-height: calc(100vh - 14rem)
-        width: 100vw
-        margin-top: 10rem
+        gap: 2rem
+        margin: 6.5rem auto 2rem
+        max-width: 1185px
+        min-height: calc(100vh - 8.5rem)
+        padding: 1.5rem
+        width: 100%
+
+        > img
+            filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.45))
+
+        > div:last-child
+            align-items: center
+            background: var(--gradient-accent)
+            border-radius: 10px
+            color: #ffffff
+            display: flex
+            font-weight: 700
+            justify-content: center
+            min-height: 3rem
+            padding: 0.65rem 1rem
+            width: min(100%, 42rem)
+
+@include mixins.md-down
+    .main
+        &-container
+            margin-top: 5.5rem
+            padding: 1rem
+            > img
+                width: 120px
+                height: auto

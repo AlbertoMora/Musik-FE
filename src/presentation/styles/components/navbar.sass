@@ -1,234 +1,370 @@
-@use 'sass:color';
-@use '../common/mixins';
-@use '../common/settings';
+@use '../common/mixins'
+@use '../common/settings'
 
+.navbar
+    display: flex
+    flex-direction: column
+    left: 0
+    position: sticky
+    top: 0
+    width: 100%
+    z-index: 299
 
+    &-container
+        align-items: center
+        backdrop-filter: blur(12px)
+        background: var(--navbar-bg)
+        border-bottom: 1px solid var(--navbar-border)
+        column-gap: 1rem
+        display: flex
+        min-height: 4.75rem
+        padding: 0 1.2rem
+        width: 100%
+        @include mixins.BoxShadow(2)
 
-@include mixins.md 
-    .navbar 
+    &-item
+        border-radius: 18px
+        color: var(--foreground)
+        cursor: pointer
+        font-size: 0.95rem
+        font-weight: 600
+        padding: 0.45rem 0.85rem
+        transition: background-color 160ms ease, color 160ms ease
+
+        &:hover
+            background: var(--item-hover-bg)
+            color: #ffffff
+
+        &-dropdown
+            backdrop-filter: blur(12px)
+            background: var(--dropdown-bg) !important
+            border: 1px solid var(--modal-border)
+            border-radius: 10px !important
+            color: var(--foreground) !important
+
+        &-child
+            color: var(--foreground) !important
+            display: block
+            padding: 0.2rem
+            text-decoration: none
+
+            &:hover button
+                background: var(--item-hover-gradient)
+
+            *
+                color: var(--foreground) !important
+
+    &-logo
+        align-items: center
+        cursor: pointer
+        display: flex
+        justify-content: center
+        user-select: none
+        width: 2.65rem !important
+
+.logo-link
+    margin-right: auto
+
+.login-modal
+    &-container
+        align-items: center
+        backdrop-filter: blur(4px)
+        background: var(--modal-overlay)
+        display: flex
+        height: 100vh
+        justify-content: center
+        left: 0
+        position: fixed
+        top: 0
+        width: 100vw
+        z-index: 800
+
+    &-dfa-form,
+    &-form
+        align-items: stretch
+        background: var(--modal-bg)
+        border: 1px solid var(--modal-border)
+        border-radius: 10px
+        color: var(--foreground)
         display: flex
         flex-direction: column
+        gap: 0.9rem
+        padding: 2.25rem
+        position: relative
+        width: min(92vw, 30rem)
+        @include mixins.BoxShadow(4)
+
+    &-dfa-form
+        width: min(92vw, 42rem)
+
+    &-logo
+        align-self: center
+        width: 7.5rem !important
+
+.ssnn
+    &-container
+        align-items: stretch
+        display: flex
+        flex-direction: column
+        gap: 0.8rem
+        justify-content: center
+        padding: 0
+
+    &-button
+        align-items: center
+        background: var(--ssnn-button-bg)
+        border: 1px solid var(--ssnn-button-border)
+        border-radius: 9999px
+        color: var(--foreground)
+        cursor: pointer
+        display: flex
+        height: 2.5rem
+        justify-content: center
+        padding: 0
+        text-align: center
+        transition: background-color 160ms ease
+        width: 2.5rem
+
+        &:hover
+            background: var(--ssnn-button-hover)
+
+    &-btn
         width: 100%
-        position: sticky
-        top: 0
-        left: 0
-        z-index: 299
-
-        &-container 
-            align-items: center
-            background-color: color.adjust(settings.$primary-color, $blackness: 20%) 
-            column-gap: 2rem
-            display: flex
-            @include mixins.BoxShadow(3)
-            height: 4rem
-            padding: 0 10rem
-            width: 100%
-
-        &-item
-            cursor: pointer
-            transition-property: background-color
-            transition-duration: 0.25s
-            &:hover
-                background-color: color-mix(in srgb,rgba(0, 0, 0, 0.5), black 5%)
-            &-dropdown
-                background-color: var(--background) !important
-                color: var(--foreground) !important
-            &-child
-                color: var(--foreground) !important
-                text-decoration: none
-                padding: 3rem 0
-                & button:hover
-                    background-color: color-mix(in srgb,var(--background), white 5%)
-                & *
-                    color: var(--foreground) !important
-
-        &-logo 
-            align-items: center
-            cursor: pointer
-            display: flex
-            width: 2.5rem !important
-            justify-content: center
-            user-select: none
-        
-
-        &-login-button 
-            color: var(--third-color)
-            background-color: transparent
-            border: var(--third-color) 1px solid
-
-            &:hover 
-                color: var(--third-color)
-            
-        
-
-        &-link 
-            align-items: center
-            background-color: transparent
-            column-gap: 0.5rem
-            display: flex
-            font-weight: 500
-            justify-content: center
-        
-
-        &-links 
-            align-items: center
-            column-gap: 2rem
-            display: flex
-            justify-content: center
-            margin-left: auto
-        
-
-        &-search-section 
-            align-items: center
-            background-color: color-mix(in srgb,var(--light-color), black 5%)
-            color: color-mix(in srgb,var(--third-color), black 5%)
-            column-gap: 0.5rem
-            border-radius: 5px
-            cursor: pointer
-            display: flex
-            height: 2rem
-            justify-content: flex-start
-            padding: 0 1rem
-            min-width: 10rem
-
-            &:hover 
-                background-color: color-mix(in srgb,var(--light-color),  black 8%)
-            
-        
-
-        &-cart 
-            background-color: color-mix(in srgb,var(--light-color),  black 5%)
-            border-radius: 50%
-            cursor: pointer
-            padding: 0.5rem
-            user-select: none
-
-            &:hover 
-                background-color: color-mix(in srgb,var(--light-color),  black 8%)
-            
-        
-
-    .logo-link
-        margin-right: auto
-
-
-    .login-modal
-        &-container
-            align-items: center
-            background-color: rgba(0, 0, 0, 0.33)
-            display: flex
-            height: 100vh
-            justify-content: center
-            left: 0
-            position: fixed
-            top: 0
-            width: 100vw
-        &-dfa-form
-            align-items: center
-            background-color: color-mix(in srgb, var(--background) 90%, var(--foreground));
-            border-radius: 15px
-            color: var(--foreground)
-            display: flex
-            flex-direction: column
-            justify-content: space-
-            gap: 1rem
-            padding: 4rem
-            position: relative
-            width: 40rem 
-            @include mixins.BoxShadow(5)
-        &-form
-            align-items: center
-            background-color: color-mix(in srgb, var(--background) 90%, var(--foreground));
-            border-radius: 15px
-            color: var(--foreground)
-            display: flex
-            flex-direction: column
-            justify-content: space-
-            gap: 1rem
-            padding: 4rem
-            position: relative
-            width: 25rem 
-            @include mixins.BoxShadow(5)
-        &-logo
-            width: 10rem !important
-
-    .ssnn
-        &-container
-            align-items: center
-            display: flex
-            flex-direction: column
-            justify-content: center
-            gap: 2rem
-            padding: 0
-        &-button
-            align-items: center
-            display: flex
-            background-color: var(--foreground)
-            color: var(--background)
-            border-radius: 50% 
-            justify-content: center
-            width: 2.5rem
-            height: 2.5rem
-            padding: 0 
-            text-align: center
-            border: none;
-            font-weight: bold;
-            font-family: sans-serif;
-            cursor: pointer;
-            transition-property: background-color
-            transition-duration: 0.25s
-            transition-delay: 0.025s
-            @include mixins.BoxShadow(1)
-            &:hover
-                @include mixins.BoxShadow(2)
-        &-btn
-            align-items: center
-            border-radius: 25px
-            cursor: pointer
-            display: flex
-            padding: 0.5rem 0.7rem
-            width: 100%
-            gap: 0.2rem
-            justify-content: center
-
 
 .right-floating-button
-    position: absolute
-    top: 1rem
-    right: 1rem
     left: auto
-
+    position: absolute
+    right: 1rem
+    top: 1rem
 
 .fb-btn
-    background-color: #1877f2;
-    color: #FFF;
-    &:hover
-        background-color: #156ad8;
+    background-color: #1877f2
 
 .x-btn
-    background-color: #000;
-    color: #FFF;
+    background-color: #000000
+    color: #ffffff
+
     &:hover
-        background-color: #242424;
+        background-color: #242424
 
 .google-btn
-    background-color: #EA4335
-    color: #FFF
+    background-color: #ffffff
+
+.gsi-material-button,
+.fb-material-button
+    align-items: center
+    border: 1px solid transparent
+    border-radius: 4px
+    cursor: pointer
+    display: inline-flex
+    font-size: 14px
+    font-weight: 500
+    height: 42px
+    justify-content: center
+    line-height: 1
+    min-height: 42px
+    position: relative
+    transition: background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease
+    width: 100%
+
+    &:active
+        transform: translateY(1px)
+
+.gsi-material-button
+    background-color: #ffffff
+    border-color: #dadce0
+    color: #3c4043
+    font-family: Roboto, Arial, sans-serif
+    overflow: hidden
+
     &:hover
-        background-color: #ce3c2f
+        background-color: #f8f9fa
+        border-color: #d2e3fc
+
+    &:focus-visible
+        box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.2)
+        outline: none
+
+    &-state
+        inset: 0
+        pointer-events: none
+        position: absolute
+
+    &-content-wrapper
+        align-items: center
+        column-gap: 12px
+        display: inline-flex
+        justify-content: center
+        width: 100%
+
+    &-icon
+        display: inline-flex
+        flex-shrink: 0
+        height: 24px
+        width: 24px
+
+    &-contents
+        letter-spacing: 0.25px
+        text-align: center
+
+.fb-material-button
+    background-color: #1877f2
+    border-color: #1877f2
+    color: #ffffff
+    font-family: Helvetica, Arial, sans-serif
+    font-weight: 700
+    padding: 0 12px
+
+    &:hover
+        background-color: #166fe5
+        border-color: #166fe5
+
+    &:focus-visible
+        box-shadow: 0 0 0 3px rgba(24, 119, 242, 0.28)
+        outline: none
+
+    &-icon
+        align-items: center
+        display: inline-flex
+        flex-shrink: 0
+        justify-content: center
+        margin-right: 10px
+
+    &-contents
+        letter-spacing: 0.15px
+        text-align: center
 
 .account-menu
-    &-item
-        text-align: center !important
-    &-signout
-        display: flex
+    &-dropdown
+        border-radius: 14px !important
+        min-width: 18.5rem
+        overflow: hidden
+        padding: 0.2rem !important
+        text-align: center
+
+    &-trigger-avatar
+        border: 2px solid rgba(255, 255, 255, 0.22)
+
+    .material-card
+        background: linear-gradient(165deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03))
+        border: 1px solid var(--modal-border)
+        border-radius: 12px
+
+    &-profile
         align-items: center
+        border-bottom: 1px solid var(--modal-border)
+        display: flex
+        flex-direction: column
+        gap: 0.55rem
+        margin: 0.35rem 0.45rem 0.3rem
+        padding: 0.75rem
+
+    &-header
+        align-items: center
+        display: flex
+        gap: 0.65rem
         justify-content: center
-        padding: 2rem 
-        & button
-            background-color: settings.$danger-color
-            color: #FFF !important
-            transition-duration: 0.25s
-            transition-property: background-color
+
+        &-text
+            min-width: 0
+            text-align: center
+
+    &-profile-avatar
+        flex-shrink: 0
+
+    &-title
+        color: var(--foreground)
+        font-size: 0.94rem
+        font-weight: 700
+        margin: 0
+        overflow: hidden
+        text-overflow: ellipsis
+        white-space: nowrap
+
+    &-handle
+        align-items: center
+        color: var(--input-checked)
+        column-gap: 0.22rem
+        display: flex
+        font-size: 0.78rem
+        justify-content: center
+        margin: 0.12rem 0 0
+        opacity: 0.95
+        overflow: hidden
+        text-overflow: ellipsis
+        white-space: nowrap
+
+    &-row
+        align-items: center
+        color: var(--foreground)
+        column-gap: 0.45rem
+        display: flex
+        font-size: 0.79rem
+        justify-content: center
+        line-height: 1.35
+        opacity: 0.9
+
+        &-text
+            overflow-wrap: anywhere
+
+            strong
+                font-weight: 700
+
+    &-item
+        border-radius: 10px !important
+        text-align: center !important
+
+        &-action
+            margin: 0.2rem 0.45rem 0
+
             &:hover
-                background-color: color.adjust($color: settings.$danger-color, $lightness: -5%)
+                background: var(--item-hover-bg)
+
+        &-content
+            align-items: center
+            display: flex
+            justify-content: space-between
+            width: 100%
+
+        &-leading
+            align-items: center
+            column-gap: 0.5rem
+            display: inline-flex
+
+    &-link
+        display: block
+        text-decoration: none
+
+    &-signout
+        align-items: center
+        display: flex
+        justify-content: center
+        padding: 0.65rem 0.8rem 0.8rem
+
+        &-btn
+            background: var(--account-menu-signout-bg)
+            border: 1px solid rgba(255, 255, 255, 0.15)
+            color: #ffffff !important
+            width: 100%
+            transition: filter 140ms ease, transform 120ms ease
+
+            &:hover
+                filter: brightness(1.08)
+
+            &:active
+                transform: translateY(1px)
+
+@include mixins.md
+    .navbar
+        &-container
+            padding: 0 1.5rem
+
+@include mixins.lg
+    .navbar
+        &-container
+            padding: 0 4rem
+
+@include mixins.xl
+    .navbar
+        &-container
+            padding: 0 7rem

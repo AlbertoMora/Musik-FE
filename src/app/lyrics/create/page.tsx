@@ -10,6 +10,18 @@ import '@/presentation/styles/components/asyncacomplete.sass';
 import CreateSongForm from './CreateSongForm';
 import { headers } from 'next/headers';
 import { getI18n } from '@/i18n/dictionaries';
+import { Metadata } from 'next';
+
+export async function generateMetadata(): Promise<Metadata> {
+    const { app, lyrics } = (await getI18n(headers)) ?? {};
+
+    return {
+        title: `${lyrics?.create?.title ?? 'Create Lyrics'} | ${app?.title ?? 'Sonnetia'}`,
+        description: `${lyrics?.create?.breadcrumb?.create ?? 'Create'} ${
+            lyrics?.create?.title ?? 'Lyrics'
+        }`,
+    };
+}
 
 const CreateSongPage = async () => {
     const { lyrics } = (await getI18n(headers)) ?? {};

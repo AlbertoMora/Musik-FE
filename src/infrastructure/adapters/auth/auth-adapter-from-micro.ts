@@ -10,9 +10,11 @@ import {
     ISignInModel,
     ISignUpModel,
 } from '@/domain/auth/auth-gateway';
-import { IBasicWebResponse, responseCodes } from '@/utils/server/web-types';
+
 import { webErrors, webRequest } from '@/utils/web-utils';
 import { getResponseData } from '../../../utils/web-utils';
+import { IBasicWebResponse, responseCodes } from '@/types/web-types';
+import { languageConstants } from '@/constants/commons-constants';
 export class AuthAdapterFromMicro implements IAuthGateway {
     public static readonly AUTH_MICRO_URI = process.env.AUTH_MICRO_URI;
     public async signUp(user: ISignUpModel) {
@@ -27,11 +29,14 @@ export class AuthAdapterFromMicro implements IAuthGateway {
         }
     }
 
-    public async signIn(userInfo: ISignInModel, userAgent: string) {
+    public async signIn(userInfo: ISignInModel, userAgent: string, locale?: string) {
         try {
             const res = await webRequest(
                 `${AuthAdapterFromMicro.AUTH_MICRO_URI}/v1/authentication/login`,
-            ).post(userInfo, { 'User-Agent': userAgent });
+            ).post(userInfo, {
+                'User-Agent': userAgent,
+                'Accept-Language': locale ?? languageConstants.en,
+            });
             return await getResponseData<ISignInDigitalSignDTO>(res, webErrors.auth02.id);
         } catch (e) {
             console.log(e);

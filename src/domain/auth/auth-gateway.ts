@@ -1,10 +1,11 @@
-import { IBasicWebResponse } from '@/utils/server/web-types';
+import { IBasicWebResponse } from '@/types/web-types';
 
 export interface IAuthGateway {
     signUp: (user: ISignUpModel) => Promise<IActionResponse<ISessionResponseDTO>>;
     signIn: (
         userInfo: ISignInModel,
         userAgent: string,
+        locale?: string,
     ) => Promise<IActionResponse<ISignInDigitalSignDTO | ISessionResponseDTO>>;
     signInChallenge?: (
         challengeInfo: ISignInChallengeModel,
@@ -78,4 +79,20 @@ export interface IActionResponse<T> {
     success: boolean;
     reason?: string;
     data?: T;
+}
+
+export interface ILocalSessionData {
+    exp: number;
+    sessionId: string;
+    user: {
+        id: string;
+        name: string;
+        lastname: string;
+        email: string;
+        username: string;
+        prof_pic?: string;
+        isactive: number;
+        ban_case_id?: string;
+        creation_date?: string;
+    };
 }

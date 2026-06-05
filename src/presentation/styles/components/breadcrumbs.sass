@@ -2,10 +2,15 @@
 @use '../common/settings'
 
 .breadcrumb
-    &-anchor 
-        color: var(--foreground)
+    &-anchor
+        border-radius: 9999px
+        color: var(--breadcrumb-color)
+        padding: 0.35rem 0.65rem
         text-decoration: none
-        font-weight: 500
+        font-weight: 600
+        transition: background-color 140ms ease, color 140ms ease
+
         &:hover
             text-decoration: none
-            color: var(--third-color)
+            background: var(--breadcrumb-hover-bg)
+            color: var(--breadcrumb-hover-color)

@@ -3,19 +3,38 @@
 
 @include mixins.md
     .create-song-container
-        margin-top: 1rem
+        background: var(--surface-1)
+        border: 1px solid var(--surface-border)
+        border-radius: 10px
+        margin: 6rem auto 2rem
+        max-width: 1185px
+        min-height: calc(100vh - 9rem)
+        padding: 1.2rem 1rem 2rem
+        width: calc(100% - 2rem)
+
     .form-container
-        align-items: center
+        align-items: stretch
         display: flex
         flex-direction: column
         justify-content: center
-        margin-top: 1rem
-        padding-top: 0.3rem
-
-    .lyrics-textarea 
+        margin-top: 0.8rem
+        padding-top: 0.5rem
         width: 100%
+
+    .lyrics-textarea
+        width: 100%
+
         & > * > textarea
-            min-height: 50rem
+            background: var(--lyrics-textarea-bg)
+            border: 1px solid var(--lyrics-textarea-border)
+            border-radius: 10px
+            min-height: 38rem
             width: 100%
-            text-align: center
-            font-size: 1.2rem
+            text-align: left
+            font-size: 1rem
+            line-height: 1.5
+
+@include mixins.md-down
+    .create-song-container
+        margin-top: 5.2rem
+        width: calc(100% - 1rem)

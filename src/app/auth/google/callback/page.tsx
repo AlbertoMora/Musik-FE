@@ -1,5 +1,6 @@
 import { getI18n } from '@/i18n/dictionaries';
 import { headers } from 'next/headers';
+import { Metadata } from 'next';
 
 import React from 'react';
 import CallbackManager from './CallbackManager';
@@ -13,6 +14,17 @@ interface ISearchParamsProps {
 
 interface IProps {
     searchParams: Promise<ISearchParamsProps>;
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+    const {
+        app: { title, navbar },
+    } = (await getI18n(headers)) ?? {};
+
+    return {
+        title: `Google callback | ${title ?? 'Sonnetia'}`,
+        description: navbar?.auth?.login?.oauth?.validating,
+    };
 }
 
 const Page = async ({ searchParams }: IProps) => {

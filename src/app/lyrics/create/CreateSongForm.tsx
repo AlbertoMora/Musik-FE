@@ -149,7 +149,7 @@ const CreateSongForm = ({ forkedFrom, i18n }: ICreateSongFormProps) => {
                     {...form.getInputProps('name')}
                 />
             </FormGroup>
-            <FormGroup>
+            <FormGroup className='flex flex-row gap-4'>
                 <AsyncAutocomplete
                     className='input-background'
                     label={
@@ -235,7 +235,7 @@ const CreateSongForm = ({ forkedFrom, i18n }: ICreateSongFormProps) => {
                     {...form.getInputProps('lyrics')}
                     onChange={onLyricsChange}></Textarea>
             </FormGroup>
-            <FormGroup>
+            <FormGroup className='flex flex-row justify-end gap-20'>
                 <Button
                     size='lg'
                     radius='xl'

@@ -99,11 +99,11 @@ export const insertAtIndex = (text: string, injection: string, index: number) =>
 export const getTemplateResult = <T extends Record<string, unknown>>(
     template: string,
     replacements: string[],
-    data: T
+    data: T,
 ) => {
     let text = template;
 
-    for (const replacement in replacements) {
+    for (const replacement of replacements) {
         text = text.replace('?', String(data[replacement]));
     }
     return text;
@@ -113,7 +113,7 @@ export const getLinkTemplateResult = <T extends Record<string, unknown>>(
     template: string,
     replacements: string[],
 
-    data: T
+    data: T,
 ) => {
     let text = template;
     for (const r of replacements) {

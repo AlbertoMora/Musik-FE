@@ -1,6 +1,107 @@
 {
     "app": {
-        "title": "Musik",
+        "title": "Sonnetia",
+        "accountPage": {
+            "menuTitle": "Quick navigation",
+            "common": {
+                "defaultDisplayName": "Music Creator",
+                "guestHandle": "@guest",
+                "notAvailable": "Not available",
+                "today": "Today"
+            },
+            "hero": {
+                "kicker": "Profile overview",
+                "stats": {
+                    "activeSince": "Active since: ",
+                    "communityMember": "Creator community member",
+                    "creatorTools": "Revenue-ready creator tools"
+                }
+            },
+            "menu": {
+                "editAccount": {
+                    "label": "Edit account",
+                    "description": "name, lastname, email, phone"
+                },
+                "securitySettings": {
+                    "label": "Security Settings",
+                    "description": "DFA, password change"
+                },
+                "statistics": {
+                    "label": "Statistics",
+                    "description": "sites visited, history"
+                },
+                "creatorPanel": {
+                    "label": "Creator Panel",
+                    "description": "created songs viewed, money earned, etc"
+                }
+            },
+            "sections": {
+                "editAccount": {
+                    "title": "Edit account",
+                    "subtitle": "Update your personal details.",
+                    "fields": {
+                        "name": "Name",
+                        "lastname": "Lastname",
+                        "email": "Email",
+                        "phone": "Phone"
+                    }
+                },
+                "securitySettings": {
+                    "title": "Security Settings",
+                    "subtitle": "Keep your account protected.",
+                    "items": {
+                        "dfa": {
+                            "title": "DFA",
+                            "description": "Second factor authentication status and trusted device controls."
+                        },
+                        "password": {
+                            "title": "Password change",
+                            "description": "Update your password and refresh login sessions."
+                        }
+                    }
+                },
+                "statistics": {
+                    "title": "Statistics",
+                    "subtitle": "Track your app activity and history.",
+                    "cards": {
+                        "sitesVisited": "Songs visited",
+                        "historyRecords": "History records",
+                        "lastVisit": "Last visit"
+                    }
+                },
+                "creatorPanel": {
+                    "title": "Creator Panel",
+                    "subtitle": "Your creator performance snapshot.",
+                    "cards": {
+                        "createdSongsViewed": "Created songs viewed",
+                        "moneyEarned": "Money earned",
+                        "publishedSongs": "Published songs",
+                        "draftsReady": "Drafts ready"
+                    }
+                }
+            }
+        },
+        "footer": {
+            "description": "Create, manage, and publish your music ideas in one place.",
+            "logoAlt": "Sonnetia logo",
+            "links": {
+                "home": "Home",
+                "createLyrics": "Create Lyrics",
+                "myAccount": "My Account",
+                "statistics": "Statistics"
+            },
+            "aria": {
+                "home": "Sonnetia home",
+                "navigation": "Footer navigation",
+                "email": "Email",
+                "github": "GitHub",
+                "instagram": "Instagram"
+            },
+            "meta": {
+                "madeBy": "Made with ❤️ by musicians to musicians 🎸",
+                "allRightsReserved": "all rights reserved."
+            }
+        },
         "navbar": {
             "lyrics": {
                 "title": "Lyrics",
@@ -31,6 +132,12 @@
                 }
             },
             "account": {
+                "profile": {
+                    "name": "Name",
+                    "username": "Username",
+                    "email": "Email",
+                    "fallback": "Unknown"
+                },
                 "children": {
                     "myAccount": "My Account",
                     "signout": {
@@ -40,6 +147,10 @@
             },
             "searchbar": {
                 "placeholder": "Search songs, artists, genres..."
+            },
+            "theme": {
+                "toDark": "Switch to dark mode",
+                "toLight": "Switch to light mode"
             },
             "auth": {
                 "button": "Sign In",
@@ -52,6 +163,7 @@
                         "placeholder": "Ex: user123 or user@mail.com"
                     },
                     "password": { "label": "Password", "placeholder": "" },
+                    "not_an_account": "Don't have an account?",
                     "signup_button": "Sign Up",
                     "errorModal": {
                         "title": "Invalid User or Password",
@@ -172,8 +284,8 @@
     },
     "main": {
         "head": {
-            "title": "Musik | Home",
-            "description": "Home page of Musik"
+            "title": "Sonnetia | Home",
+            "description": "Home page of Sonnetia"
         },
         "searchbar": {
             "label": "Search for a song, artist, or editor",

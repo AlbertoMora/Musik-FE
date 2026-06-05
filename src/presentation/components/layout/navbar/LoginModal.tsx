@@ -1,15 +1,8 @@
 'use client';
 import React, { useState } from 'react';
 import H1 from '../../headings/H1';
-import { Button, TextInput, Divider, Image, PasswordInput, Alert } from '@mantine/core';
-import {
-    IconAlertHexagon,
-    IconBrandFacebook,
-    IconBrandGoogle,
-    IconKey,
-    IconUserPlus,
-    IconX,
-} from '@tabler/icons-react';
+import { Button, TextInput, Divider, Image, PasswordInput, Alert, Typography } from '@mantine/core';
+import { IconAlertHexagon, IconKey, IconX } from '@tabler/icons-react';
 import { useForm } from '@mantine/form';
 import { loginFormConfig } from './formConfig';
 import { generateDeviceId, generateKeyPair, signValue } from '@/utils/crypto-utils';
@@ -22,12 +15,15 @@ import {
 import { I18nTypes } from '@/i18n/dictionaries';
 import { AnimatedUnmountWrapper } from '../../animation/AnimationUnmountWrapper';
 import { animations, animationSpeeds } from '@/constants/animation-constants';
-import { responseCodes } from '@/utils/server/web-types';
+
 import {
     NotificationService,
     NotificationTypes,
 } from '@/presentation/services/notification-service';
 import { authConstants } from '@/constants/auth-constants';
+import { responseCodes } from '@/types/web-types';
+import GoogleButton from '@/presentation/components/layout/navbar/GoogleButton';
+import FacebookButton from '@/presentation/components/layout/navbar/FacebookButton';
 
 interface ILoginModalProps {
     isOpen: boolean;
@@ -158,31 +154,25 @@ const LoginModal = ({
                             {i18n.button}
                         </Button>
 
-                        <Divider className='w-full' />
-                        <div className='w-full ssnn-container'>
-                            <button
+                        <Typography variant='xs' className='text-center w-full mt-5 mb-2'>
+                            {i18n.not_an_account}
+                            <Button
                                 type='button'
-                                onClick={onGoogleLogin}
-                                className='ssnn-btn google-btn'>
-                                <IconBrandGoogle size={25} /> {i18n.oauth.google}
-                            </button>
-                            <button type='button' className='ssnn-btn fb-btn'>
-                                <IconBrandFacebook size={25} /> {i18n.oauth.fb}
-                            </button>
+                                radius='xl'
+                                variant='transparent'
+                                onClick={() => {
+                                    setSignUpState(true);
+                                    closeForm();
+                                }}>
+                                {i18n.signup_button}
+                            </Button>
+                        </Typography>
+
+                        <Divider className='w-full'>{i18n.divider}</Divider>
+                        <div className='w-full ssnn-container'>
+                            <GoogleButton text={i18n.oauth.google} onClick={onGoogleLogin} />
+                            <FacebookButton text={i18n.oauth.fb} />
                         </div>
-                        <span>{i18n.divider}</span>
-                        <Button
-                            type='button'
-                            radius='xl'
-                            variant='gradient'
-                            onClick={() => {
-                                setSignUpState(true);
-                                closeForm();
-                            }}
-                            rightSection={<IconUserPlus size={20} />}
-                            gradient={{ from: '#191335', to: '#4838d9', deg: 161 }}>
-                            {i18n.signup_button}
-                        </Button>
                     </form>
                 </AnimatedUnmountWrapper>
             </div>

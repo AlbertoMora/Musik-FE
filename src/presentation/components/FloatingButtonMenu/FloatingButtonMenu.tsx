@@ -1,7 +1,6 @@
 import { ActionIcon, Tooltip } from '@mantine/core';
 import React, { ReactElement, useRef, useState } from 'react';
 
-import '../../styles/components/floating-button-menu.sass';
 import FloatingButtonItem from './FloatingButtonItem';
 import { AnimatedUnmountWrapper } from '../animation/AnimationUnmountWrapper';
 import { animations, animationSpeeds } from '@/constants/animation-constants';

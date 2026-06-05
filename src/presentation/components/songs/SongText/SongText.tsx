@@ -1,6 +1,6 @@
 'use client';
 import { ISongModel } from '@/infrastructure/models/SongModel';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 
 import '../../../styles/pages/songs.sass';
@@ -34,14 +34,34 @@ const SongText = ({
 }: ISongTextProps) => {
     const useSongTextStore = useMemo(
         () => createSongtextStore(chords, id, permissions, sampleUri ?? ''),
-        [chords, id, permissions, sampleUri]
+        [chords, id, permissions, sampleUri],
     );
 
     const store = useSongTextStore();
 
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [containerHeight, setContainerHeight] = useState(0);
+
+    useEffect(() => {
+        const el = containerRef.current;
+        if (!el) return;
+        const observer = new ResizeObserver(entries => {
+            setContainerHeight(entries[0].contentRect.height);
+        });
+        observer.observe(el);
+        return () => observer.disconnect();
+    }, []);
+
+    const ROW_HEIGHT_MULTIPLIER = 1.6 - store.fontSize * 0.005;
+    const rowHeightPx = store.fontSize * ROW_HEIGHT_MULTIPLIER;
+    const lineUnitsPerColumn =
+        containerHeight > 0
+            ? Math.max(1, Math.floor(containerHeight / rowHeightPx))
+            : Math.max(1, store.paragraphSplit * 2);
+
     const lyricsByLine = removeChords(lyrics)
         .split('\n')
-        .map(e => ({ id: uuid(), value: e }));
+        .map((e, index) => ({ id: uuid(), value: e, lineIndex: index }));
 
     return (
         <StoreContext.Provider value={store}>
@@ -67,8 +87,10 @@ const SongText = ({
                     }}
                 />
                 <MusicPlayer i18n={i18n.musicPlayer} url={store.url} />
-                <div className='song-lyrics-container' style={{ fontSize: store.fontSize }}>
-                    {getLyricsSets(store, lyricsByLine)}
+                <div className='song-lyrics-container' ref={containerRef}>
+                    <div className='song-lyrics-inner' style={{ fontSize: store.fontSize }}>
+                        {getLyricsSets(store, lyricsByLine, lineUnitsPerColumn)}
+                    </div>
                 </div>
                 <br />
                 {averageScore !== 0 && averageScore}
@@ -130,12 +152,40 @@ const SongInfo = ({
     );
 };
 
-const getLyricsSets = (store: ISongtextStore, lyricsLines: LyricsProps[]) => {
-    const lineSlices = Math.trunc(lyricsLines.length / store.paragraphSplit);
+const getLyricsSets = (
+    store: ISongtextStore,
+    lyricsLines: LyricsProps[],
+    lineUnitsPerColumn: number,
+) => {
     const lyricSets = [];
-    for (let i = 0; i <= lineSlices; i++) {
-        const lines = lyricsLines.slice(i * store.paragraphSplit, store.paragraphSplit * (i + 1));
-        lyricSets.push(<LyricsSet set={lines} store={store} lineSlice={i} key={`ls-${i}`} />);
+    let currentLine = 0;
+    let columnIndex = 0;
+    while (currentLine < lyricsLines.length) {
+        // Drop leading empty lines so each column always starts with content
+        while (currentLine < lyricsLines.length && lyricsLines[currentLine].value.trim() === '') {
+            currentLine++;
+        }
+        if (currentLine >= lyricsLines.length) break;
+
+        let usedUnits = 0;
+        const lines: LyricsProps[] = [];
+
+        while (currentLine < lyricsLines.length) {
+            const line = lyricsLines[currentLine];
+            const hasChords = store.chords.some(chord => chord.line === line.lineIndex);
+            const requiredUnits = hasChords ? 2 : 1;
+
+            if (lines.length > 0 && usedUnits + requiredUnits > lineUnitsPerColumn) {
+                break;
+            }
+
+            lines.push(line);
+            usedUnits += requiredUnits;
+            currentLine++;
+        }
+
+        lyricSets.push(<LyricsSet set={lines} store={store} key={`ls-${columnIndex}`} />);
+        columnIndex++;
     }
     return lyricSets;
 };
@@ -143,52 +193,40 @@ const getLyricsSets = (store: ISongtextStore, lyricsLines: LyricsProps[]) => {
 interface LyricsProps {
     id: string;
     value: string;
+    lineIndex: number;
 }
 
 interface LyricLineProps extends LyricsProps {
-    i: number;
     store: ISongtextStore;
-    lineSlice: number;
 }
-const LyricLine = ({ id, value, i, store, lineSlice }: LyricLineProps) => (
-    <div key={id}>
-        <p>
-            {store.chords
-                .filter(x => x.line === i + lineSlice * store.paragraphSplit)
-                .map(c => (
-                    <button style={getPadding(c.position)} key={`${uuid()}`} type='button'>
-                        <span className='song-chord-container'>{c.key}</span>
-                    </button>
-                ))}
-        </p>
-        <p>
-            {value || (
-                <>
-                    <br />
-                    <br />
-                </>
-            )}
-        </p>
-    </div>
-);
+const LyricLine = ({ id, value, store, lineIndex }: LyricLineProps) => {
+    const lineChords = store.chords.filter(x => x.line === lineIndex);
+
+    return (
+        <div key={id}>
+            {lineChords.length > 0 ? (
+                <p>
+                    {lineChords.map(c => (
+                        <button style={getPadding(c.position)} key={`${uuid()}`} type='button'>
+                            <span className='song-chord-container'>{c.key}</span>
+                        </button>
+                    ))}
+                </p>
+            ) : null}
+            <p>{value || <br />}</p>
+        </div>
+    );
+};
 
 interface LyricsSetProps {
     set: LyricsProps[];
     store: ISongtextStore;
-    lineSlice: number;
 }
 
-const LyricsSet = ({ set, store, lineSlice }: LyricsSetProps) => (
+const LyricsSet = ({ set, store }: LyricsSetProps) => (
     <div>
-        {set.map((e, i) => (
-            <LyricLine
-                id={e.id}
-                i={i}
-                store={store}
-                value={e.value}
-                key={e.id}
-                lineSlice={lineSlice}
-            />
+        {set.map(e => (
+            <LyricLine id={e.id} store={store} value={e.value} key={e.id} lineIndex={e.lineIndex} />
         ))}
     </div>
 );

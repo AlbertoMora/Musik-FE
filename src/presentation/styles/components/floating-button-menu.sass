@@ -4,38 +4,49 @@
 
 .fbm
     &-button
-        width: 3rem
-        height: auto     
-        aspect-ratio: 1 / 1  
-        border-radius: 50%
+        background: linear-gradient(161deg, #0a84ff, #d4268a)
+        border: 1px solid rgba(255, 255, 255, 0.3)
+        border-radius: 9999px
+        color: #ffffff
+        height: auto
+        aspect-ratio: 1 / 1
+        transition: transform 130ms ease, background-color 130ms ease
         padding: 0
         display: flex
         align-items: center
         justify-content: center
-        @include mixins.BoxShadow (6)
-    
+        width: 3rem
+        @include mixins.BoxShadow(3)
+
+        &:hover
+            background: linear-gradient(161deg, #0977e6, #bb2179)
+            transform: translateY(-1px)
+
     &-container
-        flex-direction: column
-        display: flex
         align-items: center
-        width: fit-content
+        display: flex
+        flex-direction: column
         gap: 1rem
         position: relative
-        
+        width: fit-content
+
     &-content
-        position: absolute
         display: flex
         flex-direction: column
         gap: 1rem
         left: 50%
+        position: absolute
         transform: translateX(-50%)
         bottom: 0.5rem
-        
+
     &-sm
         width: 4rem
+
     &-md
         width: 5rem
+
     &-lg
         width: 6rem
+
     &-xl
-        width: 7rem 
+        width: 7rem

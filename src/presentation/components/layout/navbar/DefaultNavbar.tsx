@@ -1,25 +1,17 @@
 'use client';
 import React, { useState } from 'react';
 
-import {
-    Anchor,
-    Image,
-    Menu,
-    MenuTarget,
-    MenuDropdown,
-    MenuItem,
-    Button,
-    Avatar,
-} from '@mantine/core';
+import { Anchor, Image, Menu, MenuTarget, MenuDropdown, MenuItem, Button } from '@mantine/core';
 
 import '../../../styles/components/navbar.sass';
+
 import LoginModal from './LoginModal';
-import { IconLogin2, IconUser } from '@tabler/icons-react';
+import ThemeToggle from './ThemeToggle';
+import { IconLogin2 } from '@tabler/icons-react';
 import SignUpModal from './SignUpModal';
 import DfaModal from './DfaModal';
+import AccountPopover from '@/presentation/components/layout/navbar/AccountPopover';
 import { I18nTypes } from '@/i18n/dictionaries';
-import { signOutAction } from '@/infrastructure/adapters/auth/auth-actions';
-import { responseCodes } from '@/utils/server/web-types';
 
 interface INavbarProps {
     isLogged: boolean;
@@ -51,10 +43,11 @@ const DefaultNavbar = ({ isLogged, i18n }: INavbarProps) => {
                     />
                 </Anchor>
                 <div className='j-right flex flex-row items-center gap-4'>
+                    <ThemeToggle i18n={i18n.theme} />
                     {isLogged ? (
                         <>
                             {navbarLinks(i18n)}
-                            <AccountMenu i18n={i18n.account} />
+                            <AccountPopover i18n={i18n.account} />
                         </>
                     ) : (
                         <Button
@@ -94,45 +87,6 @@ const DefaultNavbar = ({ isLogged, i18n }: INavbarProps) => {
                 setSessionId={setSessionId}
             />
         </nav>
-    );
-};
-
-interface IAccountMenuProps {
-    i18n: INavbarProps['i18n']['account'];
-}
-
-const AccountMenu = ({ i18n }: IAccountMenuProps) => {
-    const signOut = async () => {
-        const res = await signOutAction();
-        if (res?.status !== responseCodes.ok) return alert('Session not closed');
-
-        location.reload();
-    };
-
-    return (
-        <Menu withArrow>
-            <MenuTarget>
-                <Avatar color='grape' className='cursor-pointer'>
-                    A
-                </Avatar>
-            </MenuTarget>
-
-            <MenuDropdown className='navbar-item-dropdown'>
-                <a className='navbar-item-child' href='/account'>
-                    <MenuItem className='account-menu-item'>
-                        <span className='flex flex-row items-start justify-center gap-2'>
-                            <IconUser size={16} />
-                            {i18n.children.myAccount}
-                        </span>
-                    </MenuItem>
-                </a>
-                <div className='account-menu-signout'>
-                    <Button type='button' onClick={signOut}>
-                        {i18n.children.signout.button}
-                    </Button>
-                </div>
-            </MenuDropdown>
-        </Menu>
     );
 };
 

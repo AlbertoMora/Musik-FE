@@ -3,78 +3,140 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap')
 
 @include mixins.md
-    .song 
-        &-container 
+    .song
+        &-container
             align-items: stretch
+            background: var(--song-container-bg)
+            border: 1px solid var(--song-container-border)
+            border-radius: 10px
             font-family: 'Roboto Mono', 'Courier New', Courier, monospace
             display: flex
             flex-direction: column
             justify-content: stretch
-            padding: 4rem 10rem
-    
+            margin: 0.2rem auto 2rem
+            max-width: 1185px
+            min-height: calc(100vh - 9rem)
+            padding: 1.3rem
+            width: calc(100% - 2rem)
+
         &-info-layout
             align-items: flex-start
             display: flex
+            flex-wrap: wrap
             justify-content: space-between
-            gap: 2rem
+            gap: 0.9rem 2rem
 
-        &-title-container 
+            p
+                background: var(--song-info-bg)
+                border: 1px solid var(--song-info-border)
+                border-radius: 18px
+                margin: 0
+                padding: 0.35rem 0.8rem
+
+        &-title-container
             display: flex
             align-items: center
+            flex-wrap: wrap
             justify-content: space-between
-            margin-bottom: 1rem
+            margin-bottom: 1.1rem
+            row-gap: 0.8rem
+
         &-chord-container
-            background-color: settings.$info-color
-            border-radius: 0.2rem
+            align-items: center
+            aspect-ratio: 1 / 1
+            background: #7734c6
+            border-radius: 50%
+            color: #fff
+            cursor: pointer
+            display: flex
+            font-size: 0.6rem
+            justify-content: center
+            min-width: 1.35rem
+            overflow: hidden
+            padding: 0
+
         &-tools
+            backdrop-filter: blur(8px)
+            background: var(--song-tools-bg)
+            border: 1px solid var(--song-tools-border)
+            border-radius: 9999px
             display: flex
             gap: 1rem
             align-items: center
             justify-content: center
-            height: 50px
             overflow: visible
             position: fixed
-            width: 100vw
-            left: 0
-            bottom: 2rem
+            width: fit-content
+            left: 50%
+            transform: translateX(-50%)
+            bottom: 1rem
+            padding: 0.4rem 0.6rem
+            z-index: 50
+
         &-lyrics-container
+            background: var(--song-lyrics-bg)
+            border: 1px dashed var(--song-lyrics-border)
+            border-radius: 10px
+            height: 60vh
+            margin-top: 1rem
+            overflow-x: auto
+            overflow-y: hidden
+            padding: 1rem
+
+        &-lyrics-inner
             display: flex
             flex-direction: row
-            gap: 3rem
-            margin-top: 2rem
-            overflow-x: auto
-            white-space: nowrap
+            gap: 2.5rem
+            height: 100%
+
+            > div
+                height: 100%
+                min-width: max-content
+                white-space: nowrap
+
+                p
+                    line-height: 1.2
+                    margin: 0
+
         &-upload-container
-            background-color: color-mix(in srgb,var(--background), var(--foreground) 10%)
-            border-radius: 15px
+            background: var(--lyrics-upload-bg)
+            border: 1px solid var(--modal-border)
+            border-radius: 10px
             display: flex
             flex-direction: column
             justify-content: center
             position: absolute
-            width: 50vw
+            width: min(70rem, calc(100vw - 2rem))
             min-height: fit-content
-            padding: 3rem 4rem
-            top: 10rem
-            left: 25vw
+            padding: 1.6rem
+            top: 7.2rem
+            left: 50vw
+            transform: translateX(-50%)
             z-index: 190
+
             .dragzone
                 align-items: center
+                border: 1px dashed rgba(255, 255, 255, 0.2)
+                border-radius: 10px
                 cursor: pointer
                 display: flex
                 flex-direction: column
+                gap: 0.7rem
                 justify-content: center
-                border: 1px dashed var(--foreground)
                 margin-top: 1rem
-                height: calc( 100% - 2rem )
+                min-height: 14rem
+
             .preview-zone
                 align-items: center
+                border: 1px dashed rgba(255, 255, 255, 0.22)
+                border-radius: 10px
                 display: flex
                 flex-direction: column
                 justify-content: center
                 gap: 1rem
-                border: 1px dashed var(--foreground)
                 margin-top: 1rem
-                height: calc( 100% - 2rem )
+                min-height: 14rem
+
             .loading-container
                 align-items: center
                 display: flex
@@ -82,35 +144,51 @@
                 column-gap: 2rem
                 justify-content: center
                 width: 100%
+
                 .loading-bar
                     align-self: stretch
-                    margin: 1rem 10rem
+                    margin: 1rem
                     cursor: wait
+
                     &-track
                         height: 0.8rem
+                        background: rgba(255, 255, 255, 0.12)
+
                     &-content
                         background: repeating-linear-gradient(
-                        45deg,
-                        settings.$secondary-color,
-                        settings.$secondary-color 10px,
-                        settings.$dark-gray-color 10px,
-                        settings.$dark-gray-color 20px
+                            45deg,
+                            settings.$secondary-color,
+                            settings.$secondary-color 10px,
+                            settings.$dark-gray-color 10px,
+                            settings.$dark-gray-color 20px
                         )
                         background-size: 60px 100%
                         animation: conveyor 1.5s linear infinite
+
                     &-no-thumb
                         display: none
-                    @keyframes conveyor 
+
+                    @keyframes conveyor
                         0%
-                            background-position: 0 0,    
-                        
+                            background-position: 0 0
+
                         100%
                             background-position: 60px 0
-
-                    
 
         &-upload-animator
             position: absolute
             z-index: 190
+
+@include mixins.md-down
+    .song
+        &-container
+            margin-top: 5.2rem
+            width: calc(100% - 1rem)
+
+        &-tools
+            bottom: 0.8rem
+
+        &-lyrics-inner
+            gap: 1rem
 
 

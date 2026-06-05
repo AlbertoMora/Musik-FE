@@ -2,6 +2,7 @@
 
 import {
     ICheckMfaModel,
+    ILocalSessionData,
     ISessionResponseDTO,
     ISignInChallengeModel,
     ISignUpModel,
@@ -12,7 +13,7 @@ import { getTokenData } from '@/utils/jwt-utils';
 import { IRefreshTokenDataModel } from '@/infrastructure/models/SessionModel';
 import { ISignInModel } from '../../../domain/auth/auth-gateway';
 import { authConstants } from '@/constants/auth-constants';
-import { getUserAgent } from '@/utils/server/request-utils';
+import { getLocale, getUserAgent } from '@/utils/server/request-utils';
 
 export const signUpAction = async (user: ISignUpModel) => {
     const authAdapter = new AuthAdapterFromMicro();
@@ -26,7 +27,8 @@ export const signUpAction = async (user: ISignUpModel) => {
 export const signInAction = async (userInfo: ISignInModel) => {
     const authAdapter = new AuthAdapterFromMicro();
     const userAgent = await getUserAgent();
-    const res = await authAdapter.signIn(userInfo, userAgent);
+    const locale = await getLocale();
+    const res = await authAdapter.signIn(userInfo, userAgent, locale);
     if (!res) return null;
 
     return res;
@@ -72,6 +74,15 @@ export const signOutAction = async () => {
     const res = await authAdapter.signOut(accessToken);
 
     return res.data;
+};
+
+export const getSessionInfoAction = async () => {
+    const cookieData = await getSessionCookieValues();
+    const accessToken = cookieData[0];
+
+    if (!accessToken) return null;
+
+    return getTokenData<ILocalSessionData>(accessToken);
 };
 
 export async function setSessionCookie(data: ISessionResponseDTO) {

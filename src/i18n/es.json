@@ -1,6 +1,107 @@
 {
     "app": {
-        "title": "Musik",
+        "title": "Sonnetia",
+        "accountPage": {
+            "menuTitle": "Navegación rápida",
+            "common": {
+                "defaultDisplayName": "Creador Musical",
+                "guestHandle": "@invitado",
+                "notAvailable": "No disponible",
+                "today": "Hoy"
+            },
+            "hero": {
+                "kicker": "Resumen de perfil",
+                "stats": {
+                    "activeSince": "Activo desde: ",
+                    "communityMember": "Miembro de la comunidad de creadores",
+                    "creatorTools": "Herramientas para creadores listas para monetizar"
+                }
+            },
+            "menu": {
+                "editAccount": {
+                    "label": "Editar cuenta",
+                    "description": "nombre, apellido, correo, teléfono"
+                },
+                "securitySettings": {
+                    "label": "Configuración de seguridad",
+                    "description": "DFA, cambio de contraseña"
+                },
+                "statistics": {
+                    "label": "Estadísticas",
+                    "description": "sitios visitados, historial"
+                },
+                "creatorPanel": {
+                    "label": "Panel de creador",
+                    "description": "canciones creadas vistas, dinero ganado, etc"
+                }
+            },
+            "sections": {
+                "editAccount": {
+                    "title": "Editar cuenta",
+                    "subtitle": "Actualiza tus datos personales.",
+                    "fields": {
+                        "name": "Nombre",
+                        "lastname": "Apellido",
+                        "email": "Correo",
+                        "phone": "Teléfono"
+                    }
+                },
+                "securitySettings": {
+                    "title": "Configuración de seguridad",
+                    "subtitle": "Mantén tu cuenta protegida.",
+                    "items": {
+                        "dfa": {
+                            "title": "DFA",
+                            "description": "Estado del segundo factor de autenticación y control de dispositivos confiables."
+                        },
+                        "password": {
+                            "title": "Cambio de contraseña",
+                            "description": "Actualiza tu contraseña y renueva tus sesiones activas."
+                        }
+                    }
+                },
+                "statistics": {
+                    "title": "Estadísticas",
+                    "subtitle": "Haz seguimiento de tu actividad e historial en la app.",
+                    "cards": {
+                        "sitesVisited": "Canciones visitadas",
+                        "historyRecords": "Registros del historial",
+                        "lastVisit": "Última visita"
+                    }
+                },
+                "creatorPanel": {
+                    "title": "Panel de creador",
+                    "subtitle": "Resumen de tu rendimiento como creador.",
+                    "cards": {
+                        "createdSongsViewed": "Visualizaciones de canciones creadas",
+                        "moneyEarned": "Dinero ganado",
+                        "publishedSongs": "Canciones publicadas",
+                        "draftsReady": "Borradores listos"
+                    }
+                }
+            }
+        },
+        "footer": {
+            "description": "Crea, administra y publica tus ideas musicales en un solo lugar.",
+            "logoAlt": "Logo de Sonnetia",
+            "links": {
+                "home": "Inicio",
+                "createLyrics": "Crear Letra",
+                "myAccount": "Mi Cuenta",
+                "statistics": "Estadísticas"
+            },
+            "aria": {
+                "home": "Inicio de Sonnetia",
+                "navigation": "Navegación del pie de página",
+                "email": "Correo",
+                "github": "GitHub",
+                "instagram": "Instagram"
+            },
+            "meta": {
+                "madeBy": "Hecho con ❤️ por músicos para músicos 🎸",
+                "allRightsReserved": "todos los derechos reservados."
+            }
+        },
         "navbar": {
             "lyrics": {
                 "title": "Letras",
@@ -31,6 +132,12 @@
                 }
             },
             "account": {
+                "profile": {
+                    "name": "Nombre",
+                    "username": "Usuario",
+                    "email": "Correo",
+                    "fallback": "Desconocido"
+                },
                 "children": {
                     "myAccount": "Mi Cuenta",
                     "signout": {
@@ -40,6 +147,10 @@
             },
             "searchbar": {
                 "placeholder": "Busca canciones, artistas o géneros..."
+            },
+            "theme": {
+                "toDark": "Cambiar a modo oscuro",
+                "toLight": "Cambiar a modo claro"
             },
             "auth": {
                 "button": "Iniciar Sesión",
@@ -52,6 +163,7 @@
                         "placeholder": "Ex: usuario123 or usuario@correo.com"
                     },
                     "password": { "label": "Contraseña", "placeholder": "" },
+                    "not_an_account": "¿No tienes una cuenta?",
                     "signup_button": "Registrarse",
                     "errorModal": {
                         "title": "Usuario o Contraseña inválidos",
@@ -184,8 +296,8 @@
     },
     "main": {
         "head": {
-            "title": "Musik | Inicio",
-            "description": "Página de inicio de la web Musik"
+            "title": "Sonnetia | Inicio",
+            "description": "Página de inicio de la web Sonnetia"
         },
         "searchbar": {
             "label": "Busca una canción, artista o editor",

@@ -1,12 +1,13 @@
 'use client';
 import React, { useEffect } from 'react';
 import { I18nTypes } from '../../../../i18n/dictionaries';
-import { IBasicWebResponse, responseCodes } from '@/utils/server/web-types';
+
 import {
     NotificationService,
     NotificationTypes,
 } from '@/presentation/services/notification-service';
 import { getResponseData, webRequest } from '@/utils/web-utils';
+import { IBasicWebResponse, responseCodes } from '@/types/web-types';
 
 interface ICallbackManagerProps {
     code: string;

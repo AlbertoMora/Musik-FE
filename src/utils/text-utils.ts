@@ -8,19 +8,15 @@ export const extractBracedValues = (text: string): IBracedValue[] => {
     for (const [lineIndex, line] of lines.entries()) {
         const regex = /\[(.*?)\]/g;
         let match;
-        let lastIndex = 0;
-        let lastMatchSize = 0;
-        let lastMatchInnerSize = 0;
+        let accumulatedBracketsLength = 0;
         while ((match = regex.exec(line)) !== null) {
-            const position = match.index - lastIndex - lastMatchSize - lastMatchInnerSize;
+            const position = match.index - accumulatedBracketsLength;
             results.push({
                 value: match[1],
                 line: lineIndex,
                 position,
             });
-            lastIndex = match.index;
-            lastMatchSize = match[1].length + 2;
-            lastMatchInnerSize = match[1].length;
+            accumulatedBracketsLength += match[0].length;
         }
     }
 
@@ -61,18 +57,12 @@ const getChordIndex = (chord: IKey) => {
 };
 
 export const replaceTones = (ammount: number, chords: IKey[]) => {
-    console.log(chords);
-    const newChords = chords.map((e, i) => {
-        const currentChordSize = e.key.length + 2;
+    const newChords = chords.map(e => {
         const { chordIndex: currentChordIndex, chordOffset } = getChordIndex(e) ?? {};
         const newIndex =
             (currentChordIndex + (ammount % tones.length) + tones.length) % tones.length;
 
         const newChord = tones[newIndex] + e.key.substring(chordOffset);
-        const newChordSize = newChord.length + 2;
-        if (chords[i + 1]?.line === e.line) {
-            chords[i + 1].position += currentChordSize - newChordSize;
-        }
 
         return { key: newChord, position: e.position, line: e.line };
     });

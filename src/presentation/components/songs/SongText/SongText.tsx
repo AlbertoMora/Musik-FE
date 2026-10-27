@@ -203,9 +203,9 @@ const LyricLine = ({ id, value, store, lineIndex }: LyricLineProps) => {
     const lineChords = store.chords.filter(x => x.line === lineIndex);
 
     return (
-        <div key={id}>
+        <div key={id} className='song-lyric-line'>
             {lineChords.length > 0 ? (
-                <p>
+                <p className='song-chord-row'>
                     {lineChords.map(c => (
                         <button style={getPadding(c.position)} key={`${uuid()}`} type='button'>
                             <span className='song-chord-container'>{c.key}</span>
@@ -232,8 +232,7 @@ const LyricsSet = ({ set, store }: LyricsSetProps) => (
 );
 
 const getPadding = (position: number) => {
-    const padding = position * 0.6;
-    return { paddingLeft: `${padding}em` };
+    return { left: `${position}ch` };
 };
 
 export default SongText;

@@ -90,6 +90,7 @@ export interface ILocalSessionData {
         lastname: string;
         email: string;
         username: string;
+        phone?: string;
         prof_pic?: string;
         isactive: number;
         ban_case_id?: string;

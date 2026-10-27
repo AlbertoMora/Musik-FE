@@ -42,8 +42,32 @@
                     "fields": {
                         "name": "Nombre",
                         "lastname": "Apellido",
+                        "username": "Nombre de usuario",
                         "email": "Correo",
+                        "countryCode": "Código de país",
                         "phone": "Teléfono"
+                    },
+                    "placeholders": {
+                        "name": "Ej: Juan",
+                        "lastname": "Ej: Pérez",
+                        "username": "Ej: juanperez",
+                        "email": "Ej: juan@correo.com",
+                        "phone": "Ej: 88887777"
+                    },
+                    "actions": {
+                        "edit": "Editar datos",
+                        "save": "Guardar cambios",
+                        "cancel": "Cancelar"
+                    },
+                    "messages": {
+                        "usernameAvailable": "Nombre de usuario disponible",
+                        "usernameTaken": "Este nombre de usuario ya está en uso",
+                        "emailAvailable": "Correo electrónico disponible",
+                        "emailTaken": "Este correo electrónico ya está en uso",
+                        "invalidEmail": "Ingresa un correo electrónico válido",
+                        "invalidUsername": "El usuario debe tener al menos 3 caracteres",
+                        "updateSuccess": "Los datos de tu cuenta se actualizaron correctamente.",
+                        "updateError": "No se pudieron guardar los cambios. Inténtalo de nuevo."
                     }
                 },
                 "securitySettings": {
@@ -51,12 +75,35 @@
                     "subtitle": "Mantén tu cuenta protegida.",
                     "items": {
                         "dfa": {
-                            "title": "DFA",
-                            "description": "Estado del segundo factor de autenticación y control de dispositivos confiables."
+                            "title": "DFA (Segundo factor de autenticación)",
+                            "description": "Selecciona el canal por el cual recibirás tus códigos de verificación cuando inicies sesión o realices acciones en dispositivos no reconocidos.",
+                            "emailOption": "Correo electrónico",
+                            "smsOption": "Mensaje SMS",
+                            "noPhoneHint": "Agrega un número de teléfono en 'Editar cuenta' para habilitar DFA por SMS.",
+                            "saveChannel": "Guardar método DFA",
+                            "savedSuccess": "Método de verificación DFA actualizado correctamente.",
+                            "savedError": "No se pudo actualizar el método DFA."
                         },
                         "password": {
                             "title": "Cambio de contraseña",
-                            "description": "Actualiza tu contraseña y renueva tus sesiones activas."
+                            "createTitle": "Vincular contraseña a tu cuenta",
+                            "description": "Actualiza tu contraseña para mantener tu cuenta segura.",
+                            "createDescription": "Tu cuenta fue creada con Google OAuth. Crea una contraseña para poder iniciar sesión también con tu usuario o correo.",
+                            "newPassword": "Nueva contraseña",
+                            "confirmPassword": "Confirmar contraseña",
+                            "passwordPlaceholder": "Mínimo 8 caracteres",
+                            "confirmPlaceholder": "Repite tu contraseña",
+                            "minLengthHint": "La contraseña debe tener al menos 8 caracteres",
+                            "mismatchHint": "Las contraseñas no coinciden",
+                            "savePassword": "Actualizar contraseña",
+                            "createPasswordBtn": "Crear contraseña",
+                            "dfaVerificationTitle": "Verificación de dispositivo requerida",
+                            "dfaVerificationSubtitle": "Este dispositivo no está registrado como confiable. Ingresa el código de 6 dígitos enviado a:",
+                            "trustDeviceLabel": "Guardar este dispositivo como confiable",
+                            "verifyAndSave": "Verificar y guardar contraseña",
+                            "cancelVerification": "Cancelar",
+                            "passwordSuccess": "Tu contraseña se ha guardado correctamente.",
+                            "passwordError": "No se pudo guardar la contraseña. Verifica los datos o el código ingresado."
                         }
                     }
                 },
@@ -67,6 +114,14 @@
                         "sitesVisited": "Canciones visitadas",
                         "historyRecords": "Registros del historial",
                         "lastVisit": "Última visita"
+                    },
+                    "history": {
+                        "title": "Historial de letras visitadas",
+                        "empty": "Aún no has visitado ninguna letra con tu cuenta.",
+                        "artistLabel": "Artista",
+                        "keyLabel": "Tono",
+                        "viewedAtLabel": "Visitada el",
+                        "openSong": "Ver letra"
                     }
                 },
                 "creatorPanel": {

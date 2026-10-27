@@ -42,8 +42,32 @@
                     "fields": {
                         "name": "Name",
                         "lastname": "Lastname",
+                        "username": "Username",
                         "email": "Email",
+                        "countryCode": "Country code",
                         "phone": "Phone"
+                    },
+                    "placeholders": {
+                        "name": "Ex: John",
+                        "lastname": "Ex: Doe",
+                        "username": "Ex: johndoe",
+                        "email": "Ex: john@mail.com",
+                        "phone": "Ex: 88887777"
+                    },
+                    "actions": {
+                        "edit": "Edit details",
+                        "save": "Save changes",
+                        "cancel": "Cancel"
+                    },
+                    "messages": {
+                        "usernameAvailable": "Username is available",
+                        "usernameTaken": "This username is already taken",
+                        "emailAvailable": "Email is available",
+                        "emailTaken": "This email is already in use",
+                        "invalidEmail": "Enter a valid email address",
+                        "invalidUsername": "Username must be at least 3 characters",
+                        "updateSuccess": "Your account details have been updated.",
+                        "updateError": "Could not save changes. Please try again."
                     }
                 },
                 "securitySettings": {
@@ -51,12 +75,35 @@
                     "subtitle": "Keep your account protected.",
                     "items": {
                         "dfa": {
-                            "title": "DFA",
-                            "description": "Second factor authentication status and trusted device controls."
+                            "title": "DFA (Two-Factor Authentication)",
+                            "description": "Choose the channel where you want to receive verification codes when signing in or performing actions from unrecognized devices.",
+                            "emailOption": "Email",
+                            "smsOption": "SMS Message",
+                            "noPhoneHint": "Add a phone number in 'Edit account' to enable SMS DFA.",
+                            "saveChannel": "Save DFA method",
+                            "savedSuccess": "DFA verification method updated successfully.",
+                            "savedError": "Could not update DFA method."
                         },
                         "password": {
                             "title": "Password change",
-                            "description": "Update your password and refresh login sessions."
+                            "createTitle": "Link a password to your account",
+                            "description": "Update your password to keep your account secure.",
+                            "createDescription": "Your account was created with Google OAuth. Set a password so you can also sign in with your username or email.",
+                            "newPassword": "New password",
+                            "confirmPassword": "Confirm password",
+                            "passwordPlaceholder": "At least 8 characters",
+                            "confirmPlaceholder": "Repeat your password",
+                            "minLengthHint": "Password must be at least 8 characters",
+                            "mismatchHint": "Passwords do not match",
+                            "savePassword": "Update password",
+                            "createPasswordBtn": "Create password",
+                            "dfaVerificationTitle": "Device verification required",
+                            "dfaVerificationSubtitle": "This device is not marked as trusted. Enter the 6-digit code sent to:",
+                            "trustDeviceLabel": "Save this device as trusted",
+                            "verifyAndSave": "Verify & save password",
+                            "cancelVerification": "Cancel",
+                            "passwordSuccess": "Your password has been saved successfully.",
+                            "passwordError": "Could not save password. Please check your details or verification code."
                         }
                     }
                 },
@@ -67,6 +114,14 @@
                         "sitesVisited": "Songs visited",
                         "historyRecords": "History records",
                         "lastVisit": "Last visit"
+                    },
+                    "history": {
+                        "title": "Visited lyrics history",
+                        "empty": "You haven't visited any lyrics with your account yet.",
+                        "artistLabel": "Artist",
+                        "keyLabel": "Key",
+                        "viewedAtLabel": "Visited on",
+                        "openSong": "Open lyrics"
                     }
                 },
                 "creatorPanel": {

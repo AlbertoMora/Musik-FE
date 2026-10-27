@@ -1,7 +1,7 @@
 import { ISongModel, ISongPermission } from '@/infrastructure/models/SongModel';
 import { ICreateSongViewModel } from '@/presentation/viewmodels/CreateSongViewModel';
 import { IActionResponse } from '../auth/auth-gateway';
-import { IBasicWebResponse } from '@/utils/server/web-types';
+import { IBasicWebResponse } from '@/types/web-types';
 
 export interface ISongGateway {
     getSongs: () => Promise<ISongModel[] | null>;
@@ -12,6 +12,11 @@ export interface ISongGateway {
         offset: number,
         type?: string,
     ) => Promise<IActionResponse<IGetSongsListResponseDTO>>;
+    getUserSongHistory: (
+        limit: number,
+        offset: number,
+        accessToken: string,
+    ) => Promise<IActionResponse<IUserSongHistoryResponseDTO>>;
     postSong: (
         song: ICreateSongViewModel,
         accessToken: string,
@@ -27,6 +32,28 @@ export interface ISongGateway {
         id: string,
         accessToken: string,
     ) => Promise<IActionResponse<IUpdateSongSampleResDTO>>;
+}
+
+export interface ISongHistoryItemDTO {
+    id: string;
+    songId: string;
+    songName: string;
+    songKey: string | null;
+    songGenre: string | null;
+    artistId: string;
+    artistName: string;
+    slug: string;
+    viewedAt: string;
+}
+
+export interface IUserSongHistoryResponseDTO extends IBasicWebResponse {
+    stats: {
+        sitesVisited: number;
+        historyRecords: number;
+        lastVisit: string | null;
+    };
+    count: number;
+    history: ISongHistoryItemDTO[];
 }
 
 export interface IPostRecordResDTO extends IBasicWebResponse {

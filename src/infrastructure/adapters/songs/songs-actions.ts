@@ -44,3 +44,12 @@ export const getSongsByNameAction = async (
     const songAdapter = new SongsFromMicroAdapter();
     return await songAdapter.getSongByName(name, limit, offset, type);
 };
+
+export const getUserSongHistoryAction = async (limit: number = 6, offset: number = 0) => {
+    const songAdapter = new SongsFromMicroAdapter();
+    const [accessToken] = await getSessionCookieValues();
+    if (!accessToken) {
+        return { success: false, reason: 'auth05' };
+    }
+    return await songAdapter.getUserSongHistory(limit, offset, accessToken);
+};

@@ -6,6 +6,7 @@ import {
     IPostRecordResDTO,
     ISongGateway,
     IUpdateSongSampleResDTO,
+    IUserSongHistoryResponseDTO,
 } from '../../../domain/songs/song-gateway';
 import { extractBracedValues } from '@/utils/text-utils';
 import { ICreateSongViewModel } from '@/presentation/viewmodels/CreateSongViewModel';
@@ -16,6 +17,21 @@ export class SongsFromMicroAdapter implements ISongGateway {
 
     public async getSongs() {
         return null;
+    }
+
+    public async getUserSongHistory(limit: number, offset: number, accessToken: string) {
+        try {
+            const res = await webRequest(
+                `${SongsFromMicroAdapter.SONG_API_URI}/v1/songs/history`,
+            ).get(
+                { limit: String(limit), offset: String(offset) },
+                { Authorization: `Bearer ${accessToken}` },
+            );
+            return await getResponseData<IUserSongHistoryResponseDTO>(res, 'sng04');
+        } catch (error) {
+            console.error('Error getting user song history:', error);
+            return { success: false, reason: 'sng04' };
+        }
     }
 
     public async getSong(id: string, accessToken?: string) {

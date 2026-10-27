@@ -14,19 +14,19 @@ export const generateKeyPair = async () => {
         if (currentPbk) {
             const pubKey64 = await getBase64PublicKey(currentPbk);
             return { pubKey: pubKey64, keyPair: null };
-        } else {
-            return { pubKey: '' };
         }
     } catch {
-        const keyPair = await crypto.subtle.generateKey(algorithmConfig, false, ['sign', 'verify']);
-
-        saveToDB(keyPair.privateKey, devicePK);
-        saveToDB(keyPair.publicKey, devicePbK);
-
-        const pubKey64 = await getBase64PublicKey(keyPair.publicKey);
-
-        return { pubKey: pubKey64, keyPair };
+        // Proceed to generate a new key pair if not found or DB was not initialized
     }
+
+    const keyPair = await crypto.subtle.generateKey(algorithmConfig, false, ['sign', 'verify']);
+
+    await saveToDB(keyPair.privateKey, devicePK);
+    await saveToDB(keyPair.publicKey, devicePbK);
+
+    const pubKey64 = await getBase64PublicKey(keyPair.publicKey);
+
+    return { pubKey: pubKey64, keyPair };
 };
 
 const getBase64PublicKey = async (publicKey: CryptoKey) => {
@@ -42,7 +42,7 @@ export const signValue = async (value: string) => {
     const signature = await crypto.subtle.sign(
         { name: 'ECDSA', hash: { name: 'SHA-256' } },
         key,
-        encoder.encode(value)
+        encoder.encode(value),
     );
 
     const derSign = toDER(new Uint8Array(signature));
@@ -50,40 +50,79 @@ export const signValue = async (value: string) => {
     return btoa(String.fromCodePoint(...derSign));
 };
 
-const saveToDB = <T>(value: T, key: string) => {
-    return new Promise<void>((resolve, reject) => {
+const openAuthDB = (): Promise<IDBDatabase> => {
+    return new Promise((resolve, reject) => {
         const request = indexedDB.open('auth-db', 1);
         request.onupgradeneeded = () => {
-            request.result.createObjectStore('keys');
+            const db = request.result;
+            if (!db.objectStoreNames.contains('keys')) {
+                db.createObjectStore('keys');
+            }
         };
         request.onsuccess = () => {
-            const tx = request.result.transaction('keys', 'readwrite');
-            tx.objectStore('keys').put(value, key);
-            tx.oncomplete = () => resolve();
-            tx.onerror = () => reject(new Error(tx.error?.message ?? 'Transaction error'));
+            const db = request.result;
+            if (!db.objectStoreNames.contains('keys')) {
+                db.close();
+                const delReq = indexedDB.deleteDatabase('auth-db');
+                delReq.onsuccess = () => {
+                    const retryReq = indexedDB.open('auth-db', 1);
+                    retryReq.onupgradeneeded = () => {
+                        retryReq.result.createObjectStore('keys');
+                    };
+                    retryReq.onsuccess = () => resolve(retryReq.result);
+                    retryReq.onerror = () =>
+                        reject(new Error(retryReq.error?.message ?? 'Failed to open auth-db'));
+                };
+                delReq.onerror = () =>
+                    reject(new Error(delReq.error?.message ?? 'Failed to reset auth-db'));
+                return;
+            }
+            resolve(db);
+        };
+        request.onerror = () =>
+            reject(new Error(request.error?.message ?? 'Failed to open auth-db'));
+    });
+};
+
+const saveToDB = async <T>(value: T, key: string) => {
+    const db = await openAuthDB();
+    return new Promise<void>((resolve, reject) => {
+        const tx = db.transaction('keys', 'readwrite');
+        tx.objectStore('keys').put(value, key);
+        tx.oncomplete = () => {
+            db.close();
+            resolve();
+        };
+        tx.onerror = () => {
+            db.close();
+            reject(new Error(tx.error?.message ?? 'Transaction error'));
         };
     });
 };
 
-const getFromIndexedDB = <T>(keyName: string): Promise<T> => {
+const getFromIndexedDB = async <T>(keyName: string): Promise<T> => {
+    const db = await openAuthDB();
     return new Promise((resolve, reject) => {
-        const request = indexedDB.open('auth-db', 1);
-        request.onsuccess = () => {
-            if (!request.result.objectStoreNames.contains('keys')) {
-                indexedDB.deleteDatabase('auth-db');
-                return reject(new Error('NOT_FOUND'));
-            }
-            const tx = request.result.transaction('keys', 'readonly');
-            const keyRequest = tx.objectStore('keys').get(keyName);
-            keyRequest.onsuccess = () => resolve(keyRequest.result as T);
-            keyRequest.onerror = () => reject(new Error(tx.error?.message ?? 'Transaction error'));
+        const tx = db.transaction('keys', 'readonly');
+        const keyRequest = tx.objectStore('keys').get(keyName);
+        keyRequest.onsuccess = () => {
+            db.close();
+            resolve(keyRequest.result as T);
+        };
+        keyRequest.onerror = () => {
+            db.close();
+            reject(new Error(tx.error?.message ?? 'Transaction error'));
         };
     });
 };
 
 export const generateDeviceId = async () => {
-    const storedDeviceId = await getFromIndexedDB<string>(deviceIdKey);
-    if (storedDeviceId) return storedDeviceId;
+    try {
+        const storedDeviceId = await getFromIndexedDB<string>(deviceIdKey);
+        if (storedDeviceId) return storedDeviceId;
+    } catch {
+        // Fallback to generating a new device ID
+    }
 
     const deviceId = uuid();
     await saveToDB<string>(deviceId, deviceIdKey);

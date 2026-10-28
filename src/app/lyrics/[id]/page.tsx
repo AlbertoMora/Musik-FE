@@ -1,6 +1,7 @@
 import { getI18n } from '@/i18n/dictionaries';
 import { getSongAction } from '@/infrastructure/adapters/songs/songs-actions';
 import { ISongModel } from '@/infrastructure/models/SongModel';
+import SongNotFound from '@/presentation/components/songs/SongNotFound';
 import SongText from '@/presentation/components/songs/SongText/SongText';
 import { Metadata } from 'next';
 import { headers } from 'next/headers';
@@ -12,35 +13,29 @@ interface PageParams {
     params: Promise<{ id: string }>;
 }
 
-const defaultData: ISongModel = {
-    id: '',
-    title: '',
-    sampleUri: '',
-    averageScore: 0,
-    lyrics: '',
-    genre: '',
-    bpm: 0,
-    chords: [],
-    postedBy: '',
-    forkOf: '',
-    artist: '',
-    songKey: '',
-    permissions: null,
-};
-
-const getSongData = cache(async (id: string): Promise<ISongModel> => {
+const getSongData = cache(async (id: string): Promise<ISongModel | null> => {
     const res = await getSongAction(id);
-    return res.data ?? defaultData;
+    if (!res.success || !res.data || !res.data.id) {
+        return null;
+    }
+    return res.data;
 });
 
 export const generateMetadata = async ({ params }: PageParams): Promise<Metadata> => {
     const { id } = await params;
 
     const {
-        lyrics: { text },
+        lyrics: { text, notFound },
     } = await getI18n(headers);
 
     const songData = await getSongData(id);
+
+    if (!songData) {
+        return {
+            title: notFound.metaTitle,
+            description: notFound.metaDescription,
+        };
+    }
 
     return {
         title: `${songData.title} ${text.labels.by} ${songData.artist} | Sonnetia`,
@@ -52,10 +47,14 @@ const SongPage = async ({ params }: PageParams) => {
     const { id } = await params;
 
     const {
-        lyrics: { text },
+        lyrics: { text, notFound },
     } = await getI18n(headers);
 
     const songData = await getSongData(id);
+
+    if (!songData) {
+        return <SongNotFound i18n={notFound} />;
+    }
 
     return <SongText i18n={text} {...songData} />;
 };

@@ -14,6 +14,9 @@ import UploadSampleForm from './UploadSampleForm';
 
 interface ISongTextProps extends ISongModel {
     i18n: I18nTypes['lyrics']['text'];
+    showMusicPlayer?: boolean;
+    showSongTools?: boolean;
+    focusMode?: boolean;
 }
 
 const SongText = ({
@@ -31,6 +34,9 @@ const SongText = ({
     chords,
     permissions,
     i18n,
+    showMusicPlayer = true,
+    showSongTools = true,
+    focusMode = false,
 }: ISongTextProps) => {
     const useSongTextStore = useMemo(
         () => createSongtextStore(chords, id, permissions, sampleUri ?? ''),
@@ -65,36 +71,44 @@ const SongText = ({
 
     return (
         <StoreContext.Provider value={store}>
-            <UploadSampleForm i18n={i18n} />
+            {!focusMode && <UploadSampleForm i18n={i18n} />}
 
-            <div className='song-container'>
-                <SongInfo
-                    {...{
-                        id,
-                        postedBy,
-                        averageScore,
-                        artist,
-                        forkOf,
-                        lyrics,
-                        title,
-                        genre,
-                        sampleUri,
-                        bpm,
-                        songKey,
-                        chords,
-                        permissions,
-                        i18n,
-                    }}
-                />
-                <MusicPlayer i18n={i18n.musicPlayer} url={store.url} />
+            <div className={`song-container ${focusMode ? 'song-container--focus' : ''}`}>
+                {!focusMode && (
+                    <SongInfo
+                        {...{
+                            id,
+                            postedBy,
+                            averageScore,
+                            artist,
+                            forkOf,
+                            lyrics,
+                            title,
+                            genre,
+                            sampleUri,
+                            bpm,
+                            songKey,
+                            chords,
+                            permissions,
+                            i18n,
+                        }}
+                    />
+                )}
+                {!focusMode && showMusicPlayer && (
+                    <MusicPlayer i18n={i18n.musicPlayer} url={store.url} />
+                )}
                 <div className='song-lyrics-container' ref={containerRef}>
                     <div className='song-lyrics-inner' style={{ fontSize: store.fontSize }}>
                         {getLyricsSets(store, lyricsByLine, lineUnitsPerColumn)}
                     </div>
                 </div>
-                <br />
-                {averageScore !== 0 && averageScore}
-                <SongTools i18n={i18n.menuLabels} />
+                {!focusMode && (
+                    <>
+                        <br />
+                        {averageScore !== 0 && averageScore}
+                        {showSongTools && <SongTools i18n={i18n.menuLabels} />}
+                    </>
+                )}
             </div>
         </StoreContext.Provider>
     );

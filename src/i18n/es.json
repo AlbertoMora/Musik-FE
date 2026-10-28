@@ -347,6 +347,16 @@
                     "retryButton": "Retry"
                 }
             }
+        },
+        "notFound": {
+            "metaTitle": "Canción no encontrada | Sonnetia",
+            "metaDescription": "La letra o canción que buscas no se encuentra disponible en Sonnetia.",
+            "badge": "Error 404 · Compás en silencio",
+            "title": "No encontramos esta canción",
+            "description": "Parece que la letra que buscas fue movida, eliminada o el enlace no es correcto.",
+            "redirectNotice": "Serás redirigido a la página principal en {seconds} segundos...",
+            "goHomeButton": "Ir a la página principal",
+            "createSongButton": "Crear una nueva letra"
         }
     },
     "main": {
@@ -369,6 +379,112 @@
                 },
                 "not_found": "No se han encontrado resultados"
             }
+        }
+    },
+    "notFound": {
+        "metaTitle": "Página no encontrada | Sonnetia",
+        "metaDescription": "La página que buscas no existe o fue movida en Sonnetia.",
+        "badge": "Error 404 · Cuerdas rotas y sin repuesto",
+        "title": "Nos quedamos sin cuerdas en esta ruta",
+        "description": "Nuestro guitarrista buscó por todo el escenario, pero ni hay cuerdas de repuesto ni existe la página a la que intentaste entrar.",
+        "redirectNotice": "Volviendo al escenario principal en {seconds} segundos...",
+        "goHomeButton": "Ir a la página principal",
+        "createSongButton": "Crear una nueva letra"
+    },
+    "unauthorized": {
+        "metaTitle": "Acceso no autorizado (401) | Sonnetia",
+        "metaDescription": "Debes iniciar sesión para acceder a esta sección de Sonnetia.",
+        "badge": "Error 401 · Zona exclusiva del backstage",
+        "title": "¡Alto ahí! Nuestro bajista no te deja pasar",
+        "description": "Esta área requiere que tengas sesión iniciada. Identifícate en la entrada o regresa al escenario principal.",
+        "redirectNotice": "Volviendo al escenario principal en {seconds} segundos...",
+        "goHomeButton": "Ir a la página principal"
+    },
+    "repertoires": {
+        "create": {
+            "title": "Crear Repertorio",
+            "subtitle": "Busca canciones por título o artista, previsualiza sus letras y arma tu lista ordenada.",
+            "breadcrumb": {
+                "home": "Inicio",
+                "repertoires": "Repertorios",
+                "myRepertoires": "Mis Repertorios",
+                "create": "Crear"
+            },
+            "form": {
+                "nameLabel": "Nombre del repertorio",
+                "namePlaceholder": "Ej: Concierto Acústico Viernes, Setlist Domingo...",
+                "nameMinLengthError": "El nombre del repertorio debe tener al menos 3 caracteres.",
+                "emptyLyricsError": "Agrega al menos una letra a la lista para crear el repertorio.",
+                "searchLabel": "Buscar letra por canción o artista",
+                "searchPlaceholder": "Escribe al menos 2 caracteres (título o nombre del artista)...",
+                "searchEmptyHint": "Usa el buscador para encontrar canciones y previsualizarlas antes de agregarlas.",
+                "noResults": "No se encontraron canciones para tu búsqueda.",
+                "previewButton": "Previsualizar",
+                "hidePreviewButton": "Ocultar",
+                "addButton": "Agregar",
+                "addedButton": "Agregada",
+                "selectedListTitle": "Letras en el repertorio",
+                "selectedListSubtitle": "Se guardarán en este orden dentro de tu repertorio.",
+                "selectedEmpty": "Aún no has agregado canciones a la lista. Busca una canción a la izquierda y haz clic en 'Agregar'.",
+                "moveUp": "Subir posición",
+                "moveDown": "Bajar posición",
+                "remove": "Quitar de la lista",
+                "keyBadge": "Tono",
+                "bpmBadge": "BPM",
+                "genreBadge": "Ritmo",
+                "byLabel": "de",
+                "postedByLabel": "por",
+                "previewTitle": "Vista previa de la letra",
+                "openFullSong": "Abrir canción completa",
+                "cancel": "Cancelar",
+                "save": "Crear Repertorio",
+                "saving": "Guardando repertorio...",
+                "successTitle": "¡Repertorio creado!",
+                "successMessage": "El repertorio se ha guardado correctamente.",
+                "errorTitle": "No se pudo crear el repertorio",
+                "errorMessage": "Verifica que hayas iniciado sesión e inténtalo nuevamente."
+            }
+        },
+        "myRepertoires": {
+            "title": "Mis Repertorios",
+            "subtitle": "Administra y abre los repertorios musicales que has creado.",
+            "searchPlaceholder": "Filtrar por nombre de repertorio...",
+            "createButton": "Nuevo Repertorio",
+            "emptyTitle": "Aún no has creado ningún repertorio",
+            "emptyDescription": "Organiza tus letras favoritas en listas ordenadas para tus presentaciones o ensayos.",
+            "songsCountLabel": "canciones",
+            "songSingularLabel": "canción",
+            "updatedLabel": "Actualizado el",
+            "openButton": "Abrir repertorio",
+            "deleteButton": "Eliminar",
+            "deleteSuccess": "Repertorio eliminado correctamente.",
+            "deleteError": "No se pudo eliminar el repertorio."
+        },
+        "view": {
+            "metaNotFoundTitle": "Repertorio no disponible | Sonnetia",
+            "metaNotFoundDescription": "El repertorio no existe o no tienes permisos para visualizarlo.",
+            "songsInRepertoire": "Canciones del repertorio",
+            "songIndexLabel": "Canción",
+            "ofLabel": "de",
+            "previousSong": "Anterior",
+            "nextSong": "Siguiente",
+            "openIndividualSong": "Abrir letra individual",
+            "emptySongs": "Este repertorio aún no tiene canciones asociadas.",
+            "backToMyRepertoires": "Mis Repertorios",
+            "showPlayer": "Mostrar grabación",
+            "hidePlayer": "Ocultar grabación",
+            "showTools": "Mostrar herramientas",
+            "hideTools": "Ocultar herramientas",
+            "focusModeEnter": "Modo concentración",
+            "focusModeExit": "Salir de concentración",
+            "focusSwipeHint": "Desliza o arrastra a izquierda/derecha como un libro, o usa las flechas",
+            "toggleSidebar": "Menú del repertorio",
+            "forbiddenBadge": "Acceso restringido · Error 403 / 404",
+            "forbiddenTitle": "Repertorio no encontrado o sin permisos",
+            "forbiddenDescription": "No tienes permisos en OpenFGA para ver este repertorio o el enlace no existe.",
+            "redirectNotice": "Volviendo a la página principal en {seconds} segundos...",
+            "goHomeButton": "Ir a la página principal",
+            "myRepertoiresButton": "Ver mis repertorios"
         }
     }
 }

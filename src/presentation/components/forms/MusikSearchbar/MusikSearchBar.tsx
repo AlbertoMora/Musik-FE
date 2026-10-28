@@ -94,7 +94,7 @@ const MusikSearchBar = ({ i18n }: { i18n: I18nTypes['main'] }) => {
                     label={i18n.searchbar.results.songs.title}
                     icon={<IconMusic size={15} />}
                     data={currentSongs}
-                    linkTemplate={{ template: '/lyrics/?', replaceProperties: ['name,posted_by'] }}
+                    linkTemplate={{ template: '/lyrics/?', replaceProperties: ['slug'] }}
                     textTemplate={{
                         template: `? ${i18n.searchbar.results.songs.templateReplacement} ?`,
                         replaceProperties: ['name', 'artist_name'],

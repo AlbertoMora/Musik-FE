@@ -85,11 +85,13 @@ export interface ISongRes {
     lyrics_text: string;
     name: string;
     sample_uri: string;
+    sample_url?: string | null;
     fork_of?: string;
     artist_name: string;
     posted_by: string;
     fork_of_name?: string;
     avg_rate?: number;
+    slug?: string;
 }
 
 export interface IGetSongsListResponseDTO {

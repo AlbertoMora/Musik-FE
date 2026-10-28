@@ -335,6 +335,16 @@
                     "retryButton": "Retry"
                 }
             }
+        },
+        "notFound": {
+            "metaTitle": "Song Not Found | Sonnetia",
+            "metaDescription": "The lyrics or song you are looking for is not available on Sonnetia.",
+            "badge": "Error 404 · Silent measure",
+            "title": "We couldn't find this song",
+            "description": "It looks like the lyrics you're looking for were moved, deleted, or the link is incorrect.",
+            "redirectNotice": "Redirecting you to the home page in {seconds} seconds...",
+            "goHomeButton": "Go to home page",
+            "createSongButton": "Create new lyrics"
         }
     },
     "main": {
@@ -357,6 +367,112 @@
                 },
                 "not_found": "No results found"
             }
+        }
+    },
+    "notFound": {
+        "metaTitle": "Page Not Found | Sonnetia",
+        "metaDescription": "The page you are looking for does not exist or has been moved on Sonnetia.",
+        "badge": "Error 404 · Broken strings & out of spares",
+        "title": "We snapped a string on this route",
+        "description": "Our guitarist searched the whole stage, but there are no spare strings left and the page you tried to visit doesn't exist.",
+        "redirectNotice": "Heading back to the main stage in {seconds} seconds...",
+        "goHomeButton": "Go to home page",
+        "createSongButton": "Create new lyrics"
+    },
+    "unauthorized": {
+        "metaTitle": "Unauthorized Access (401) | Sonnetia",
+        "metaDescription": "You must sign in to access this section of Sonnetia.",
+        "badge": "Error 401 · Backstage VIP only",
+        "title": "Hold on! Our bassist is blocking the way",
+        "description": "You need to be signed in to enter this area. Log in at the top bar or head back to the main stage.",
+        "redirectNotice": "Heading back to the main stage in {seconds} seconds...",
+        "goHomeButton": "Go to home page"
+    },
+    "repertoires": {
+        "create": {
+            "title": "Create Repertoire",
+            "subtitle": "Search songs by title or artist, preview their lyrics, and build your ordered setlist.",
+            "breadcrumb": {
+                "home": "Home",
+                "repertoires": "Repertoires",
+                "myRepertoires": "My Repertoires",
+                "create": "Create"
+            },
+            "form": {
+                "nameLabel": "Repertoire name",
+                "namePlaceholder": "Ex: Friday Acoustic Gig, Sunday Setlist...",
+                "nameMinLengthError": "Repertoire name must be at least 3 characters long.",
+                "emptyLyricsError": "Add at least one song to the list to create the repertoire.",
+                "searchLabel": "Search lyrics by song or artist",
+                "searchPlaceholder": "Type at least 2 characters (song title or artist name)...",
+                "searchEmptyHint": "Use the search box to find songs and preview their lyrics before adding them.",
+                "noResults": "No songs found matching your search.",
+                "previewButton": "Preview",
+                "hidePreviewButton": "Hide",
+                "addButton": "Add",
+                "addedButton": "Added",
+                "selectedListTitle": "Songs in repertoire",
+                "selectedListSubtitle": "They will be saved in this order inside your repertoire.",
+                "selectedEmpty": "You haven't added any songs yet. Search for a song on the left and click 'Add'.",
+                "moveUp": "Move up",
+                "moveDown": "Move down",
+                "remove": "Remove from list",
+                "keyBadge": "Key",
+                "bpmBadge": "BPM",
+                "genreBadge": "Rhythm",
+                "byLabel": "by",
+                "postedByLabel": "by",
+                "previewTitle": "Lyrics preview",
+                "openFullSong": "Open full lyrics",
+                "cancel": "Cancel",
+                "save": "Create Repertoire",
+                "saving": "Saving repertoire...",
+                "successTitle": "Repertoire created!",
+                "successMessage": "Your repertoire has been saved successfully.",
+                "errorTitle": "Could not create repertoire",
+                "errorMessage": "Please make sure you are signed in and try again."
+            }
+        },
+        "myRepertoires": {
+            "title": "My Repertoires",
+            "subtitle": "Manage and open the musical repertoires you have created.",
+            "searchPlaceholder": "Filter by repertoire name...",
+            "createButton": "New Repertoire",
+            "emptyTitle": "You haven't created any repertoires yet",
+            "emptyDescription": "Organize your favorite lyrics into ordered setlists for your gigs or rehearsals.",
+            "songsCountLabel": "songs",
+            "songSingularLabel": "song",
+            "updatedLabel": "Updated on",
+            "openButton": "Open repertoire",
+            "deleteButton": "Delete",
+            "deleteSuccess": "Repertoire deleted successfully.",
+            "deleteError": "Could not delete the repertoire."
+        },
+        "view": {
+            "metaNotFoundTitle": "Repertoire Unavailable | Sonnetia",
+            "metaNotFoundDescription": "The repertoire does not exist or you do not have permission to view it.",
+            "songsInRepertoire": "Songs in repertoire",
+            "songIndexLabel": "Song",
+            "ofLabel": "of",
+            "previousSong": "Previous",
+            "nextSong": "Next",
+            "openIndividualSong": "Open standalone lyrics",
+            "emptySongs": "This repertoire has no songs attached yet.",
+            "backToMyRepertoires": "My Repertoires",
+            "showPlayer": "Show recording",
+            "hidePlayer": "Hide recording",
+            "showTools": "Show tools",
+            "hideTools": "Hide tools",
+            "focusModeEnter": "Focus mode",
+            "focusModeExit": "Exit focus mode",
+            "focusSwipeHint": "Swipe or drag left/right like a book, or use the arrows",
+            "toggleSidebar": "Repertoire menu",
+            "forbiddenBadge": "Restricted access · Error 403 / 404",
+            "forbiddenTitle": "Repertoire not found or access denied",
+            "forbiddenDescription": "You do not have OpenFGA permissions to view this repertoire, or the link does not exist.",
+            "redirectNotice": "Redirecting to the home page in {seconds} seconds...",
+            "goHomeButton": "Go to home page",
+            "myRepertoiresButton": "View my repertoires"
         }
     }
 }

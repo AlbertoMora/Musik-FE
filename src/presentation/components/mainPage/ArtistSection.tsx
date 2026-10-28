@@ -116,7 +116,12 @@ const SectionMapper = ({ data, type }: ISectionMapperProps) => {
                     href={`/${type}s/${
                         type === 'artist'
                             ? getSlugifiedValue([e.name])
-                            : getSlugifiedValue([e.name, e.posted_by])
+                            : (e as ISongRes).slug ||
+                              getSlugifiedValue([
+                                  e.name,
+                                  (e as ISongRes).artist_name,
+                                  (e as ISongRes).posted_by,
+                              ])
                     }`}>
                     {type === 'lyric' ? <IconMusic size={15} /> : <IconMicrophone size={17} />}
                     <span className={type === 'artist' ? 'flex-1' : ''}>

@@ -24,7 +24,7 @@
                 },
                 "securitySettings": {
                     "label": "Security Settings",
-                    "description": "DFA, password change"
+                    "description": "DFA, password change, active sessions"
                 },
                 "statistics": {
                     "label": "Statistics",
@@ -104,6 +104,21 @@
                             "cancelVerification": "Cancel",
                             "passwordSuccess": "Your password has been saved successfully.",
                             "passwordError": "Could not save password. Please check your details or verification code."
+                        },
+                        "sessions": {
+                            "title": "Active sessions & devices",
+                            "description": "Review the devices where your account is currently signed in and close any sessions you don't recognize.",
+                            "currentSessionBadge": "Current session",
+                            "trustedDeviceBadge": "Trusted device",
+                            "untrustedDeviceBadge": "Standard verification",
+                            "osLabel": "Operating system",
+                            "ipLabel": "IP",
+                            "signedInSinceLabel": "Signed in since",
+                            "revokeBtn": "Revoke session",
+                            "refreshBtn": "Refresh",
+                            "empty": "No active sessions found.",
+                            "revokeSuccess": "The selected session was closed successfully.",
+                            "revokeError": "Could not close the session. Please try again."
                         }
                     }
                 },
@@ -289,7 +304,8 @@
                 "key": "Key",
                 "rythm": "Rythm",
                 "bpm": "Beats per Minute",
-                "by": "by"
+                "by": "by",
+                "exportPdf": "Export to PDF (Letter)"
             },
             "menuLabels": {
                 "musicOptions": "Music Options",
@@ -301,6 +317,7 @@
                 "textOptions": "Text Options",
                 "increaseFont": "Increase font size",
                 "decreaseFont": "Decrease font size",
+                "exportPdf": "Export to PDF (Letter)",
                 "recordOptions": "Record Options",
                 "recordSample": "Record new sample",
                 "uploadSample": "Upload sample"
@@ -465,6 +482,7 @@
             "hideTools": "Hide tools",
             "focusModeEnter": "Focus mode",
             "focusModeExit": "Exit focus mode",
+            "exportRepertoirePdf": "Export repertoire to PDF",
             "focusSwipeHint": "Swipe or drag left/right like a book, or use the arrows",
             "toggleSidebar": "Repertoire menu",
             "forbiddenBadge": "Restricted access · Error 403 / 404",

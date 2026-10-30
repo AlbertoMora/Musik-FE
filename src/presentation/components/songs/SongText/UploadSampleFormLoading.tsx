@@ -245,7 +245,7 @@ const UploadSampleFormLoading = ({ i18n, cancelProcessAction }: UploadSampleForm
                         src={UPLOADING_LOTTIE_URI}
                         autoplay
                         loop
-                        style={{ width: 668, height: 209 }}
+                        style={{ width: 'min(100%, 668px)', height: 209 }}
                     />
                     <Text className="mt-3">{i18n.uploadProcess.uploading}</Text>
                     <Slider

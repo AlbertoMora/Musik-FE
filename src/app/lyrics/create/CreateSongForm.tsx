@@ -235,7 +235,7 @@ const CreateSongForm = ({ forkedFrom, i18n }: ICreateSongFormProps) => {
                     {...form.getInputProps('lyrics')}
                     onChange={onLyricsChange}></Textarea>
             </FormGroup>
-            <FormGroup className='flex flex-row justify-end gap-20'>
+            <FormGroup className='flex flex-row flex-wrap justify-end gap-4'>
                 <Button
                     size='lg'
                     radius='xl'

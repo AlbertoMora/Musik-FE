@@ -29,25 +29,43 @@ const MusicPlayerComponent = ({ i18n, url }: IMusicPlayerProps) => {
     useEffect(() => {
         const audio = audioRef.current;
 
-        if (!audio) {
+        if (!audio || !url) {
             return;
         }
+
+        setIsLoading(true);
+        setIsPlaying(false);
+        setCurrentTime(0);
+        setDuration(0);
 
         const updateTime = () => setCurrentTime(audio.currentTime);
         const setAudioData = () => {
             setIsLoading(false);
-            setDuration(audio.duration);
+            setDuration(Number.isFinite(audio.duration) ? audio.duration : 0);
             setCurrentTime(audio.currentTime);
+        };
+        const handleEnded = () => {
+            setIsPlaying(false);
+            setCurrentTime(0);
         };
 
         audio.addEventListener('loadedmetadata', setAudioData);
+        audio.addEventListener('canplay', setAudioData);
         audio.addEventListener('timeupdate', updateTime);
+        audio.addEventListener('ended', handleEnded);
+
+        audio.load();
+        if (audio.readyState >= 1) {
+            setAudioData();
+        }
 
         return () => {
             audio.removeEventListener('loadedmetadata', setAudioData);
+            audio.removeEventListener('canplay', setAudioData);
             audio.removeEventListener('timeupdate', updateTime);
+            audio.removeEventListener('ended', handleEnded);
         };
-    }, []);
+    }, [url]);
 
     const togglePlayPause = () => {
         const audio = audioRef.current;

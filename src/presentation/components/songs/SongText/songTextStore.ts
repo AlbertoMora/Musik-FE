@@ -34,6 +34,9 @@ export interface ISongtextStore {
 
     isProcessFinished: boolean;
     toggleIsProcessFinished: () => void;
+
+    exportToPdf?: () => void;
+    setExportToPdf: (fn: () => void) => void;
 }
 
 export const StoreContext = createContext<ISongtextStore | null>(null);
@@ -42,7 +45,8 @@ export const createSongtextStore = (
     chords: IKey[],
     id: string,
     permissions: ISongPermission[] | null,
-    url?: string
+    url?: string,
+    exportToPdf?: () => void,
 ) =>
     create<ISongtextStore>(set => ({
         id,
@@ -91,4 +95,7 @@ export const createSongtextStore = (
         isProcessFinished: false,
         toggleIsProcessFinished: () =>
             set(state => ({ isProcessFinished: !state.isProcessFinished })),
+
+        exportToPdf,
+        setExportToPdf: (fn: () => void) => set(() => ({ exportToPdf: fn })),
     }));

@@ -13,6 +13,15 @@
         overflow: hidden
         width: min(100%, 46rem)
 
+        @media (max-width: 576px)
+            flex-direction: column
+            gap: 0.45rem
+            padding: 0.7rem 0.85rem
+
+            > div:last-child
+                padding-top: 0.2rem !important
+                width: 100%
+
     &-stop-bottom
         background: linear-gradient(120deg, #065fd4, #ff0033)
         border-radius: 50%

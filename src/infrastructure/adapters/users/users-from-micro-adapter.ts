@@ -1,6 +1,8 @@
 import {
     DfaChannelType,
+    IActiveSessionsResponseDTO,
     ICheckAvailabilityResponseDTO,
+    IRevokeSessionResponseDTO,
     ISecuritySettingsResponseDTO,
     IUpdateAccountModel,
     IUpdateDfaResponseDTO,
@@ -83,14 +85,53 @@ export class UserFromMicroAdapter implements IUsersGateway {
         }
     }
 
-    public async updatePassword(payload: IUpdatePasswordModel) {
+    public async updatePassword(payload: IUpdatePasswordModel, userAgent?: string) {
         try {
+            const headers: Record<string, string> = {};
+            if (userAgent) headers['User-Agent'] = userAgent;
+
             const res = await webRequest(
                 `${AuthAdapterFromMicro.AUTH_MICRO_URI}/v1/users/security/password`,
-            ).put(payload, undefined, true);
+            ).put(payload, headers, true);
             return getResponseData<IUpdatePasswordResponseDTO>(res, 'usr01');
         } catch (error) {
             console.error('Error updating password:', error);
+            return { success: false, reason: 'usr01' };
+        }
+    }
+
+    public async getActiveSessions(deviceId?: string, userAgent?: string, clientIp?: string) {
+        try {
+            const [accessToken] = await getSessionCookieValues();
+            const headers: Record<string, string> = {};
+            if (accessToken) headers.authorization = `Bearer ${accessToken}`;
+            if (userAgent) headers['User-Agent'] = userAgent;
+            if (deviceId) headers.deviceid = deviceId;
+            if (clientIp) headers['x-client-ip'] = clientIp;
+
+            const query: Record<string, string> = {};
+            if (deviceId) query.deviceId = deviceId;
+            if (clientIp) query.clientIp = clientIp;
+
+            const res = await webRequest(
+                `${AuthAdapterFromMicro.AUTH_MICRO_URI}/v1/users/sessions`,
+            ).get(Object.keys(query).length ? query : undefined, headers);
+            return getResponseData<IActiveSessionsResponseDTO>(res, 'usr01');
+        } catch (error) {
+            console.error('Error getting active sessions:', error);
+            return { success: false, reason: 'usr01' };
+        }
+    }
+
+    public async revokeSession(sessionId: string) {
+        try {
+            const [accessToken] = await getSessionCookieValues();
+            const res = await webRequest(
+                `${AuthAdapterFromMicro.AUTH_MICRO_URI}/v1/users/sessions`,
+            ).delete(sessionId, accessToken ? { authorization: `Bearer ${accessToken}` } : undefined);
+            return getResponseData<IRevokeSessionResponseDTO>(res, 'usr01');
+        } catch (error) {
+            console.error('Error revoking session:', error);
             return { success: false, reason: 'usr01' };
         }
     }

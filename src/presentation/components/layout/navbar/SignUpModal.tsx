@@ -6,6 +6,7 @@ import H1 from '../../headings/H1';
 import { useForm } from '@mantine/form';
 import { signUpFormConfig } from './formConfig';
 import { signUpAction } from '@/infrastructure/adapters/auth/auth-actions';
+import { getClientDeviceInfo } from '@/utils/crypto-utils';
 import { AnimatedUnmountWrapper } from '../../animation/AnimationUnmountWrapper';
 import { I18nTypes } from '@/i18n/dictionaries';
 import { animations, animationSpeeds } from '@/constants/animation-constants';
@@ -25,12 +26,14 @@ const SignUpModal = ({ isOpen, setLoginModalState, setOwnState, i18n }: ISignUpM
 
         if (form.isValid()) {
             const { email, username, password } = form.values;
+            form.setFieldValue('isFormLoading', true);
+            const deviceInfo = await getClientDeviceInfo().catch(() => undefined);
             const signUpData = {
                 email,
                 username,
                 password,
+                ...(deviceInfo ?? {}),
             };
-            form.setFieldValue('isFormLoading', true);
             const res = await signUpAction(signUpData);
             if (!res?.success) {
                 form.reset();

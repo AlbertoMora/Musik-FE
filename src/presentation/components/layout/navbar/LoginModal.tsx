@@ -5,7 +5,7 @@ import { Button, TextInput, Divider, Image, PasswordInput, Alert, Typography } f
 import { IconAlertHexagon, IconKey, IconX } from '@tabler/icons-react';
 import { useForm } from '@mantine/form';
 import { loginFormConfig } from './formConfig';
-import { generateDeviceId, generateKeyPair, signValue } from '@/utils/crypto-utils';
+import { getClientDeviceInfo, signValue } from '@/utils/crypto-utils';
 import {
     getGoogleKeyAction,
     signInAction,
@@ -53,15 +53,24 @@ const LoginModal = ({
 
         if (form.isValid()) {
             const { username, password } = form.values;
-            const loginRes = await signInAction({ username, password });
+            const deviceInfo = await getClientDeviceInfo();
+            const loginRes = await signInAction({
+                username,
+                password,
+                deviceId: deviceInfo.deviceId,
+                clientIp: deviceInfo.clientIp,
+            });
             if (!loginRes?.success || !loginRes?.data) return setShouldShowAlert(true);
 
-            const { pubKey } = await generateKeyPair();
             const signedNonce = await signValue(loginRes.data.nonce);
-            const deviceId = await generateDeviceId();
             const challengeRes = await signInChallengeAction({
-                deviceId,
-                rsaPubKey: pubKey,
+                deviceId: deviceInfo.deviceId,
+                rsaPubKey: deviceInfo.rsaPubKey,
+                deviceName: deviceInfo.deviceName,
+                deviceBrand: deviceInfo.deviceBrand,
+                deviceModel: deviceInfo.deviceModel,
+                deviceType: deviceInfo.deviceType,
+                clientIp: deviceInfo.clientIp,
                 sessionId: loginRes.data.sessionId,
                 signedNonce,
             });

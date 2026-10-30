@@ -123,7 +123,7 @@
 .my-repertoires-grid
     display: grid
     gap: 1.15rem
-    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr))
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr))
     margin-top: 1.4rem
 
 .my-repertoire-card
@@ -296,22 +296,17 @@
     transform: translateX(-50%)
     z-index: 425
 
-@include mixins.md-down
-    .create-repertoire-container
-        margin-top: 5.2rem
-        padding: 1.1rem 0.9rem 1.6rem
-        width: calc(100% - 1rem)
-
+@include mixins.lg-down
     .repertoire-builder-grid
         grid-template-columns: 1fr
 
     .repertoire-view-layout
         flex-direction: column-reverse
-        margin-top: 5.2rem
-        padding: 0 0.5rem
+        margin-top: 1.5rem
+        padding: 0 0.75rem
 
         &.is-focus-mode
-            padding: 0.8rem 2.6rem
+            padding: 0.8rem 2.8rem
 
     .repertoire-right-sidebar
         max-height: unset
@@ -320,3 +315,32 @@
 
         &.is-collapsed
             width: 100%
+
+@include mixins.md-down
+    .create-repertoire-container
+        margin-top: 1.2rem
+        padding: 1.1rem 0.85rem 1.6rem
+        width: calc(100% - 1rem)
+
+    .repertoire-panel
+        min-height: 20rem
+        padding: 1rem
+
+    .repertoire-view-layout
+        &.is-focus-mode
+            padding: 3.2rem 0.65rem 0.8rem
+
+    .repertoire-focus-arrow
+        height: 2.5rem
+        width: 2.5rem
+
+        &--left
+            left: 0.35rem
+
+        &--right
+            right: 0.35rem
+
+    .repertoire-focus-topbar
+        max-width: calc(100vw - 1rem)
+        padding: 0.3rem 0.7rem
+        width: max-content

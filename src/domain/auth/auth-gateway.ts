@@ -1,7 +1,10 @@
 import { IBasicWebResponse } from '@/types/web-types';
 
 export interface IAuthGateway {
-    signUp: (user: ISignUpModel) => Promise<IActionResponse<ISessionResponseDTO>>;
+    signUp: (
+        user: ISignUpModel,
+        userAgent?: string,
+    ) => Promise<IActionResponse<ISessionResponseDTO>>;
     signIn: (
         userInfo: ISignInModel,
         userAgent: string,
@@ -13,6 +16,7 @@ export interface IAuthGateway {
     ) => Promise<IActionResponse<ISessionResponseDTO>>;
     checkMfa: (
         mfaInfo: ICheckMfaModel,
+        userAgent?: string,
     ) => Promise<IActionResponse<ISessionResponseDTO & IGenericMfaResponse>>;
     checkSession?: (accessToken: string, userAgent: string) => Promise<IActionResponse<unknown>>;
     refreshSession?: (
@@ -21,10 +25,25 @@ export interface IAuthGateway {
     ) => Promise<IActionResponse<ISessionResponseDTO>>;
     signOut: (accessToken: string) => Promise<IActionResponse<IBasicWebResponse>>;
     getGoogleKey: () => Promise<IActionResponse<IGetGoogleKeyModel>>;
-    checkGoogleSession: (code: string) => Promise<IActionResponse<ISessionResponseDTO>>;
+    checkGoogleSession: (
+        code: string,
+        userAgent?: string,
+        deviceInfo?: IDeviceRegistrationPayload,
+        redirectUri?: string,
+    ) => Promise<IActionResponse<ISessionResponseDTO>>;
 }
 
-export interface ISignUpModel {
+export interface IDeviceRegistrationPayload {
+    deviceId?: string;
+    rsaPubKey?: string;
+    deviceName?: string;
+    deviceBrand?: string;
+    deviceModel?: string;
+    deviceType?: string;
+    clientIp?: string;
+}
+
+export interface ISignUpModel extends IDeviceRegistrationPayload {
     name?: string;
     lastname?: string;
     username: string;
@@ -40,6 +59,8 @@ export interface IGetGoogleKeyModel extends IBasicWebResponse {
 export interface ISignInModel {
     username: string;
     password: string;
+    deviceId?: string;
+    clientIp?: string;
 }
 
 export interface ICheckMfaModel {
@@ -49,7 +70,7 @@ export interface ICheckMfaModel {
     shouldDeviceSafe: boolean;
 }
 
-export interface ISignInChallengeModel {
+export interface ISignInChallengeModel extends IDeviceRegistrationPayload {
     signedNonce: string;
     sessionId: string;
     deviceId: string;

@@ -1,13 +1,26 @@
 'use client';
 import React, { useState } from 'react';
 
-import { Anchor, Image, Menu, MenuTarget, MenuDropdown, MenuItem, Button } from '@mantine/core';
+import {
+    Anchor,
+    Image,
+    Menu,
+    MenuTarget,
+    MenuDropdown,
+    MenuItem,
+    Button,
+    Burger,
+    Drawer,
+    Stack,
+    Divider,
+    Text,
+} from '@mantine/core';
 
 import '../../../styles/components/navbar.sass';
 
 import LoginModal from './LoginModal';
 import ThemeToggle from './ThemeToggle';
-import { IconLogin2 } from '@tabler/icons-react';
+import { IconChevronRight, IconLogin2 } from '@tabler/icons-react';
 import SignUpModal from './SignUpModal';
 import DfaModal from './DfaModal';
 import AccountPopover from '@/presentation/components/layout/navbar/AccountPopover';
@@ -29,39 +42,91 @@ const DefaultNavbar = ({ isLogged, i18n }: INavbarProps) => {
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
     const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(false);
     const [isDfaModalOpen, setIsDfaModalOpen] = useState(false);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [userMail, setUserMail] = useState('');
     const [sessionId, setSessionId] = useState('');
 
+    const navSections = navigationConfig(i18n);
+
     return (
-        <nav className='navbar'>
-            <div className='navbar-container'>
-                <Anchor href='/' className='logo-link'>
+        <nav className="navbar">
+            <div className="navbar-container">
+                <Anchor href="/" className="logo-link">
                     <Image
-                        className='navbar-logo'
-                        src='/resources/musik-logo1.png'
-                        alt='musik logo'
+                        className="navbar-logo"
+                        src="/resources/musik-logo1.png"
+                        alt="musik logo"
                     />
                 </Anchor>
-                <div className='j-right flex flex-row items-center gap-4'>
+                <div className="j-right flex flex-row items-center gap-3">
                     <ThemeToggle i18n={i18n.theme} />
                     {isLogged ? (
                         <>
-                            {navbarLinks(i18n)}
+                            <div className="navbar-desktop-links">{navbarLinks(i18n)}</div>
                             <AccountPopover i18n={i18n.account} />
+                            <Burger
+                                className="navbar-mobile-burger"
+                                opened={mobileMenuOpen}
+                                onClick={() => setMobileMenuOpen(o => !o)}
+                                size="sm"
+                                aria-label="Toggle navigation"
+                            />
                         </>
                     ) : (
                         <Button
-                            size='sm'
-                            radius='xl'
-                            variant='gradient'
+                            size="sm"
+                            radius="xl"
+                            variant="gradient"
                             onClick={() => setIsLoginModalOpen(true)}
                             rightSection={<IconLogin2 size={20} />}
-                            gradient={{ from: 'blue', to: 'magenta', deg: 161 }}>
+                            gradient={{ from: 'blue', to: 'magenta', deg: 161 }}
+                        >
                             {i18n.auth.login.button}
                         </Button>
                     )}
                 </div>
             </div>
+
+            {/* Mobile & Tablet Navigation Drawer */}
+            <Drawer
+                opened={mobileMenuOpen}
+                onClose={() => setMobileMenuOpen(false)}
+                position="right"
+                size="xs"
+                title={
+                    <Text fw={700} size="lg">
+                        Sonnetia
+                    </Text>
+                }
+                zIndex={350}
+            >
+                <Stack gap="md">
+                    {navSections.map((section, idx) => (
+                        <div key={`${idx}-${section.title}`} className="navbar-mobile-section">
+                            <Text size="xs" fw={700} tt="uppercase" c="dimmed" mb={6}>
+                                {section.title}
+                            </Text>
+                            <Stack gap={4}>
+                                {section.children?.map((child, cIdx) =>
+                                    child.url ? (
+                                        <a
+                                            key={`${cIdx}-${child.title}`}
+                                            href={child.url}
+                                            className="navbar-mobile-link"
+                                            onClick={() => setMobileMenuOpen(false)}
+                                        >
+                                            <span>{child.title}</span>
+                                            <IconChevronRight size={16} />
+                                        </a>
+                                    ) : null,
+                                )}
+                            </Stack>
+                            {idx < navSections.length - 1 && <Divider mt="sm" />}
+                        </div>
+                    ))}
+                </Stack>
+            </Drawer>
+
             <LoginModal
                 i18n={i18n.auth.login}
                 isOpen={isLoginModalOpen}
@@ -149,13 +214,13 @@ const navbarLinks = (i18n: INavbarProps['i18n']) =>
     navigationConfig(i18n).map((n, i) => (
         <Menu withArrow key={`${i}-${n.title}`}>
             <MenuTarget>
-                <div className='navbar-item'>{n.title}</div>
+                <div className="navbar-item">{n.title}</div>
             </MenuTarget>
 
-            <MenuDropdown className='navbar-item-dropdown'>
+            <MenuDropdown className="navbar-item-dropdown">
                 {n.children?.map((r, ix) => {
                     return r.url ? (
-                        <a className='navbar-item-child' key={`${ix}${r.title}`} href={r.url}>
+                        <a className="navbar-item-child" key={`${ix}${r.title}`} href={r.url}>
                             <MenuItem>{r.title}</MenuItem>
                         </a>
                     ) : null;

@@ -22,7 +22,39 @@ export interface IUsersGateway {
     ) => Promise<IActionResponse<IUpdateDfaResponseDTO>>;
     updatePassword: (
         payload: IUpdatePasswordModel,
+        userAgent?: string,
     ) => Promise<IActionResponse<IUpdatePasswordResponseDTO>>;
+    getActiveSessions: (
+        deviceId?: string,
+        userAgent?: string,
+        clientIp?: string,
+    ) => Promise<IActionResponse<IActiveSessionsResponseDTO>>;
+    revokeSession: (
+        sessionId: string,
+    ) => Promise<IActionResponse<IRevokeSessionResponseDTO>>;
+}
+
+export interface IActiveSessionItemDTO {
+    sessionId: string;
+    deviceId: string;
+    deviceName: string;
+    deviceBrand: string;
+    deviceModel: string;
+    deviceType: 'desktop' | 'mobile' | 'tablet' | string;
+    deviceOS: string;
+    sessionIP: string;
+    location: string;
+    signedInSince: string;
+    isCurrent: boolean;
+    isTrusted: boolean;
+}
+
+export interface IActiveSessionsResponseDTO extends IBasicWebResponse {
+    sessions: IActiveSessionItemDTO[];
+}
+
+export interface IRevokeSessionResponseDTO extends IBasicWebResponse {
+    revokedSessionId: string;
 }
 
 export interface ISecuritySettingsResponseDTO extends IBasicWebResponse {
@@ -40,6 +72,10 @@ export interface IUpdateDfaResponseDTO extends IBasicWebResponse {
 export interface IUpdatePasswordModel {
     password: string;
     deviceId: string;
+    deviceBrand?: string;
+    deviceModel?: string;
+    deviceName?: string;
+    deviceType?: string;
     rsaPubKey?: string;
     code?: string;
     shouldDeviceSafe?: boolean;

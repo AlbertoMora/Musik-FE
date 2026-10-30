@@ -1,11 +1,14 @@
 'use client';
 import { ISongModel } from '@/infrastructure/models/SongModel';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { v4 as uuid } from 'uuid';
+import { Button } from '@mantine/core';
+import { IconFileTypePdf } from '@tabler/icons-react';
 
 import '../../../styles/pages/songs.sass';
 import H1 from '../../headings/H1';
 import { removeChords } from '../../../../utils/text-utils';
+import { exportSongToLetterPdf } from '@/utils/pdf-export';
 import { I18nTypes } from '@/i18n/dictionaries';
 import MusicPlayer from '../MusicPlayer';
 import SongTools from './SongTools';
@@ -44,6 +47,38 @@ const SongText = ({
     );
 
     const store = useSongTextStore();
+
+    const handleExportPdf = useCallback(() => {
+        exportSongToLetterPdf({
+            title,
+            artist,
+            postedBy,
+            forkOf,
+            genre,
+            bpm,
+            songKey,
+            toneVariation: store.toneVariation,
+            lyrics,
+            chords: store.chords,
+            labels: i18n.labels,
+        });
+    }, [
+        title,
+        artist,
+        postedBy,
+        forkOf,
+        genre,
+        bpm,
+        songKey,
+        store.toneVariation,
+        lyrics,
+        store.chords,
+        i18n.labels,
+    ]);
+
+    useEffect(() => {
+        store.setExportToPdf(handleExportPdf);
+    }, [handleExportPdf, store.setExportToPdf]);
 
     const containerRef = useRef<HTMLDivElement>(null);
     const [containerHeight, setContainerHeight] = useState(0);
@@ -91,6 +126,7 @@ const SongText = ({
                             chords,
                             permissions,
                             i18n,
+                            onExportPdf: handleExportPdf,
                         }}
                     />
                 )}
@@ -114,6 +150,10 @@ const SongText = ({
     );
 };
 
+interface ISongInfoProps extends ISongTextProps {
+    onExportPdf: () => void;
+}
+
 const SongInfo = ({
     postedBy,
     artist,
@@ -123,7 +163,8 @@ const SongInfo = ({
     bpm,
     songKey,
     i18n,
-}: ISongTextProps) => {
+    onExportPdf,
+}: ISongInfoProps) => {
     return (
         <>
             <div className='song-title-container'>
@@ -142,6 +183,16 @@ const SongInfo = ({
                             {i18n.labels.artist}: {artist}
                         </p>
                     ) : null}
+                    <Button
+                        type='button'
+                        size='xs'
+                        radius='xl'
+                        variant='gradient'
+                        gradient={{ from: 'violet', to: 'grape', deg: 145 }}
+                        leftSection={<IconFileTypePdf size={16} />}
+                        onClick={onExportPdf}>
+                        {i18n.labels.exportPdf}
+                    </Button>
                 </div>
             </div>
             <div className='song-info-layout'>

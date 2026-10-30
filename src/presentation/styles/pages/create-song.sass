@@ -1,40 +1,47 @@
 @use '../common/settings'
 @use '../common/mixins'
 
-@include mixins.md
-    .create-song-container
-        background: var(--surface-1)
-        border: 1px solid var(--surface-border)
+.create-song-container
+    background: var(--surface-1)
+    border: 1px solid var(--surface-border)
+    border-radius: 12px
+    margin: 5.8rem auto 2rem
+    max-width: 1185px
+    min-height: calc(100vh - 9rem)
+    padding: 1.2rem 1rem 2rem
+    width: calc(100% - 2rem)
+
+.form-container
+    align-items: stretch
+    display: flex
+    flex-direction: column
+    justify-content: center
+    margin-top: 0.8rem
+    padding-top: 0.5rem
+    width: 100%
+
+.lyrics-textarea
+    width: 100%
+
+    & > * > textarea
+        background: var(--lyrics-textarea-bg)
+        border: 1px solid var(--lyrics-textarea-border)
         border-radius: 10px
-        margin: 6rem auto 2rem
-        max-width: 1185px
-        min-height: calc(100vh - 9rem)
-        padding: 1.2rem 1rem 2rem
-        width: calc(100% - 2rem)
-
-    .form-container
-        align-items: stretch
-        display: flex
-        flex-direction: column
-        justify-content: center
-        margin-top: 0.8rem
-        padding-top: 0.5rem
+        font-size: 1rem
+        line-height: 1.5
+        min-height: 28rem
+        text-align: left
         width: 100%
 
-    .lyrics-textarea
-        width: 100%
-
-        & > * > textarea
-            background: var(--lyrics-textarea-bg)
-            border: 1px solid var(--lyrics-textarea-border)
-            border-radius: 10px
-            min-height: 38rem
-            width: 100%
-            text-align: left
-            font-size: 1rem
-            line-height: 1.5
+@include mixins.md
+    .lyrics-textarea > * > textarea
+        min-height: 38rem
 
 @include mixins.md-down
     .create-song-container
         margin-top: 5.2rem
+        padding: 1rem 0.75rem 1.5rem
         width: calc(100% - 1rem)
+
+    .lyrics-textarea > * > textarea
+        min-height: 20rem

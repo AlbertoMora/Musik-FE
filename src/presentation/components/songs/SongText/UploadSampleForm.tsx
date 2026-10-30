@@ -179,7 +179,7 @@ const sendMessage = (
     let message: string = '';
     let title: string = '';
     const messageType =
-        NotificationTypes.warning || NotificationTypes.error
+        type === NotificationTypes.warning || type === NotificationTypes.error
             ? NotificationTypes.error
             : NotificationTypes.ok;
     switch (type) {

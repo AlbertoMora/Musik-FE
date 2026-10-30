@@ -7,6 +7,7 @@ import {
 } from '@/domain/users/users-gateway';
 import { getSessionInfoAction, setSessionCookie } from '../auth/auth-actions';
 import { UserFromMicroAdapter } from './users-from-micro-adapter';
+import { getUserAgent } from '@/utils/server/request-utils';
 
 export const getUsers = async (username: string, limit: number, offset: number) => {
     const usersAdapter = new UserFromMicroAdapter();
@@ -50,5 +51,17 @@ export const updateDfaSettingsAction = async (dfaChannel: DfaChannelType) => {
 
 export const updatePasswordAction = async (payload: IUpdatePasswordModel) => {
     const usersAdapter = new UserFromMicroAdapter();
-    return await usersAdapter.updatePassword(payload);
+    const userAgent = await getUserAgent();
+    return await usersAdapter.updatePassword(payload, userAgent);
+};
+
+export const getActiveSessionsAction = async (deviceId?: string, clientIp?: string) => {
+    const usersAdapter = new UserFromMicroAdapter();
+    const userAgent = await getUserAgent();
+    return await usersAdapter.getActiveSessions(deviceId, userAgent, clientIp);
+};
+
+export const revokeSessionAction = async (sessionId: string) => {
+    const usersAdapter = new UserFromMicroAdapter();
+    return await usersAdapter.revokeSession(sessionId);
 };

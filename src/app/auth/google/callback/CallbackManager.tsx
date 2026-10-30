@@ -8,6 +8,7 @@ import {
 } from '@/presentation/services/notification-service';
 import { getResponseData, webRequest } from '@/utils/web-utils';
 import { IBasicWebResponse, responseCodes } from '@/types/web-types';
+import { getClientDeviceInfo } from '@/utils/crypto-utils';
 
 interface ICallbackManagerProps {
     code: string;
@@ -17,7 +18,13 @@ interface ICallbackManagerProps {
 const CallbackManager = ({ i18n, code }: ICallbackManagerProps) => {
     useEffect(() => {
         const handleCallbackEvent = async () => {
-            const res = await webRequest('/api/google/callback').post({ code });
+            const deviceInfo = await getClientDeviceInfo().catch(() => undefined);
+            const redirectUri = `${window.location.origin}/auth/google/callback`;
+            const res = await webRequest('/api/google/callback').post({
+                code,
+                redirectUri,
+                ...(deviceInfo ?? {}),
+            });
             const json = await getResponseData<IBasicWebResponse>(res, 'client');
 
             if (json?.data?.status !== responseCodes.ok) {

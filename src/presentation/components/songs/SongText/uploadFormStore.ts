@@ -40,5 +40,5 @@ export const createUploadFormStoreContext = () =>
         toggleIsDragged: () => set(state => ({ isDragged: !state.isDragged })),
         setIsDragged: (newState: boolean) => set(() => ({ isDragged: newState })),
         uploadProgress: 0,
-        setUploadProgress: (percentage: number) => () => ({ uploadProgress: percentage }),
+        setUploadProgress: (percentage: number) => set(() => ({ uploadProgress: percentage })),
     }));

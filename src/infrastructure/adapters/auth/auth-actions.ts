@@ -17,7 +17,8 @@ import { getLocale, getUserAgent } from '@/utils/server/request-utils';
 
 export const signUpAction = async (user: ISignUpModel) => {
     const authAdapter = new AuthAdapterFromMicro();
-    const res = await authAdapter.signUp(user);
+    const userAgent = await getUserAgent();
+    const res = await authAdapter.signUp(user, userAgent);
     if (!res.data) return null;
 
     await setSessionCookie(res.data);
@@ -48,7 +49,8 @@ export const signInChallengeAction = async (challengeInfo: ISignInChallengeModel
 
 export const checkMfaAction = async (checkMfaInfo: ICheckMfaModel) => {
     const authAdapter = new AuthAdapterFromMicro();
-    const res = await authAdapter.checkMfa(checkMfaInfo);
+    const userAgent = await getUserAgent();
+    const res = await authAdapter.checkMfa(checkMfaInfo, userAgent);
     if (!res?.data) return null;
 
     if (res.data.accessToken) {

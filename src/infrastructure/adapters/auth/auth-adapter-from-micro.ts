@@ -2,6 +2,7 @@ import {
     IActionResponse,
     IAuthGateway,
     ICheckMfaModel,
+    IDeviceRegistrationPayload,
     IGenericMfaResponse,
     IGetGoogleKeyModel,
     ISessionResponseDTO,
@@ -15,13 +16,17 @@ import { webErrors, webRequest } from '@/utils/web-utils';
 import { getResponseData } from '../../../utils/web-utils';
 import { IBasicWebResponse, responseCodes } from '@/types/web-types';
 import { languageConstants } from '@/constants/commons-constants';
+
 export class AuthAdapterFromMicro implements IAuthGateway {
     public static readonly AUTH_MICRO_URI = process.env.AUTH_MICRO_URI;
-    public async signUp(user: ISignUpModel) {
+    public async signUp(user: ISignUpModel, userAgent?: string) {
         try {
+            const headers: Record<string, string> = {};
+            if (userAgent) headers['User-Agent'] = userAgent;
+
             const res = await webRequest(
                 `${AuthAdapterFromMicro.AUTH_MICRO_URI}/v1/authentication/signup`,
-            ).post(user);
+            ).post(user, headers);
             return await getResponseData<ISessionResponseDTO>(res, webErrors.auth01.id);
         } catch (e) {
             console.log(e);
@@ -56,11 +61,14 @@ export class AuthAdapterFromMicro implements IAuthGateway {
         }
     }
 
-    public async checkMfa(checkMfaInfo: ICheckMfaModel) {
+    public async checkMfa(checkMfaInfo: ICheckMfaModel, userAgent?: string) {
         try {
+            const headers: Record<string, string> = {};
+            if (userAgent) headers['User-Agent'] = userAgent;
+
             const res = await webRequest(
                 `${AuthAdapterFromMicro.AUTH_MICRO_URI}/v1/authentication/check-mfa`,
-            ).post(checkMfaInfo);
+            ).post(checkMfaInfo, headers);
             const data = (await res.json()) as ISessionResponseDTO & IGenericMfaResponse;
             if (data.status !== responseCodes.ok && (!data.attempts || data.attempts < 3))
                 return { success: false, data };
@@ -107,11 +115,20 @@ export class AuthAdapterFromMicro implements IAuthGateway {
         }
     }
 
-    public async checkGoogleSession(code: string) {
+    public async checkGoogleSession(
+        code: string,
+        userAgent?: string,
+        deviceInfo?: IDeviceRegistrationPayload,
+        redirectUri?: string,
+    ) {
         try {
+            const headers: Record<string, string> = {};
+            if (userAgent) headers['User-Agent'] = userAgent;
+            if (deviceInfo?.clientIp) headers['x-client-ip'] = deviceInfo.clientIp;
+
             const res = await webRequest(
                 `${AuthAdapterFromMicro.AUTH_MICRO_URI}/v1/oauth/google/callback`,
-            ).post({ code });
+            ).post({ code, redirectUri, ...deviceInfo }, headers);
             return await getResponseData<ISessionResponseDTO>(res, webErrors.srv01.id);
         } catch (e) {
             const err = e instanceof Error ? e : new Error(String(e));

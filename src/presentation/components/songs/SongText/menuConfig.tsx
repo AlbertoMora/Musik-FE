@@ -1,6 +1,7 @@
 import {
     IconCaretDown,
     IconCaretUp,
+    IconFileTypePdf,
     IconLetterCase,
     IconMath1Divide2,
     IconMicrophone2,
@@ -22,6 +23,7 @@ export const menuItems = ({
     toggleRecordModal,
     toggleUploadModal,
     resetToneVariation,
+    exportToPdf,
 }: ISongtextStore): IMenuItem[] => [
     {
         Label: <IconMusic />,
@@ -96,6 +98,11 @@ export const menuItems = ({
                 ),
                 name: 'decreaseFont',
                 onClick: decreaseFontSize,
+            },
+            {
+                Label: <IconFileTypePdf />,
+                name: 'exportPdf',
+                onClick: () => exportToPdf?.(),
             },
         ],
     },

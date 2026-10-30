@@ -24,7 +24,7 @@
                 },
                 "securitySettings": {
                     "label": "Configuración de seguridad",
-                    "description": "DFA, cambio de contraseña"
+                    "description": "DFA, cambio de contraseña, sesiones activas"
                 },
                 "statistics": {
                     "label": "Estadísticas",
@@ -104,6 +104,21 @@
                             "cancelVerification": "Cancelar",
                             "passwordSuccess": "Tu contraseña se ha guardado correctamente.",
                             "passwordError": "No se pudo guardar la contraseña. Verifica los datos o el código ingresado."
+                        },
+                        "sessions": {
+                            "title": "Sesiones activas y dispositivos",
+                            "description": "Revisa los dispositivos donde tu cuenta tiene una sesión activa actualmente y cierra aquellas que no reconozcas.",
+                            "currentSessionBadge": "Sesión actual",
+                            "trustedDeviceBadge": "Dispositivo confiable",
+                            "untrustedDeviceBadge": "Verificación estándar",
+                            "osLabel": "Sistema operativo",
+                            "ipLabel": "IP",
+                            "signedInSinceLabel": "Activa desde",
+                            "revokeBtn": "Cerrar sesión",
+                            "refreshBtn": "Actualizar",
+                            "empty": "No se encontraron sesiones activas.",
+                            "revokeSuccess": "La sesión seleccionada fue cerrada correctamente.",
+                            "revokeError": "No se pudo cerrar la sesión. Inténtalo de nuevo."
                         }
                     }
                 },
@@ -301,7 +316,8 @@
                 "key": "Tono",
                 "rythm": "Ritmo",
                 "bpm": "BPM",
-                "by": "de"
+                "by": "de",
+                "exportPdf": "Exportar a PDF (Carta)"
             },
             "menuLabels": {
                 "musicOptions": "Opciones Musicales",
@@ -313,6 +329,7 @@
                 "textOptions": "Opciones de Texto",
                 "increaseFont": "Incrementar tamaño de fuente",
                 "decreaseFont": "Disminuir tamaño de fuente",
+                "exportPdf": "Exportar a PDF (Carta)",
                 "recordOptions": "Opciones de Grabación",
                 "recordSample": "Crear nueva grabación",
                 "uploadSample": "Subir grabación"
@@ -477,6 +494,7 @@
             "hideTools": "Ocultar herramientas",
             "focusModeEnter": "Modo concentración",
             "focusModeExit": "Salir de concentración",
+            "exportRepertoirePdf": "Exportar repertorio a PDF",
             "focusSwipeHint": "Desliza o arrastra a izquierda/derecha como un libro, o usa las flechas",
             "toggleSidebar": "Menú del repertorio",
             "forbiddenBadge": "Acceso restringido · Error 403 / 404",

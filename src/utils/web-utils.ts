@@ -15,38 +15,70 @@ export interface UploadResponse {
     statusCode: number;
 }
 
+const buildForwardHeaders = async (isAuth?: boolean) => {
+    const extraHeaders: Record<string, string> = {};
+    if (isAuth) {
+        const [accessToken] = await getSessionCookieValues();
+        if (accessToken) {
+            extraHeaders.authorization = `Bearer ${accessToken}`;
+        }
+    }
+
+    if (typeof window === 'undefined') {
+        try {
+            const { getClientIpFromHeaders, getUserAgent } = await import(
+                '@/utils/server/request-utils'
+            );
+            const [clientIp, ua] = await Promise.all([
+                getClientIpFromHeaders(),
+                getUserAgent(),
+            ]);
+            if (clientIp) {
+                extraHeaders['x-forwarded-for'] = clientIp;
+                extraHeaders['x-real-ip'] = clientIp;
+            }
+            if (ua && ua !== 'Unknown') {
+                extraHeaders['User-Agent'] = ua;
+            }
+        } catch {
+            // Ignore when invoked outside a Next.js request context
+        }
+    }
+
+    return extraHeaders;
+};
+
 export const webRequest = (url: string) => {
     return {
         post: async <Q>(body: Q, headers?: HeadersInit, isAuth?: boolean) => {
-            let authHeaders = {};
-            if (isAuth) {
-                const [accessToken] = await getSessionCookieValues();
-                authHeaders = { authorization: `Bearer ${accessToken}` };
-            }
+            const autoHeaders = await buildForwardHeaders(isAuth);
 
             const res = await fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    ...autoHeaders,
                     ...headers,
-                    ...authHeaders,
                 },
                 body: JSON.stringify(body),
             });
             return res;
         },
         delete: async (id?: string | null, headers?: HeadersInit) => {
+            const autoHeaders = await buildForwardHeaders(false);
             const composedUrl = id ? `${url}/${id}` : url;
             const res = await fetch(composedUrl, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
+                    ...autoHeaders,
                     ...headers,
                 },
             });
             return res;
         },
         get: async (params?: DictionaryItem<string>, headers?: HeadersInit) => {
+            const autoHeaders = await buildForwardHeaders(false);
             const getUrl = new URL(url);
 
             if (params)
@@ -58,24 +90,21 @@ export const webRequest = (url: string) => {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
+                    ...autoHeaders,
                     ...headers,
                 },
             });
             return res;
         },
         put: async <Q>(body: Q, headers?: HeadersInit, isAuth?: boolean) => {
-            let authHeaders = {};
-            if (isAuth) {
-                const [accessToken] = await getSessionCookieValues();
-                authHeaders = { authorization: `Bearer ${accessToken}` };
-            }
+            const autoHeaders = await buildForwardHeaders(isAuth);
 
             const res = await fetch(url, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
+                    ...autoHeaders,
                     ...headers,
-                    ...authHeaders,
                 },
                 body: JSON.stringify(body),
             });

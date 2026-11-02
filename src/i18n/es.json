@@ -564,5 +564,73 @@
             "goHomeButton": "Ir a la página principal",
             "myRepertoiresButton": "Ver mis repertorios"
         }
+    },
+    "artists": {
+        "view": {
+            "metaNotFoundTitle": "Artista no encontrado | Sonnetia",
+            "metaNotFoundDescription": "El artista que buscas no existe en Sonnetia.",
+            "verifiedBadge": "Artista verificado",
+            "postedByLabel": "Registrado por",
+            "totalSongsBadge": "Canciones en catálogo",
+            "matchingSongsBadge": "Coincidencias",
+            "filtersSectionTitle": "Filtros y ordenamiento",
+            "showAdvancedFilters": "Más filtros",
+            "hideAdvancedFilters": "Menos filtros",
+            "clearFiltersBtn": "Limpiar filtros",
+            "sortByLabel": "Ordenar por campo",
+            "sortDirLabel": "Dirección",
+            "sortAsc": "Ascendente (A→Z / Menor→Mayor)",
+            "sortDesc": "Descendente (Z→A / Mayor→Menor)",
+            "fields": {
+                "id": "ID de letra",
+                "name": "Título de la canción",
+                "lyrics_text": "Contenido de la letra",
+                "genre": "Género / Ritmo",
+                "sample_uri": "Grabación de audio",
+                "bpm": "Tempo (BPM)",
+                "key": "Tonalidad",
+                "artist_id": "Artista",
+                "posted_by": "Publicado por",
+                "fork_of": "Canción base / Fork",
+                "creation_date": "Fecha de creación",
+                "last_modified": "Última modificación",
+                "album_id": "Álbum"
+            },
+            "placeholders": {
+                "name": "Filtrar por título de canción...",
+                "lyrics_text": "Buscar palabra o frase dentro de la letra...",
+                "id": "Filtrar por UUID...",
+                "genre": "Todos los géneros",
+                "key": "Todas las tonalidades",
+                "bpmMin": "BPM mín.",
+                "bpmMax": "BPM máx.",
+                "posted_by": "Usuario que publicó...",
+                "fork_of": "Todas (originales y forks)",
+                "forkOriginalOnly": "Solo originales (sin fork)",
+                "forkOnly": "Solo forks de otra letra",
+                "album_id": "Todos los álbumes",
+                "withAlbum": "Con álbum asociado",
+                "withoutAlbum": "Sin álbum asociado",
+                "sampleAll": "Todas",
+                "sampleYes": "Con audio",
+                "sampleNo": "Sin audio",
+                "dateFrom": "Desde",
+                "dateTo": "Hasta"
+            },
+            "card": {
+                "keyLabel": "Tono",
+                "bpmLabel": "BPM",
+                "genreLabel": "Género",
+                "postedByLabel": "Por",
+                "forkOfLabel": "Fork de",
+                "albumLabel": "Álbum",
+                "createdLabel": "Creada",
+                "modifiedLabel": "Modificada",
+                "hasAudioBadge": "Con audio",
+                "openSongBtn": "Ver letra y acordes"
+            },
+            "emptySongsTitle": "No se encontraron canciones para este artista",
+            "emptySongsDescription": "Prueba ajustando o limpiando los filtros de búsqueda."
+        }
     }
 }

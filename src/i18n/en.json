@@ -552,5 +552,73 @@
             "goHomeButton": "Go to home page",
             "myRepertoiresButton": "View my repertoires"
         }
+    },
+    "artists": {
+        "view": {
+            "metaNotFoundTitle": "Artist Not Found | Sonnetia",
+            "metaNotFoundDescription": "The artist you are looking for does not exist on Sonnetia.",
+            "verifiedBadge": "Verified artist",
+            "postedByLabel": "Added by",
+            "totalSongsBadge": "Songs in catalog",
+            "matchingSongsBadge": "Matches",
+            "filtersSectionTitle": "Filters & sorting",
+            "showAdvancedFilters": "More filters",
+            "hideAdvancedFilters": "Fewer filters",
+            "clearFiltersBtn": "Clear filters",
+            "sortByLabel": "Sort by field",
+            "sortDirLabel": "Direction",
+            "sortAsc": "Ascending (A→Z / Low→High)",
+            "sortDesc": "Descending (Z→A / High→Low)",
+            "fields": {
+                "id": "Lyric ID",
+                "name": "Song title",
+                "lyrics_text": "Lyrics content",
+                "genre": "Genre / Rhythm",
+                "sample_uri": "Audio sample",
+                "bpm": "Tempo (BPM)",
+                "key": "Musical key",
+                "artist_id": "Artist",
+                "posted_by": "Posted by",
+                "fork_of": "Base song / Fork",
+                "creation_date": "Creation date",
+                "last_modified": "Last modified",
+                "album_id": "Album"
+            },
+            "placeholders": {
+                "name": "Filter by song title...",
+                "lyrics_text": "Search word or phrase inside lyrics...",
+                "id": "Filter by UUID...",
+                "genre": "All genres",
+                "key": "All keys",
+                "bpmMin": "Min BPM",
+                "bpmMax": "Max BPM",
+                "posted_by": "Posted by username...",
+                "fork_of": "All (originals & forks)",
+                "forkOriginalOnly": "Originals only (no fork)",
+                "forkOnly": "Forks only",
+                "album_id": "All albums",
+                "withAlbum": "With album",
+                "withoutAlbum": "Without album",
+                "sampleAll": "All",
+                "sampleYes": "With audio",
+                "sampleNo": "No audio",
+                "dateFrom": "From",
+                "dateTo": "To"
+            },
+            "card": {
+                "keyLabel": "Key",
+                "bpmLabel": "BPM",
+                "genreLabel": "Genre",
+                "postedByLabel": "By",
+                "forkOfLabel": "Fork of",
+                "albumLabel": "Album",
+                "createdLabel": "Created",
+                "modifiedLabel": "Modified",
+                "hasAudioBadge": "Audio sample",
+                "openSongBtn": "View lyrics & chords"
+            },
+            "emptySongsTitle": "No songs found for this artist",
+            "emptySongsDescription": "Try adjusting or clearing the search filters."
+        }
     }
 }

@@ -115,7 +115,7 @@ const SectionMapper = ({ data, type }: ISectionMapperProps) => {
                     key={e.id}
                     href={`/${type}s/${
                         type === 'artist'
-                            ? getSlugifiedValue([e.name])
+                            ? (e as IArtistModel).slug || getSlugifiedValue([e.name])
                             : (e as ISongRes).slug ||
                               getSlugifiedValue([
                                   e.name,

@@ -7,9 +7,10 @@ import { IconFileTypePdf } from '@tabler/icons-react';
 
 import '../../../styles/pages/songs.sass';
 import H1 from '../../headings/H1';
-import { removeChords } from '../../../../utils/text-utils';
+import { getSlugifiedValue, removeChords } from '../../../../utils/text-utils';
 import { exportSongToLetterPdf } from '@/utils/pdf-export';
 import { I18nTypes } from '@/i18n/dictionaries';
+import Link from 'next/link';
 import MusicPlayer from '../MusicPlayer';
 import SongTools from './SongTools';
 import { createSongtextStore, StoreContext, ISongtextStore } from './songTextStore';
@@ -180,7 +181,13 @@ const SongInfo = ({
                     ) : null}
                     {artist ? (
                         <p>
-                            {i18n.labels.artist}: {artist}
+                            {i18n.labels.artist}:{' '}
+                            <Link
+                                href={`/artists/${getSlugifiedValue([artist])}`}
+                                style={{ textDecoration: 'underline', fontWeight: 600 }}
+                            >
+                                {artist}
+                            </Link>
                         </p>
                     ) : null}
                     <Button

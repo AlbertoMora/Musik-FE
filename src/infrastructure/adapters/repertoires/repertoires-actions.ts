@@ -16,10 +16,10 @@ export const createRepertoireAction = async (payload: ICreateRepertoirePayload) 
     return await adapter.createRepertoire(payload, accessToken);
 };
 
-export const getRepertoireAction = async (id: string) => {
+export const getRepertoireAction = async (id: string, linkToken?: string) => {
     const adapter = new RepertoiresFromMicroAdapter();
     const [accessToken] = await getSessionCookieValues();
-    return await adapter.getRepertoire(id, accessToken);
+    return await adapter.getRepertoire(id, accessToken, linkToken);
 };
 
 export const getRepertoiresAction = async (
@@ -48,4 +48,52 @@ export const deleteRepertoireAction = async (id: string) => {
         return { success: false, reason: 'auth05' };
     }
     return await adapter.deleteRepertoire(id, accessToken);
+};
+
+export const generateRepertoireEditLinkAction = async (id: string) => {
+    const adapter = new RepertoiresFromMicroAdapter();
+    const [accessToken] = await getSessionCookieValues();
+    if (!accessToken) {
+        return { success: false, reason: 'auth05' };
+    }
+    return await adapter.generateEditLink(id, accessToken);
+};
+
+export const revokeRepertoireEditLinkAction = async (id: string) => {
+    const adapter = new RepertoiresFromMicroAdapter();
+    const [accessToken] = await getSessionCookieValues();
+    if (!accessToken) {
+        return { success: false, reason: 'auth05' };
+    }
+    return await adapter.revokeEditLink(id, accessToken);
+};
+
+export const searchRepertoireUsersAction = async (id: string, query: string) => {
+    const adapter = new RepertoiresFromMicroAdapter();
+    const [accessToken] = await getSessionCookieValues();
+    if (!accessToken) {
+        return { success: false, reason: 'auth05' };
+    }
+    return await adapter.searchUsersForRepertoire(id, query, accessToken);
+};
+
+export const addRepertoireEditorAction = async (
+    id: string,
+    payload: { userId?: string; identifier?: string },
+) => {
+    const adapter = new RepertoiresFromMicroAdapter();
+    const [accessToken] = await getSessionCookieValues();
+    if (!accessToken) {
+        return { success: false, reason: 'auth05' };
+    }
+    return await adapter.addEditor(id, payload, accessToken);
+};
+
+export const removeRepertoireEditorAction = async (id: string, editorUserId: string) => {
+    const adapter = new RepertoiresFromMicroAdapter();
+    const [accessToken] = await getSessionCookieValues();
+    if (!accessToken) {
+        return { success: false, reason: 'auth05' };
+    }
+    return await adapter.removeEditor(id, editorUserId, accessToken);
 };

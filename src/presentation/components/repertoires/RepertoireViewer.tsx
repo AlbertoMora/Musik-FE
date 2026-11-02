@@ -1,9 +1,16 @@
 'use client';
 
-import { IRepertoireDTO } from '@/domain/repertoires/repertoire-gateway';
+import { IRepertoireDTO, IRepertoireEditorDTO } from '@/domain/repertoires/repertoire-gateway';
 import { ISongRes } from '@/domain/songs/song-gateway';
 import { I18nTypes } from '@/i18n/dictionaries';
-import { updateRepertoireAction } from '@/infrastructure/adapters/repertoires/repertoires-actions';
+import {
+    addRepertoireEditorAction,
+    generateRepertoireEditLinkAction,
+    removeRepertoireEditorAction,
+    revokeRepertoireEditLinkAction,
+    searchRepertoireUsersAction,
+    updateRepertoireAction,
+} from '@/infrastructure/adapters/repertoires/repertoires-actions';
 import { getSongsByNameAction } from '@/infrastructure/adapters/songs/songs-actions';
 import { IKey, ISongModel, ISongPermission } from '@/infrastructure/models/SongModel';
 import SongText from '@/presentation/components/songs/SongText/SongText';
@@ -36,6 +43,7 @@ import {
     IconCheck,
     IconChevronLeft,
     IconChevronRight,
+    IconCopy,
     IconDeviceFloppy,
     IconEdit,
     IconExternalLink,
@@ -44,22 +52,31 @@ import {
     IconHeadphonesOff,
     IconLayoutSidebarRightCollapse,
     IconLayoutSidebarRightExpand,
+    IconLink,
+    IconLinkOff,
     IconMaximize,
     IconMinimize,
     IconMusic,
     IconPlaylist,
     IconPlaylistAdd,
     IconPlus,
+    IconRefresh,
     IconSearch,
+    IconShare,
     IconTool,
     IconTrash,
+    IconUserPlus,
+    IconUsers,
 } from '@tabler/icons-react';
 import Link from 'next/link';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 interface RepertoireViewerProps {
     repertoire: IRepertoireDTO;
+    repertoireSlug?: string;
+    editToken?: string;
     songs: ISongRes[];
+    editors?: IRepertoireEditorDTO[];
     permissions: ISongPermission[] | null;
     lyricsI18n: I18nTypes['lyrics']['text'];
     viewI18n: I18nTypes['repertoires']['view'];
@@ -95,7 +112,10 @@ const SWIPE_THRESHOLD_PX = 65;
 
 export default function RepertoireViewer({
     repertoire,
+    repertoireSlug,
+    editToken,
     songs: initialSongs,
+    editors: initialEditors = [],
     permissions,
     lyricsI18n,
     viewI18n,
@@ -115,9 +135,33 @@ export default function RepertoireViewer({
     const [isSearching, setIsSearching] = useState(false);
     const [isSavingRepertoire, setIsSavingRepertoire] = useState(false);
 
+    // Share edit link modal & state
+    const [shareModalOpen, setShareModalOpen] = useState(false);
+    const [activeEditLinkToken, setActiveEditLinkToken] = useState<string | null>(
+        repertoire.editLinkToken ?? null,
+    );
+    const [isManagingLink, setIsManagingLink] = useState(false);
+    const [copiedLink, setCopiedLink] = useState(false);
+
+    // Editors modal & state
+    const [editorsModalOpen, setEditorsModalOpen] = useState(false);
+    const [editorsList, setEditorsList] = useState<IRepertoireEditorDTO[]>(initialEditors);
+    const [editorSearchQuery, setEditorSearchQuery] = useState('');
+    const [editorSearchResults, setEditorSearchResults] = useState<IRepertoireEditorDTO[]>([]);
+    const [isSearchingUsers, setIsSearchingUsers] = useState(false);
+    const [isManagingEditors, setIsManagingEditors] = useState(false);
+
     useEffect(() => {
         setSongsList(initialSongs);
     }, [initialSongs]);
+
+    useEffect(() => {
+        setEditorsList(initialEditors);
+    }, [initialEditors]);
+
+    useEffect(() => {
+        setActiveEditLinkToken(repertoire.editLinkToken ?? null);
+    }, [repertoire.editLinkToken]);
 
     const canEditRepertoire = useMemo(
         () =>
@@ -125,9 +169,34 @@ export default function RepertoireViewer({
         [permissions],
     );
 
+    const canShareRepertoire = useMemo(
+        () =>
+            permissions?.some(p => p.correlationId === 'can_share' && p.allowed) ?? false,
+        [permissions],
+    );
+
+    const isEditingViaSharedLink = useMemo(
+        () => Boolean(editToken) && canEditRepertoire && !canShareRepertoire,
+        [editToken, canEditRepertoire, canShareRepertoire],
+    );
+
+    const shareableEditUrl = useMemo(() => {
+        if (!activeEditLinkToken) return '';
+        const origin = typeof window !== 'undefined' ? window.location.origin : '';
+        const targetSlug = repertoireSlug || repertoire.slug || repertoire._id;
+        return `${origin}/repertoires/${targetSlug}?editToken=${encodeURIComponent(
+            activeEditLinkToken,
+        )}`;
+    }, [activeEditLinkToken, repertoireSlug, repertoire.slug, repertoire._id]);
+
     const draftSongIdsSet = useMemo(
         () => new Set(draftSongs.map(s => s.id)),
         [draftSongs],
+    );
+
+    const editorIdsSet = useMemo(
+        () => new Set(editorsList.map(e => e.id)),
+        [editorsList],
     );
 
     // Book-like drag / swipe state
@@ -147,7 +216,7 @@ export default function RepertoireViewer({
     // Keyboard navigation (Left / Right arrows + Escape for focus mode)
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
-            if (editModalOpen) return;
+            if (editModalOpen || shareModalOpen || editorsModalOpen) return;
             if (e.key === 'ArrowLeft') {
                 goPrev();
             } else if (e.key === 'ArrowRight') {
@@ -158,7 +227,7 @@ export default function RepertoireViewer({
         };
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [goPrev, goNext, focusMode, editModalOpen]);
+    }, [goPrev, goNext, focusMode, editModalOpen, shareModalOpen, editorsModalOpen]);
 
     const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
         const target = e.target as HTMLElement;
@@ -229,6 +298,7 @@ export default function RepertoireViewer({
         const lyricIds = nextSongs.map(s => s.id);
         const res = await updateRepertoireAction(repertoire._id, {
             lyrics: lyricIds,
+            linkToken: editToken,
         });
         setIsSavingRepertoire(false);
 
@@ -249,6 +319,143 @@ export default function RepertoireViewer({
             repertoire.name,
         );
         return true;
+    };
+
+    const handleGenerateEditLink = async () => {
+        if (!canShareRepertoire || isManagingLink) return;
+        setIsManagingLink(true);
+        const res = await generateRepertoireEditLinkAction(repertoire._id);
+        setIsManagingLink(false);
+
+        if (!res.success || !res.data?.editLinkToken) {
+            NotificationService.showMessage(
+                viewI18n.linkActionError,
+                NotificationTypes.error,
+                repertoire.name,
+            );
+            return;
+        }
+
+        setActiveEditLinkToken(res.data.editLinkToken);
+        setCopiedLink(false);
+        NotificationService.showMessage(
+            viewI18n.linkGeneratedSuccess,
+            NotificationTypes.ok,
+            repertoire.name,
+        );
+    };
+
+    const handleRevokeEditLink = async () => {
+        if (!canShareRepertoire || isManagingLink) return;
+        setIsManagingLink(true);
+        const res = await revokeRepertoireEditLinkAction(repertoire._id);
+        setIsManagingLink(false);
+
+        if (!res.success) {
+            NotificationService.showMessage(
+                viewI18n.linkActionError,
+                NotificationTypes.error,
+                repertoire.name,
+            );
+            return;
+        }
+
+        setActiveEditLinkToken(null);
+        setCopiedLink(false);
+        NotificationService.showMessage(
+            viewI18n.linkRevokedSuccess,
+            NotificationTypes.ok,
+            repertoire.name,
+        );
+    };
+
+    const handleCopyEditLink = async () => {
+        if (!shareableEditUrl) return;
+        try {
+            await navigator.clipboard.writeText(shareableEditUrl);
+            setCopiedLink(true);
+            setTimeout(() => setCopiedLink(false), 2200);
+        } catch {
+            // Ignore clipboard errors
+        }
+    };
+
+    const performEditorUserSearch = useDebouncedCallback(async (query: string) => {
+        const trimmed = query.trim();
+        if (trimmed.length < 2) {
+            setEditorSearchResults([]);
+            setIsSearchingUsers(false);
+            return;
+        }
+        setIsSearchingUsers(true);
+        const res = await searchRepertoireUsersAction(repertoire._id, trimmed);
+        if (res?.success && res.data?.users) {
+            setEditorSearchResults(res.data.users);
+        } else {
+            setEditorSearchResults([]);
+        }
+        setIsSearchingUsers(false);
+    }, 320);
+
+    const handleEditorSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const val = e.currentTarget.value;
+        setEditorSearchQuery(val);
+        if (val.trim().length >= 2) {
+            setIsSearchingUsers(true);
+        }
+        performEditorUserSearch(val);
+    };
+
+    const handleAddEditor = async (payload: { userId?: string; identifier?: string }) => {
+        if (!canShareRepertoire || isManagingEditors) return;
+        setIsManagingEditors(true);
+        const res = await addRepertoireEditorAction(repertoire._id, payload);
+        setIsManagingEditors(false);
+
+        if (!res.success || !res.data?.editors) {
+            NotificationService.showMessage(
+                viewI18n.editorActionError,
+                NotificationTypes.error,
+                repertoire.name,
+            );
+            return;
+        }
+
+        setEditorsList(res.data.editors);
+        NotificationService.showMessage(
+            viewI18n.editorAddedSuccess,
+            NotificationTypes.ok,
+            repertoire.name,
+        );
+    };
+
+    const handleRemoveEditor = async (editorUserId: string) => {
+        if (!canShareRepertoire || isManagingEditors) return;
+        setIsManagingEditors(true);
+        const res = await removeRepertoireEditorAction(repertoire._id, editorUserId);
+        setIsManagingEditors(false);
+
+        if (!res.success || !res.data?.editors) {
+            NotificationService.showMessage(
+                viewI18n.editorActionError,
+                NotificationTypes.error,
+                repertoire.name,
+            );
+            return;
+        }
+
+        setEditorsList(res.data.editors);
+        NotificationService.showMessage(
+            viewI18n.editorRemovedSuccess,
+            NotificationTypes.ok,
+            repertoire.name,
+        );
+    };
+
+    const openEditorsModal = () => {
+        setEditorSearchQuery('');
+        setEditorSearchResults([]);
+        setEditorsModalOpen(true);
     };
 
     const handleQuickRemoveSongFromSidebar = async (
@@ -476,6 +683,34 @@ export default function RepertoireViewer({
                                 </Tooltip>
                             )}
 
+                            {canShareRepertoire && (
+                                <Tooltip label={viewI18n.manageEditorsButton} position="left">
+                                    <ActionIcon
+                                        variant="light"
+                                        color="indigo"
+                                        size="lg"
+                                        radius="xl"
+                                        onClick={openEditorsModal}
+                                    >
+                                        <IconUsers size={18} />
+                                    </ActionIcon>
+                                </Tooltip>
+                            )}
+
+                            {canShareRepertoire && (
+                                <Tooltip label={viewI18n.shareEditLinkButton} position="left">
+                                    <ActionIcon
+                                        variant="light"
+                                        color="cyan"
+                                        size="lg"
+                                        radius="xl"
+                                        onClick={() => setShareModalOpen(true)}
+                                    >
+                                        <IconShare size={18} />
+                                    </ActionIcon>
+                                </Tooltip>
+                            )}
+
                             <Tooltip
                                 label={showPlayer ? viewI18n.hidePlayer : viewI18n.showPlayer}
                                 position="left"
@@ -556,6 +791,18 @@ export default function RepertoireViewer({
                                             {repertoire.name}
                                         </Title>
                                     </Group>
+                                    {isEditingViaSharedLink && (
+                                        <Badge
+                                            size="xs"
+                                            color="teal"
+                                            variant="light"
+                                            radius="xl"
+                                            mt={4}
+                                            leftSection={<IconLink size={11} />}
+                                        >
+                                            {viewI18n.editingViaLinkBadge}
+                                        </Badge>
+                                    )}
                                 </div>
 
                                 <Tooltip label={viewI18n.toggleSidebar}>
@@ -661,6 +908,44 @@ export default function RepertoireViewer({
                                         onClick={openEditModal}
                                     >
                                         {viewI18n.editSongsButton}
+                                    </Button>
+                                )}
+
+                                {canShareRepertoire && (
+                                    <Button
+                                        size="xs"
+                                        radius="xl"
+                                        variant="light"
+                                        color="indigo"
+                                        leftSection={<IconUsers size={15} />}
+                                        rightSection={
+                                            editorsList.length > 0 ? (
+                                                <Badge
+                                                    size="xs"
+                                                    color="indigo"
+                                                    variant="filled"
+                                                    radius="xl"
+                                                >
+                                                    {editorsList.length}
+                                                </Badge>
+                                            ) : null
+                                        }
+                                        onClick={openEditorsModal}
+                                    >
+                                        {viewI18n.manageEditorsButton}
+                                    </Button>
+                                )}
+
+                                {canShareRepertoire && (
+                                    <Button
+                                        size="xs"
+                                        radius="xl"
+                                        variant="light"
+                                        color="cyan"
+                                        leftSection={<IconShare size={15} />}
+                                        onClick={() => setShareModalOpen(true)}
+                                    >
+                                        {viewI18n.shareEditLinkButton}
                                     </Button>
                                 )}
 
@@ -996,6 +1281,279 @@ export default function RepertoireViewer({
                             {viewI18n.saveChangesBtn}
                         </Button>
                     </Group>
+                </Stack>
+            </Modal>
+
+            {/* Modal for Generating / Copying / Revoking the Repertoire Edit Link */}
+            <Modal
+                opened={shareModalOpen}
+                onClose={() => setShareModalOpen(false)}
+                title={
+                    <Group gap="xs">
+                        <IconLink size={20} color="#22d3ee" />
+                        <Text fw={700}>{viewI18n.shareModalTitle}</Text>
+                    </Group>
+                }
+                size="md"
+                centered
+            >
+                <Stack gap="md">
+                    <Text size="sm" c="dimmed">
+                        {viewI18n.shareModalDescription}
+                    </Text>
+
+                    {activeEditLinkToken ? (
+                        <Stack gap="sm">
+                            <Group gap="xs" wrap="nowrap" align="center">
+                                <TextInput
+                                    value={shareableEditUrl}
+                                    readOnly
+                                    style={{ flex: 1 }}
+                                    leftSection={<IconLink size={15} />}
+                                    onClick={e => e.currentTarget.select()}
+                                />
+                                <Button
+                                    radius="xl"
+                                    color={copiedLink ? 'teal' : 'violet'}
+                                    variant={copiedLink ? 'light' : 'filled'}
+                                    leftSection={
+                                        copiedLink ? (
+                                            <IconCheck size={16} />
+                                        ) : (
+                                            <IconCopy size={16} />
+                                        )
+                                    }
+                                    onClick={handleCopyEditLink}
+                                >
+                                    {copiedLink ? viewI18n.copiedLinkBtn : viewI18n.copyLinkBtn}
+                                </Button>
+                            </Group>
+
+                            <Divider />
+
+                            <Group justify="space-between" wrap="wrap" gap="xs">
+                                <Button
+                                    size="xs"
+                                    radius="xl"
+                                    variant="light"
+                                    color="violet"
+                                    leftSection={<IconRefresh size={15} />}
+                                    loading={isManagingLink}
+                                    onClick={handleGenerateEditLink}
+                                >
+                                    {viewI18n.regenerateLinkBtn}
+                                </Button>
+
+                                <Button
+                                    size="xs"
+                                    radius="xl"
+                                    variant="subtle"
+                                    color="red"
+                                    leftSection={<IconLinkOff size={15} />}
+                                    loading={isManagingLink}
+                                    onClick={handleRevokeEditLink}
+                                >
+                                    {viewI18n.revokeLinkBtn}
+                                </Button>
+                            </Group>
+                        </Stack>
+                    ) : (
+                        <Stack gap="sm" align="center" py="sm">
+                            <Text size="sm" c="dimmed" ta="center">
+                                {viewI18n.noActiveLinkNotice}
+                            </Text>
+                            <Button
+                                radius="xl"
+                                variant="gradient"
+                                gradient={{ from: 'violet', to: 'cyan', deg: 145 }}
+                                leftSection={<IconLink size={16} />}
+                                loading={isManagingLink}
+                                onClick={handleGenerateEditLink}
+                            >
+                                {viewI18n.generateLinkBtn}
+                            </Button>
+                        </Stack>
+                    )}
+                </Stack>
+            </Modal>
+
+            {/* Modal for Adding and Removing Editor Users */}
+            <Modal
+                opened={editorsModalOpen}
+                onClose={() => setEditorsModalOpen(false)}
+                title={
+                    <Group gap="xs">
+                        <IconUsers size={20} color="#818cf8" />
+                        <Text fw={700}>{viewI18n.editorsModalTitle}</Text>
+                    </Group>
+                }
+                size="lg"
+                centered
+            >
+                <Stack gap="md">
+                    <Text size="sm" c="dimmed">
+                        {viewI18n.editorsModalDescription}
+                    </Text>
+
+                    <div>
+                        <Group gap="xs" wrap="nowrap">
+                            <TextInput
+                                style={{ flex: 1 }}
+                                placeholder={viewI18n.searchEditorPlaceholder}
+                                value={editorSearchQuery}
+                                onChange={handleEditorSearchInputChange}
+                                onKeyDown={e => {
+                                    if (e.key === 'Enter' && editorSearchQuery.trim().length >= 2) {
+                                        e.preventDefault();
+                                        handleAddEditor({ identifier: editorSearchQuery.trim() });
+                                    }
+                                }}
+                                leftSection={<IconSearch size={16} />}
+                                rightSection={isSearchingUsers ? <Loader size="xs" /> : null}
+                            />
+                            <Button
+                                radius="xl"
+                                color="violet"
+                                leftSection={<IconUserPlus size={16} />}
+                                disabled={editorSearchQuery.trim().length < 2 || isManagingEditors}
+                                loading={isManagingEditors}
+                                onClick={() =>
+                                    handleAddEditor({ identifier: editorSearchQuery.trim() })
+                                }
+                            >
+                                {viewI18n.addEditorBtn}
+                            </Button>
+                        </Group>
+
+                        {editorSearchQuery.trim().length >= 2 && (
+                            <div
+                                className="repertoire-search-results"
+                                style={{ maxHeight: '13rem', marginTop: '0.65rem' }}
+                            >
+                                {isSearchingUsers ? (
+                                    <Group justify="center" py="md">
+                                        <Loader size="sm" color="violet" />
+                                    </Group>
+                                ) : editorSearchResults.length === 0 ? (
+                                    <Text size="xs" c="dimmed" ta="center" py="sm">
+                                        {viewI18n.noUsersFound}
+                                    </Text>
+                                ) : (
+                                    editorSearchResults.map(userItem => {
+                                        const isAlreadyEditor = editorIdsSet.has(userItem.id);
+                                        const fullName = [userItem.name, userItem.lastname]
+                                            .filter(Boolean)
+                                            .join(' ');
+                                        return (
+                                            <div
+                                                key={userItem.id}
+                                                className="repertoire-selected-item"
+                                            >
+                                                <div style={{ minWidth: 0, flex: 1 }}>
+                                                    <Group gap="xs" wrap="nowrap">
+                                                        <Text fw={600} size="sm" truncate>
+                                                            @{userItem.username}
+                                                        </Text>
+                                                        {fullName && (
+                                                            <Text size="xs" c="dimmed" truncate>
+                                                                ({fullName})
+                                                            </Text>
+                                                        )}
+                                                    </Group>
+                                                    <Text size="xs" c="dimmed" truncate>
+                                                        {userItem.email}
+                                                    </Text>
+                                                </div>
+                                                <Button
+                                                    size="compact-xs"
+                                                    radius="xl"
+                                                    color={isAlreadyEditor ? 'teal' : 'violet'}
+                                                    variant={isAlreadyEditor ? 'light' : 'filled'}
+                                                    disabled={isAlreadyEditor || isManagingEditors}
+                                                    leftSection={
+                                                        isAlreadyEditor ? (
+                                                            <IconCheck size={13} />
+                                                        ) : (
+                                                            <IconUserPlus size={13} />
+                                                        )
+                                                    }
+                                                    onClick={() =>
+                                                        handleAddEditor({ userId: userItem.id })
+                                                    }
+                                                >
+                                                    {isAlreadyEditor
+                                                        ? viewI18n.alreadyEditorBtn
+                                                        : viewI18n.addEditorBtn}
+                                                </Button>
+                                            </div>
+                                        );
+                                    })
+                                )}
+                            </div>
+                        )}
+                    </div>
+
+                    <Divider />
+
+                    <div>
+                        <Group justify="space-between" mb={6}>
+                            <Text size="xs" fw={700} tt="uppercase" c="dimmed">
+                                {viewI18n.currentEditorsTitle}
+                            </Text>
+                            <Badge color="indigo" variant="filled" size="sm" radius="xl">
+                                {editorsList.length}
+                            </Badge>
+                        </Group>
+
+                        {editorsList.length === 0 ? (
+                            <Text size="sm" c="dimmed" ta="center" py="md">
+                                {viewI18n.noEditorsEmpty}
+                            </Text>
+                        ) : (
+                            <div
+                                className="repertoire-selected-list"
+                                style={{ maxHeight: '14rem' }}
+                            >
+                                {editorsList.map(editor => {
+                                    const fullName = [editor.name, editor.lastname]
+                                        .filter(Boolean)
+                                        .join(' ');
+                                    return (
+                                        <div
+                                            key={editor.id}
+                                            className="repertoire-selected-item"
+                                        >
+                                            <div style={{ minWidth: 0, flex: 1 }}>
+                                                <Group gap="xs" wrap="nowrap">
+                                                    <Text fw={600} size="sm" truncate>
+                                                        @{editor.username}
+                                                    </Text>
+                                                    {fullName && (
+                                                        <Text size="xs" c="dimmed" truncate>
+                                                            — {fullName}
+                                                        </Text>
+                                                    )}
+                                                </Group>
+                                                <Text size="xs" c="dimmed" truncate>
+                                                    {editor.email}
+                                                </Text>
+                                            </div>
+                                            <Tooltip label={viewI18n.removeEditorTooltip}>
+                                                <ActionIcon
+                                                    variant="subtle"
+                                                    color="red"
+                                                    disabled={isManagingEditors}
+                                                    onClick={() => handleRemoveEditor(editor.id)}
+                                                >
+                                                    <IconTrash size={16} />
+                                                </ActionIcon>
+                                            </Tooltip>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        )}
+                    </div>
                 </Stack>
             </Modal>
         </div>

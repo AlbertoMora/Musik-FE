@@ -13,18 +13,31 @@ import '@/presentation/styles/components/floating-button-menu.sass';
 
 interface PageParams {
     params: Promise<{ slug: string }>;
+    searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
-const getRepertoireData = cache(async (slug: string) => {
-    const res = await getRepertoireAction(slug);
+const extractEditToken = (
+    searchParams?: { [key: string]: string | string[] | undefined },
+): string | undefined => {
+    const raw = searchParams?.editToken ?? searchParams?.linkToken ?? searchParams?.link;
+    return typeof raw === 'string' && raw.trim() ? raw.trim() : undefined;
+};
+
+const getRepertoireData = cache(async (slug: string, editToken?: string) => {
+    const res = await getRepertoireAction(slug, editToken);
     if (!res.success || !res.data || !res.data.repertoire) {
         return null;
     }
     return res.data;
 });
 
-export const generateMetadata = async ({ params }: PageParams): Promise<Metadata> => {
+export const generateMetadata = async ({
+    params,
+    searchParams,
+}: PageParams): Promise<Metadata> => {
     const { slug } = await params;
+    const resolvedSearchParams = searchParams ? await searchParams : undefined;
+    const editToken = extractEditToken(resolvedSearchParams);
 
     const {
         repertoires: { view },
@@ -39,7 +52,7 @@ export const generateMetadata = async ({ params }: PageParams): Promise<Metadata
         };
     }
 
-    const data = await getRepertoireData(slug);
+    const data = await getRepertoireData(slug, editToken);
 
     if (!data) {
         return {
@@ -54,8 +67,10 @@ export const generateMetadata = async ({ params }: PageParams): Promise<Metadata
     };
 };
 
-const RepertoirePage = async ({ params }: PageParams) => {
+const RepertoirePage = async ({ params, searchParams }: PageParams) => {
     const { slug } = await params;
+    const resolvedSearchParams = searchParams ? await searchParams : undefined;
+    const editToken = extractEditToken(resolvedSearchParams);
 
     const {
         lyrics: { text: lyricsTextI18n },
@@ -68,7 +83,7 @@ const RepertoirePage = async ({ params }: PageParams) => {
         return <Unauthorized401 i18n={unauthorized} />;
     }
 
-    const data = await getRepertoireData(slug);
+    const data = await getRepertoireData(slug, editToken);
 
     if (!data) {
         return <RepertoireNotFound i18n={viewI18n} />;
@@ -77,7 +92,10 @@ const RepertoirePage = async ({ params }: PageParams) => {
     return (
         <RepertoireViewer
             repertoire={data.repertoire}
+            repertoireSlug={data.slug?.slug ?? slug}
+            editToken={editToken}
             songs={data.songs ?? []}
+            editors={data.editors ?? []}
             permissions={data.permissions}
             lyricsI18n={lyricsTextI18n}
             viewI18n={viewI18n}

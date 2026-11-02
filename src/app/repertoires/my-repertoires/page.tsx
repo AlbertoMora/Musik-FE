@@ -39,7 +39,7 @@ export default async function MyRepertoiresPage() {
         return <Unauthorized401 i18n={unauthorized} />;
     }
 
-    const res = await getRepertoiresAction(0, 9);
+    const res = await getRepertoiresAction(0, 100);
 
     const initialRepertoires = res.success && res.data ? res.data.repertoires : [];
     const initialCount = res.success && res.data ? res.data.count : 0;
@@ -52,6 +52,7 @@ export default async function MyRepertoiresPage() {
             </Text>
             <Divider className="w-full" />
             <MyRepertoiresClient
+                currentUserId={session.user.id}
                 initialRepertoires={initialRepertoires}
                 initialCount={initialCount}
                 i18n={repertoires.myRepertoires}

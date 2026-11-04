@@ -4,6 +4,7 @@ import MusikSearchBar from '../presentation/components/forms/MusikSearchbar/Musi
 import { getI18n } from '@/i18n/dictionaries';
 import { headers } from 'next/headers';
 import ArtistSection from '@/presentation/components/mainPage/ArtistSection';
+import { BetaNoticeBanner } from '@/presentation/components/mainPage/BetaNoticeBanner';
 import { Metadata } from 'next';
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -20,6 +21,7 @@ export default async function Home() {
 
     return (
         <div className='main-container'>
+            <BetaNoticeBanner i18n={main?.betaNotice} />
             <Image src='/resources/musik-logo1.png' alt='Musik logo' width={150} height={150} />
             <MusikSearchBar i18n={main} />
             <ArtistSection />

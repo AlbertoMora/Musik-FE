@@ -3,15 +3,16 @@ import { ISongModel } from '@/infrastructure/models/SongModel';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import { Button } from '@mantine/core';
-import { IconFileTypePdf } from '@tabler/icons-react';
+import { IconFileTypePdf, IconStarFilled } from '@tabler/icons-react';
 
 import '../../../styles/pages/songs.sass';
 import H1 from '../../headings/H1';
-import { getSlugifiedValue, removeChords } from '../../../../utils/text-utils';
+import { getSlugifiedValue } from '../../../../utils/text-utils';
 import { exportSongToLetterPdf } from '@/utils/pdf-export';
 import { I18nTypes } from '@/i18n/dictionaries';
 import Link from 'next/link';
 import MusicPlayer from '../MusicPlayer';
+import SongCommentsSection from './SongCommentsSection';
 import SongTools from './SongTools';
 import { createSongtextStore, StoreContext, ISongtextStore } from './songTextStore';
 import UploadSampleForm from './UploadSampleForm';
@@ -20,6 +21,7 @@ interface ISongTextProps extends ISongModel {
     i18n: I18nTypes['lyrics']['text'];
     showMusicPlayer?: boolean;
     showSongTools?: boolean;
+    showComments?: boolean;
     focusMode?: boolean;
 }
 
@@ -40,6 +42,7 @@ const SongText = ({
     i18n,
     showMusicPlayer = true,
     showSongTools = true,
+    showComments = true,
     focusMode = false,
 }: ISongTextProps) => {
     const useSongTextStore = useMemo(
@@ -83,6 +86,11 @@ const SongText = ({
 
     const containerRef = useRef<HTMLDivElement>(null);
     const [containerHeight, setContainerHeight] = useState(0);
+    const [liveAverageScore, setLiveAverageScore] = useState<number>(averageScore || 0);
+
+    useEffect(() => {
+        setLiveAverageScore(averageScore || 0);
+    }, [averageScore]);
 
     useEffect(() => {
         const el = containerRef.current;
@@ -101,9 +109,14 @@ const SongText = ({
             ? Math.max(1, Math.floor(containerHeight / rowHeightPx))
             : Math.max(1, store.paragraphSplit * 2);
 
-    const lyricsByLine = removeChords(lyrics)
+    const lyricsByLine = lyrics
+        .replace(/\r\n/g, '\n')
         .split('\n')
-        .map((e, index) => ({ id: uuid(), value: e, lineIndex: index }));
+        .map((rawLine, index) => ({
+            id: uuid(),
+            value: rawLine.replace(/\t/g, '    ').replaceAll(/\[[^\]]*\]/g, ''),
+            lineIndex: index,
+        }));
 
     return (
         <StoreContext.Provider value={store}>
@@ -115,7 +128,7 @@ const SongText = ({
                         {...{
                             id,
                             postedBy,
-                            averageScore,
+                            averageScore: liveAverageScore,
                             artist,
                             forkOf,
                             lyrics,
@@ -141,8 +154,14 @@ const SongText = ({
                 </div>
                 {!focusMode && (
                     <>
-                        <br />
-                        {averageScore !== 0 && averageScore}
+                        {showComments && i18n.comments && (
+                            <SongCommentsSection
+                                songId={id}
+                                initialAverageScore={averageScore}
+                                i18n={i18n.comments}
+                                onRatingStatsChange={avg => setLiveAverageScore(avg)}
+                            />
+                        )}
                         {showSongTools && <SongTools i18n={i18n.menuLabels} />}
                     </>
                 )}
@@ -157,6 +176,7 @@ interface ISongInfoProps extends ISongTextProps {
 
 const SongInfo = ({
     postedBy,
+    averageScore,
     artist,
     forkOf,
     title,
@@ -171,8 +191,32 @@ const SongInfo = ({
             <div className='song-title-container'>
                 <H1>{title}</H1>
                 <div className='song-info-layout'>
+                    {averageScore > 0 && (
+                        <p
+                            style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '0.35rem',
+                                fontWeight: 700,
+                                color: '#f59e0b',
+                            }}
+                        >
+                            <IconStarFilled size={14} style={{ color: '#f59e0b' }} />
+                            {Number(averageScore).toFixed(1)}
+                        </p>
+                    )}
                     <p>
-                        {i18n.labels.postedBy}: {postedBy}
+                        {i18n.labels.postedBy}:{' '}
+                        {postedBy ? (
+                            <Link
+                                href={`/editors/${getSlugifiedValue([postedBy])}`}
+                                style={{ textDecoration: 'underline', fontWeight: 600 }}
+                            >
+                                {postedBy}
+                            </Link>
+                        ) : (
+                            postedBy
+                        )}
                     </p>
                     {forkOf ? (
                         <p>
@@ -272,14 +316,32 @@ interface LyricLineProps extends LyricsProps {
     store: ISongtextStore;
 }
 const LyricLine = ({ id, value, store, lineIndex }: LyricLineProps) => {
-    const lineChords = store.chords.filter(x => x.line === lineIndex);
+    const lineChords = useMemo(() => {
+        const sorted = store.chords
+            .filter(x => x.line === lineIndex)
+            .sort((a, b) => a.position - b.position);
+
+        let minNextPosition = 0;
+        return sorted.map(chord => {
+            const effectivePosition = Math.max(chord.position, minNextPosition);
+            const badgeWidthCh = Math.max(1.9, chord.key.length * 0.65 + 0.35);
+            minNextPosition = effectivePosition + badgeWidthCh;
+            return {
+                ...chord,
+                effectivePosition,
+            };
+        });
+    }, [store.chords, lineIndex]);
 
     return (
         <div key={id} className='song-lyric-line'>
             {lineChords.length > 0 ? (
                 <p className='song-chord-row'>
-                    {lineChords.map(c => (
-                        <button style={getPadding(c.position)} key={`${uuid()}`} type='button'>
+                    {lineChords.map((c, idx) => (
+                        <button
+                            style={getPadding(c.effectivePosition)}
+                            key={`${lineIndex}-${idx}-${c.position}`}
+                            type='button'>
                             <span className='song-chord-container'>{c.key}</span>
                         </button>
                     ))}

@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import '../../styles/components/mainPage/popular.sass';
-import { IconFlame, IconMicrophone, IconMusic } from '@tabler/icons-react';
+import { IconFlame, IconMicrophone, IconMusic, IconStarFilled } from '@tabler/icons-react';
 import Skeleton, { skeletonTypes } from '../aesthetics/Skeleton/Skeleton';
 import { IArtistModel } from '@/domain/artists/artist-gateway';
 import { getSongsByNameAction } from '@/infrastructure/adapters/songs/songs-actions';
@@ -93,7 +93,7 @@ const ArtistSection = () => {
                     {isLoading ? (
                         <ArtistSkeleton />
                     ) : (
-                        <SectionMapper type='lyric' data={tops.bestRatedSongs} />
+                        <SectionMapper type='lyric' data={tops.bestRatedSongs} showRating />
                     )}
                 </div>
             </div>
@@ -104,32 +104,53 @@ const ArtistSection = () => {
 interface ISectionMapperProps {
     data: IArtistModel[] | ISongRes[];
     type: 'artist' | 'lyric';
+    showRating?: boolean;
 }
 
-const SectionMapper = ({ data, type }: ISectionMapperProps) => {
+const SectionMapper = ({ data, type, showRating = false }: ISectionMapperProps) => {
     return (
         <>
-            {data.map(e => (
-                <a
-                    className='flex items-center justify-center gap-2.5 pl-2 w-full'
-                    key={e.id}
-                    href={`/${type}s/${
-                        type === 'artist'
-                            ? (e as IArtistModel).slug || getSlugifiedValue([e.name])
-                            : (e as ISongRes).slug ||
-                              getSlugifiedValue([
-                                  e.name,
-                                  (e as ISongRes).artist_name,
-                                  (e as ISongRes).posted_by,
-                              ])
-                    }`}>
-                    {type === 'lyric' ? <IconMusic size={15} /> : <IconMicrophone size={17} />}
-                    <span className={type === 'artist' ? 'flex-1' : ''}>
-                        {e.name}
-                        {type === 'lyric' && ` de ${(e as ISongRes).artist_name}`}
-                    </span>
-                </a>
-            ))}
+            {data.map(e => {
+                const songItem = type === 'lyric' ? (e as ISongRes) : null;
+                const avgRate = songItem?.avg_rate ? Number(songItem.avg_rate) : 0;
+
+                return (
+                    <a
+                        className='flex items-center justify-center gap-2.5 pl-2 w-full'
+                        key={e.id}
+                        href={`/${type}s/${
+                            type === 'artist'
+                                ? (e as IArtistModel).slug || getSlugifiedValue([e.name])
+                                : (e as ISongRes).slug ||
+                                  getSlugifiedValue([
+                                      e.name,
+                                      (e as ISongRes).artist_name,
+                                      (e as ISongRes).posted_by,
+                                  ])
+                        }`}>
+                        {type === 'lyric' ? <IconMusic size={15} /> : <IconMicrophone size={17} />}
+                        <span className={type === 'artist' ? 'flex-1' : ''}>
+                            {e.name}
+                            {type === 'lyric' && ` de ${(e as ISongRes).artist_name}`}
+                        </span>
+                        {showRating && avgRate > 0 && (
+                            <span
+                                style={{
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: 3,
+                                    fontSize: '0.78rem',
+                                    fontWeight: 700,
+                                    color: '#f59e0b',
+                                    marginLeft: 4,
+                                }}>
+                                <IconStarFilled size={12} style={{ color: '#f59e0b' }} />
+                                {avgRate.toFixed(1)}
+                            </span>
+                        )}
+                    </a>
+                );
+            })}
         </>
     );
 };

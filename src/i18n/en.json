@@ -33,6 +33,18 @@
                 "creatorPanel": {
                     "label": "Creator Panel",
                     "description": "created songs viewed, money earned, etc"
+                },
+                "admin": {
+                    "label": "Admin",
+                    "description": "User management and moderation forum"
+                },
+                "bugtracker": {
+                    "label": "Bugtracker",
+                    "description": "Track and manage bug reports"
+                },
+                "reportBug": {
+                    "label": "Report a Bug",
+                    "description": "Send details, screenshots, or videos of an issue"
                 }
             },
             "sections": {
@@ -158,7 +170,8 @@
                 "home": "Home",
                 "createLyrics": "Create Lyrics",
                 "myAccount": "My Account",
-                "statistics": "Statistics"
+                "statistics": "Statistics",
+                "reportBug": "Report a Bug"
             },
             "aria": {
                 "home": "Sonnetia home",
@@ -170,6 +183,28 @@
             "meta": {
                 "madeBy": "Made with ❤️ by musicians to musicians 🎸",
                 "allRightsReserved": "all rights reserved."
+            },
+            "bugReportModal": {
+                "modalTitle": "Report a Bug",
+                "friendlyNoticeTitle": "Hey there! Before submitting your report, please keep this in mind 💡",
+                "friendlyNoticeBody": "A bug report covers a website feature that isn't working properly; it does not include editing topics such as incorrect song titles, wrong lyrics or chords, or anything related to editing lyrics, repertoires, collections, or books.",
+                "titleLabel": "Title",
+                "titlePlaceholder": "Add a descriptive title to the report",
+                "contentLabel": "Content",
+                "contentPlaceholder": "Describe the bug in detail and how to reproduce it...",
+                "mediaLabel": "Media (Images or Videos - Max 50 MB)",
+                "mediaDropzoneCaption": "Drag images or videos here or click to select",
+                "mediaSubCaption": "You can upload one or multiple files at once (up to 50 MB total)",
+                "submitButton": "Publish Report",
+                "cancelButton": "Cancel",
+                "publishingTitle": "Publishing bug report...",
+                "publishingSub": "Tuning and fixing broken notes, please wait...",
+                "successTitle": "Report submitted",
+                "successMessage": "Thank you! Your report has been successfully registered.",
+                "errorTitle": "Error reporting bug",
+                "errorSizeLimit": "Total file size exceeds the 50 MB maximum limit.",
+                "errorInvalidFields": "Please fill in the bug title and description.",
+                "errorUploadFailed": "Could not complete file upload or report submission."
             }
         },
         "navbar": {
@@ -210,6 +245,9 @@
                 },
                 "children": {
                     "myAccount": "My Account",
+                    "reportBug": "Report a Bug",
+                    "admin": "Admin",
+                    "bugtracker": "Bugtracker",
                     "signout": {
                         "button": "Sign Out"
                     }
@@ -305,7 +343,7 @@
                 "rythm": "Rythm",
                 "bpm": "Beats per Minute",
                 "by": "by",
-                "exportPdf": "Export to PDF (Letter)"
+                "exportPdf": "Export to PDF"
             },
             "menuLabels": {
                 "musicOptions": "Music Options",
@@ -317,7 +355,7 @@
                 "textOptions": "Text Options",
                 "increaseFont": "Increase font size",
                 "decreaseFont": "Decrease font size",
-                "exportPdf": "Export to PDF (Letter)",
+                "exportPdf": "Export to PDF",
                 "recordOptions": "Record Options",
                 "recordSample": "Record new sample",
                 "uploadSample": "Upload sample"
@@ -351,6 +389,30 @@
                     "okButton": "Ok",
                     "retryButton": "Retry"
                 }
+            },
+            "comments": {
+                "title": "Ratings & Comments",
+                "averageLabel": "Overall average",
+                "reviewsCount": "ratings",
+                "noReviewsYet": "No ratings yet",
+                "leaveReviewTitle": "Leave your star rating & comment",
+                "ratingLabel": "Your star rating",
+                "commentLabel": "Comment",
+                "commentPlaceholder": "Share your thoughts on this song... 🎵✨",
+                "plainTextHint": "Only plain text and emojis are allowed.",
+                "invalidCharsError": "Comment contains disallowed characters. Please use plain text and emojis only.",
+                "ratingRequiredError": "Please select a rating from 1 to 5 stars.",
+                "commentRequiredError": "Please write a comment before posting.",
+                "emojiPickerTooltip": "Insert emoji",
+                "submitButton": "Post comment",
+                "submitting": "Posting...",
+                "deleteTooltip": "Delete my comment",
+                "emptyComments": "No comments for this song yet. Be the first to rate it!",
+                "loginRequiredNotice": "Sign in to leave a star rating and comment.",
+                "postSuccess": "Your rating and comment have been saved.",
+                "postError": "Could not post your comment. Please check your session and try again.",
+                "deleteSuccess": "Your comment was deleted.",
+                "deleteError": "Could not delete comment."
             }
         },
         "notFound": {
@@ -368,6 +430,12 @@
         "head": {
             "title": "Sonnetia | Home",
             "description": "Home page of Sonnetia"
+        },
+        "betaNotice": {
+            "badge": "Beta Phase",
+            "title": "We're building Sonnetia with passion!",
+            "message": "Our application is currently in beta phase, our team is working with dedication and love to deliver a quality product that improves the lives of musicians looking to share their knowledge with fellow musicians. If you find any error, please report it using the \"Report a Bug\" button in the footer of the site. Thank you!",
+            "dismissAria": "Dismiss beta notice"
         },
         "searchbar": {
             "label": "Search for a song, artist, or editor",
@@ -397,7 +465,7 @@
         "createSongButton": "Create new lyrics"
     },
     "unauthorized": {
-        "metaTitle": "Unauthorized Access (401) | Sonnetia",
+        "metaTitle": "Unauthorized Access | Sonnetia",
         "metaDescription": "You must sign in to access this section of Sonnetia.",
         "badge": "Error 401 · Backstage VIP only",
         "title": "Hold on! Our bassist is blocking the way",
@@ -421,7 +489,7 @@
                 "nameMinLengthError": "Repertoire name must be at least 3 characters long.",
                 "emptyLyricsError": "Add at least one song to the list to create the repertoire.",
                 "searchLabel": "Search lyrics by song or artist",
-                "searchPlaceholder": "Type at least 2 characters (song title or artist name)...",
+                "searchPlaceholder": "Type at least 2 characters to search by song title or artist...",
                 "searchEmptyHint": "Use the search box to find songs and preview their lyrics before adding them.",
                 "noResults": "No songs found matching your search.",
                 "previewButton": "Preview",
@@ -471,11 +539,11 @@
             "folderSharedTitle": "Shared with me",
             "folderSharedSubtitle": "Where you are an editor",
             "emptyOwnedFolder": "You have no owned repertoires matching the filters.",
-            "emptySharedFolder": "No repertoires have been shared with you as an editor yet (or none match the filters).",
+            "emptySharedFolder": "No repertoires have been shared with you as an editor yet.",
             "sortByLabel": "Sort by",
             "sortRecent": "Most recent",
             "sortOldest": "Oldest",
-            "sortNameAsc": "Name (A - Z)",
+            "sortNameAsc": "Alphabetical name",
             "sortSongsDesc": "Most songs",
             "filterSongsLabel": "Content",
             "filterAllSongs": "All",
@@ -506,7 +574,7 @@
             "editSongsButton": "Edit songs",
             "editModalTitle": "Edit repertoire songs",
             "addSongsSectionTitle": "Add songs to repertoire",
-            "searchSongsPlaceholder": "Search song by title or artist (min. 2 chars)...",
+            "searchSongsPlaceholder": "Search song by title or artist...",
             "noSearchResults": "No songs found matching your search.",
             "addSongBtn": "Add",
             "addedSongBtn": "In list",
@@ -533,7 +601,7 @@
             "manageEditorsButton": "Editor users",
             "editorsModalTitle": "Repertoire editor users",
             "editorsModalDescription": "Add users by username or email to grant them permanent edit access to this repertoire.",
-            "searchEditorPlaceholder": "Search by username, email, or name (min. 2 chars)...",
+            "searchEditorPlaceholder": "Search by username, email, or name...",
             "addEditorBtn": "Add editor",
             "alreadyEditorBtn": "Already editor",
             "currentEditorsTitle": "Editors with access",
@@ -567,15 +635,15 @@
             "clearFiltersBtn": "Clear filters",
             "sortByLabel": "Sort by field",
             "sortDirLabel": "Direction",
-            "sortAsc": "Ascending (A→Z / Low→High)",
-            "sortDesc": "Descending (Z→A / High→Low)",
+            "sortAsc": "Ascending",
+            "sortDesc": "Descending",
             "fields": {
                 "id": "Lyric ID",
                 "name": "Song title",
                 "lyrics_text": "Lyrics content",
                 "genre": "Genre / Rhythm",
                 "sample_uri": "Audio sample",
-                "bpm": "Tempo (BPM)",
+                "bpm": "Tempo",
                 "key": "Musical key",
                 "artist_id": "Artist",
                 "posted_by": "Posted by",
@@ -593,8 +661,8 @@
                 "bpmMin": "Min BPM",
                 "bpmMax": "Max BPM",
                 "posted_by": "Posted by username...",
-                "fork_of": "All (originals & forks)",
-                "forkOriginalOnly": "Originals only (no fork)",
+                "fork_of": "All songs",
+                "forkOriginalOnly": "Originals only",
                 "forkOnly": "Forks only",
                 "album_id": "All albums",
                 "withAlbum": "With album",
@@ -618,6 +686,83 @@
                 "openSongBtn": "View lyrics & chords"
             },
             "emptySongsTitle": "No songs found for this artist",
+            "emptySongsDescription": "Try adjusting or clearing the search filters."
+        }
+    },
+    "editors": {
+        "view": {
+            "metaNotFoundTitle": "Editor Not Found | Sonnetia",
+            "metaNotFoundDescription": "The editor you are looking for does not exist on Sonnetia.",
+            "selfBadge": "Your editor profile",
+            "selfBannerText": "You are viewing your own catalog of published songs. From here you can manage and delete your lyrics.",
+            "createSongCta": "Publish new lyrics",
+            "memberSinceLabel": "Member since",
+            "totalSongsBadge": "Published songs",
+            "matchingSongsBadge": "Matches",
+            "filtersSectionTitle": "Filters & sorting",
+            "showAdvancedFilters": "More filters",
+            "hideAdvancedFilters": "Fewer filters",
+            "clearFiltersBtn": "Clear filters",
+            "sortByLabel": "Sort by field",
+            "sortDirLabel": "Direction",
+            "sortAsc": "Ascending",
+            "sortDesc": "Descending",
+            "fields": {
+                "id": "Lyric ID",
+                "name": "Song title",
+                "lyrics_text": "Lyrics content",
+                "genre": "Genre / Rhythm",
+                "sample_uri": "Audio sample",
+                "bpm": "Tempo",
+                "key": "Musical key",
+                "artist_id": "Artist",
+                "posted_by": "Posted by",
+                "fork_of": "Base song / Fork",
+                "creation_date": "Creation date",
+                "last_modified": "Last modified",
+                "album_id": "Album"
+            },
+            "placeholders": {
+                "name": "Filter by song title...",
+                "lyrics_text": "Search word or phrase inside lyrics...",
+                "id": "Filter by UUID...",
+                "genre": "All genres",
+                "key": "All keys",
+                "bpmMin": "Min BPM",
+                "bpmMax": "Max BPM",
+                "artist_id": "All artists",
+                "fork_of": "All songs",
+                "forkOriginalOnly": "Originals only",
+                "forkOnly": "Forks only",
+                "album_id": "All albums",
+                "withAlbum": "With album",
+                "withoutAlbum": "Without album",
+                "sampleAll": "All",
+                "sampleYes": "With audio",
+                "sampleNo": "No audio",
+                "dateFrom": "From",
+                "dateTo": "To"
+            },
+            "card": {
+                "keyLabel": "Key",
+                "bpmLabel": "BPM",
+                "genreLabel": "Genre",
+                "artistLabel": "Artist",
+                "forkOfLabel": "Fork of",
+                "albumLabel": "Album",
+                "createdLabel": "Created",
+                "modifiedLabel": "Modified",
+                "hasAudioBadge": "Audio sample",
+                "openSongBtn": "View lyrics & chords",
+                "deleteSongTooltip": "Delete song",
+                "deleteModalTitle": "Delete song",
+                "deleteModalConfirm": "Are you sure you want to mark as deleted the song",
+                "deleteModalCancel": "Cancel",
+                "deleteModalAccept": "Yes, delete",
+                "deleteSuccess": "The song has been marked as deleted.",
+                "deleteError": "Could not delete the song."
+            },
+            "emptySongsTitle": "No songs found for this editor",
             "emptySongsDescription": "Try adjusting or clearing the search filters."
         }
     }

@@ -33,6 +33,18 @@
                 "creatorPanel": {
                     "label": "Panel de creador",
                     "description": "canciones creadas vistas, dinero ganado, etc"
+                },
+                "admin": {
+                    "label": "Admin",
+                    "description": "Gestión de usuarios y foro de moderación"
+                },
+                "bugtracker": {
+                    "label": "Bugtracker",
+                    "description": "Seguimiento y estado de reportes de bugs"
+                },
+                "reportBug": {
+                    "label": "Reportar un Bug",
+                    "description": "Envía detalles, capturas o videos de un problema"
                 }
             },
             "sections": {
@@ -158,7 +170,8 @@
                 "home": "Inicio",
                 "createLyrics": "Crear Letra",
                 "myAccount": "Mi Cuenta",
-                "statistics": "Estadísticas"
+                "statistics": "Estadísticas",
+                "reportBug": "Reportar un Bug"
             },
             "aria": {
                 "home": "Inicio de Sonnetia",
@@ -170,6 +183,28 @@
             "meta": {
                 "madeBy": "Hecho con ❤️ por músicos para músicos 🎸",
                 "allRightsReserved": "todos los derechos reservados."
+            },
+            "bugReportModal": {
+                "modalTitle": "Reportar un Bug",
+                "friendlyNoticeTitle": "¡Hola! Antes de enviar tu reporte, ten esto en cuenta 💡",
+                "friendlyNoticeBody": "Un reporte de bug abarca una funcionalidad de la web que no está trabajando bien; no incluye temas de edición como nombres incorrectos de canciones, letras o acordes incorrectos, ni nada relacionado con la edición de letras, repertorios, colecciones o libros.",
+                "titleLabel": "Título",
+                "titlePlaceholder": "Agrega un título descriptivo al reporte",
+                "contentLabel": "Contenido",
+                "contentPlaceholder": "Describe detalladamente el bug y cómo reproducirlo...",
+                "mediaLabel": "Media (Imágenes o Videos - Máx. 50 MB)",
+                "mediaDropzoneCaption": "Arrastra imágenes o videos aquí o haz clic para seleccionar",
+                "mediaSubCaption": "Puedes subir uno o varios archivos a la vez (máximo 50 MB en total)",
+                "submitButton": "Publicar Reporte",
+                "cancelButton": "Cancelar",
+                "publishingTitle": "Publicando reporte de bug...",
+                "publishingSub": "Afinando y reparando las notas rotas, por favor espera...",
+                "successTitle": "Reporte enviado",
+                "successMessage": "¡Gracias! Tu reporte ha sido registrado correctamente.",
+                "errorTitle": "Error al reportar bug",
+                "errorSizeLimit": "El tamaño total de los archivos supera el límite máximo de 50 MB.",
+                "errorInvalidFields": "Por favor completa el título y la descripción del bug.",
+                "errorUploadFailed": "No se pudo completar la subida de archivos o el envío del reporte."
             }
         },
         "navbar": {
@@ -210,6 +245,9 @@
                 },
                 "children": {
                     "myAccount": "Mi Cuenta",
+                    "reportBug": "Reportar un Bug",
+                    "admin": "Admin",
+                    "bugtracker": "Bugtracker",
                     "signout": {
                         "button": "Cerrar Sesión"
                     }
@@ -317,7 +355,7 @@
                 "rythm": "Ritmo",
                 "bpm": "BPM",
                 "by": "de",
-                "exportPdf": "Exportar a PDF (Carta)"
+                "exportPdf": "Exportar a PDF"
             },
             "menuLabels": {
                 "musicOptions": "Opciones Musicales",
@@ -329,7 +367,7 @@
                 "textOptions": "Opciones de Texto",
                 "increaseFont": "Incrementar tamaño de fuente",
                 "decreaseFont": "Disminuir tamaño de fuente",
-                "exportPdf": "Exportar a PDF (Carta)",
+                "exportPdf": "Exportar a PDF",
                 "recordOptions": "Opciones de Grabación",
                 "recordSample": "Crear nueva grabación",
                 "uploadSample": "Subir grabación"
@@ -363,6 +401,30 @@
                     "okButton": "Ok",
                     "retryButton": "Retry"
                 }
+            },
+            "comments": {
+                "title": "Calificaciones y comentarios",
+                "averageLabel": "Promedio general",
+                "reviewsCount": "calificaciones",
+                "noReviewsYet": "Sin calificaciones aún",
+                "leaveReviewTitle": "Deja tu calificación y comentario",
+                "ratingLabel": "Tu puntuación por estrellas",
+                "commentLabel": "Comentario",
+                "commentPlaceholder": "Comparte tu opinión sobre esta canción... 🎵✨",
+                "plainTextHint": "Solo se admiten texto plano y emojis.",
+                "invalidCharsError": "El comentario contiene caracteres no permitidos. Usa únicamente texto plano y emojis.",
+                "ratingRequiredError": "Selecciona una puntuación de 1 a 5 estrellas.",
+                "commentRequiredError": "Escribe un comentario antes de publicar.",
+                "emojiPickerTooltip": "Insertar emoji",
+                "submitButton": "Publicar comentario",
+                "submitting": "Publicando...",
+                "deleteTooltip": "Eliminar mi comentario",
+                "emptyComments": "Aún no hay comentarios para esta canción. ¡Sé el primero en calificarla!",
+                "loginRequiredNotice": "Inicia sesión para dejar tu puntuación por estrellas y un comentario.",
+                "postSuccess": "Tu calificación y comentario se han guardado correctamente.",
+                "postError": "No fue posible publicar el comentario. Verifica tu sesión e inténtalo de nuevo.",
+                "deleteSuccess": "Tu comentario fue eliminado.",
+                "deleteError": "No se pudo eliminar el comentario."
             }
         },
         "notFound": {
@@ -380,6 +442,12 @@
         "head": {
             "title": "Sonnetia | Inicio",
             "description": "Página de inicio de la web Sonnetia"
+        },
+        "betaNotice": {
+            "badge": "Fase Beta",
+            "title": "¡Estamos construyendo Sonnetia con pasión!",
+            "message": "Nuestra aplicación se encuentra en fase beta, nuestro equipo está trabajando con dedicación y amor para entregar un producto versátil y de gran utilidad,  que logre mejorar la calidad de vida de los músicos que buscan compartir sus conocimientos con otros músicos. Si encuentras algún error por favor, repórtalo, accediendo al botón de \"Reportar Bug\" en el pie de página de la web. ¡Gracias!",
+            "dismissAria": "Cerrar aviso de fase beta"
         },
         "searchbar": {
             "label": "Busca una canción, artista o editor",
@@ -409,7 +477,7 @@
         "createSongButton": "Crear una nueva letra"
     },
     "unauthorized": {
-        "metaTitle": "Acceso no autorizado (401) | Sonnetia",
+        "metaTitle": "Acceso no autorizado | Sonnetia",
         "metaDescription": "Debes iniciar sesión para acceder a esta sección de Sonnetia.",
         "badge": "Error 401 · Zona exclusiva del backstage",
         "title": "¡Alto ahí! Nuestro bajista no te deja pasar",
@@ -433,7 +501,7 @@
                 "nameMinLengthError": "El nombre del repertorio debe tener al menos 3 caracteres.",
                 "emptyLyricsError": "Agrega al menos una letra a la lista para crear el repertorio.",
                 "searchLabel": "Buscar letra por canción o artista",
-                "searchPlaceholder": "Escribe al menos 2 caracteres (título o nombre del artista)...",
+                "searchPlaceholder": "Escribe al menos 2 caracteres para buscar por título o artista...",
                 "searchEmptyHint": "Usa el buscador para encontrar canciones y previsualizarlas antes de agregarlas.",
                 "noResults": "No se encontraron canciones para tu búsqueda.",
                 "previewButton": "Previsualizar",
@@ -483,11 +551,11 @@
             "folderSharedTitle": "Compartidos conmigo",
             "folderSharedSubtitle": "Donde eres editor",
             "emptyOwnedFolder": "No tienes repertorios propios que coincidan con los filtros.",
-            "emptySharedFolder": "Aún no te han compartido repertorios como editor (o ninguno coincide con los filtros).",
+            "emptySharedFolder": "Aún no te han compartido repertorios como editor.",
             "sortByLabel": "Ordenar por",
             "sortRecent": "Más recientes",
             "sortOldest": "Más antiguos",
-            "sortNameAsc": "Nombre (A - Z)",
+            "sortNameAsc": "Nombre alfabético",
             "sortSongsDesc": "Más canciones",
             "filterSongsLabel": "Contenido",
             "filterAllSongs": "Todos",
@@ -518,7 +586,7 @@
             "editSongsButton": "Modificar canciones",
             "editModalTitle": "Modificar canciones del repertorio",
             "addSongsSectionTitle": "Agregar canciones al repertorio",
-            "searchSongsPlaceholder": "Buscar canción por título o artista (mín. 2 caracteres)...",
+            "searchSongsPlaceholder": "Buscar canción por título o artista...",
             "noSearchResults": "No se encontraron canciones para tu búsqueda.",
             "addSongBtn": "Agregar",
             "addedSongBtn": "En lista",
@@ -545,7 +613,7 @@
             "manageEditorsButton": "Usuarios editores",
             "editorsModalTitle": "Usuarios editores del repertorio",
             "editorsModalDescription": "Agrega usuarios por su nombre de usuario o correo electrónico para darles permiso permanente de edición sobre este repertorio.",
-            "searchEditorPlaceholder": "Buscar por usuario, correo o nombre (mín. 2 caracteres)...",
+            "searchEditorPlaceholder": "Buscar por usuario, correo o nombre...",
             "addEditorBtn": "Agregar editor",
             "alreadyEditorBtn": "Ya es editor",
             "currentEditorsTitle": "Editores con acceso",
@@ -579,15 +647,15 @@
             "clearFiltersBtn": "Limpiar filtros",
             "sortByLabel": "Ordenar por campo",
             "sortDirLabel": "Dirección",
-            "sortAsc": "Ascendente (A→Z / Menor→Mayor)",
-            "sortDesc": "Descendente (Z→A / Mayor→Menor)",
+            "sortAsc": "Ascendente",
+            "sortDesc": "Descendente",
             "fields": {
                 "id": "ID de letra",
                 "name": "Título de la canción",
                 "lyrics_text": "Contenido de la letra",
                 "genre": "Género / Ritmo",
                 "sample_uri": "Grabación de audio",
-                "bpm": "Tempo (BPM)",
+                "bpm": "Tempo",
                 "key": "Tonalidad",
                 "artist_id": "Artista",
                 "posted_by": "Publicado por",
@@ -605,8 +673,8 @@
                 "bpmMin": "BPM mín.",
                 "bpmMax": "BPM máx.",
                 "posted_by": "Usuario que publicó...",
-                "fork_of": "Todas (originales y forks)",
-                "forkOriginalOnly": "Solo originales (sin fork)",
+                "fork_of": "Todas las canciones",
+                "forkOriginalOnly": "Solo originales",
                 "forkOnly": "Solo forks de otra letra",
                 "album_id": "Todos los álbumes",
                 "withAlbum": "Con álbum asociado",
@@ -630,6 +698,83 @@
                 "openSongBtn": "Ver letra y acordes"
             },
             "emptySongsTitle": "No se encontraron canciones para este artista",
+            "emptySongsDescription": "Prueba ajustando o limpiando los filtros de búsqueda."
+        }
+    },
+    "editors": {
+        "view": {
+            "metaNotFoundTitle": "Editor no encontrado | Sonnetia",
+            "metaNotFoundDescription": "El editor que buscas no existe en Sonnetia.",
+            "selfBadge": "Tu perfil de editor",
+            "selfBannerText": "Estás viendo tu propio catálogo de canciones publicadas. Desde aquí puedes administrar y eliminar tus letras.",
+            "createSongCta": "Publicar nueva letra",
+            "memberSinceLabel": "Miembro desde",
+            "totalSongsBadge": "Canciones publicadas",
+            "matchingSongsBadge": "Coincidencias",
+            "filtersSectionTitle": "Filtros y ordenamiento",
+            "showAdvancedFilters": "Más filtros",
+            "hideAdvancedFilters": "Menos filtros",
+            "clearFiltersBtn": "Limpiar filtros",
+            "sortByLabel": "Ordenar por campo",
+            "sortDirLabel": "Dirección",
+            "sortAsc": "Ascendente",
+            "sortDesc": "Descendente",
+            "fields": {
+                "id": "ID de letra",
+                "name": "Título de la canción",
+                "lyrics_text": "Contenido de la letra",
+                "genre": "Género / Ritmo",
+                "sample_uri": "Grabación de audio",
+                "bpm": "Tempo",
+                "key": "Tonalidad",
+                "artist_id": "Artista",
+                "posted_by": "Publicado por",
+                "fork_of": "Canción base / Fork",
+                "creation_date": "Fecha de creación",
+                "last_modified": "Última modificación",
+                "album_id": "Álbum"
+            },
+            "placeholders": {
+                "name": "Filtrar por título de canción...",
+                "lyrics_text": "Buscar palabra o frase dentro de la letra...",
+                "id": "Filtrar por UUID...",
+                "genre": "Todos los géneros",
+                "key": "Todas las tonalidades",
+                "bpmMin": "BPM mín.",
+                "bpmMax": "BPM máx.",
+                "artist_id": "Todos los artistas",
+                "fork_of": "Todas las canciones",
+                "forkOriginalOnly": "Solo originales",
+                "forkOnly": "Solo forks de otra letra",
+                "album_id": "Todos los álbumes",
+                "withAlbum": "Con álbum asociado",
+                "withoutAlbum": "Sin álbum asociado",
+                "sampleAll": "Todas",
+                "sampleYes": "Con audio",
+                "sampleNo": "Sin audio",
+                "dateFrom": "Desde",
+                "dateTo": "Hasta"
+            },
+            "card": {
+                "keyLabel": "Tono",
+                "bpmLabel": "BPM",
+                "genreLabel": "Género",
+                "artistLabel": "Artista",
+                "forkOfLabel": "Fork de",
+                "albumLabel": "Álbum",
+                "createdLabel": "Creada",
+                "modifiedLabel": "Modificada",
+                "hasAudioBadge": "Con audio",
+                "openSongBtn": "Ver letra y acordes",
+                "deleteSongTooltip": "Eliminar canción",
+                "deleteModalTitle": "Eliminar canción",
+                "deleteModalConfirm": "¿Estás seguro de que deseas marcar como eliminada la canción",
+                "deleteModalCancel": "Cancelar",
+                "deleteModalAccept": "Sí, eliminar",
+                "deleteSuccess": "La canción ha sido marcada como eliminada.",
+                "deleteError": "No se pudo eliminar la canción."
+            },
+            "emptySongsTitle": "No se encontraron canciones para este editor",
             "emptySongsDescription": "Prueba ajustando o limpiando los filtros de búsqueda."
         }
     }

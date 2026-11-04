@@ -1,9 +1,13 @@
 import { IKey, ISongModel, ISongPermission } from '@/infrastructure/models/SongModel';
 import {
     ICreateSongResponseDTO,
+    IDeleteSongCommentResponseDTO,
+    IGetSongCommentsResponseDTO,
     IGetSongResponseDTO,
     IGetSongsListResponseDTO,
     IPostRecordResDTO,
+    IPostSongCommentResponseDTO,
+    ISoftDeleteSongResDTO,
     ISongGateway,
     IUpdateSongSampleResDTO,
     IUserSongHistoryResponseDTO,
@@ -108,6 +112,68 @@ export class SongsFromMicroAdapter implements ISongGateway {
         } catch (error) {
             console.error('Error posting song:', error);
             return { success: false, reason: 'sng01' };
+        }
+    }
+
+    public async softDeleteSong(id: string, accessToken: string) {
+        try {
+            const res = await webRequest(
+                `${SongsFromMicroAdapter.SONG_API_URI}/v1/songs`,
+            ).delete(id, { Authorization: `Bearer ${accessToken}` });
+            return getResponseData<ISoftDeleteSongResDTO>(res, 'sng06');
+        } catch (error) {
+            console.error('Error soft-deleting song:', error);
+            return { success: false, reason: 'sng06' };
+        }
+    }
+
+    public async getSongComments(songId: string, accessToken?: string) {
+        try {
+            const headers: HeadersInit = {};
+            if (accessToken) headers.Authorization = `Bearer ${accessToken}`;
+            const res = await webRequest(
+                `${SongsFromMicroAdapter.SONG_API_URI}/v1/songs/${encodeURIComponent(songId)}/comments`,
+            ).get(undefined, headers);
+            return getResponseData<IGetSongCommentsResponseDTO>(res, 'cmt01');
+        } catch (error) {
+            console.error('Error getting song comments:', error);
+            return { success: false, reason: 'cmt01' };
+        }
+    }
+
+    public async postSongComment(
+        songId: string,
+        rating: number,
+        comment: string,
+        accessToken: string,
+    ) {
+        try {
+            const res = await webRequest(
+                `${SongsFromMicroAdapter.SONG_API_URI}/v1/songs/${encodeURIComponent(songId)}/comments`,
+            ).post(
+                { rating, comment },
+                { Authorization: `Bearer ${accessToken}` },
+            );
+            return getResponseData<IPostSongCommentResponseDTO>(res, 'cmt02');
+        } catch (error) {
+            console.error('Error posting song comment:', error);
+            return { success: false, reason: 'cmt02' };
+        }
+    }
+
+    public async deleteSongComment(
+        songId: string,
+        commentId: string,
+        accessToken: string,
+    ) {
+        try {
+            const res = await webRequest(
+                `${SongsFromMicroAdapter.SONG_API_URI}/v1/songs/${encodeURIComponent(songId)}/comments`,
+            ).delete(commentId, { Authorization: `Bearer ${accessToken}` });
+            return getResponseData<IDeleteSongCommentResponseDTO>(res, 'cmt04');
+        } catch (error) {
+            console.error('Error deleting song comment:', error);
+            return { success: false, reason: 'cmt04' };
         }
     }
 

@@ -26,6 +26,7 @@ export default async function RootLayout({
     } = (await getI18n(headers)) ?? {};
 
     const isLogged = await isSessionActive();
+    const version = process.env.npm_package_version || '0.1.0';
     return (
         <html lang='en' suppressHydrationWarning>
             <head>
@@ -43,7 +44,7 @@ export default async function RootLayout({
                     <Notifications />
                     <DefaultNavbar i18n={navbar} isLogged={!!isLogged} />
                     <div className='app-shell-content'>{children}</div>
-                    <Footer i18n={footer} />
+                    <Footer i18n={footer} isLogged={!!isLogged} version={version} />
                 </MantineProvider>
             </body>
         </html>

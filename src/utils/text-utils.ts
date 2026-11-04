@@ -2,10 +2,11 @@ import slugify from 'slugify';
 import { IKey } from '@/infrastructure/models/SongModel';
 
 export const extractBracedValues = (text: string): IBracedValue[] => {
-    const lines = text.split('\n');
+    const lines = text.replace(/\r\n/g, '\n').split('\n');
     const results: IBracedValue[] = [];
 
-    for (const [lineIndex, line] of lines.entries()) {
+    for (const [lineIndex, rawLine] of lines.entries()) {
+        const line = rawLine.replace(/\t/g, '    ');
         const regex = /\[(.*?)\]/g;
         let match;
         let accumulatedBracketsLength = 0;

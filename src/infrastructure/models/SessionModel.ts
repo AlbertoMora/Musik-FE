@@ -6,6 +6,8 @@ export interface ISessionDataModel {
         isactive: number;
         ban_case_id?: string;
         rol_id: string;
+        isAdmin?: boolean | number;
+        isDeveloper?: boolean | number;
     };
     sessionId: string;
     exp: number;

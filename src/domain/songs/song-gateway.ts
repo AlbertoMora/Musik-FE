@@ -32,6 +32,65 @@ export interface ISongGateway {
         id: string,
         accessToken: string,
     ) => Promise<IActionResponse<IUpdateSongSampleResDTO>>;
+    softDeleteSong: (
+        id: string,
+        accessToken: string,
+    ) => Promise<IActionResponse<ISoftDeleteSongResDTO>>;
+    getSongComments: (
+        songId: string,
+        accessToken?: string,
+    ) => Promise<IActionResponse<IGetSongCommentsResponseDTO>>;
+    postSongComment: (
+        songId: string,
+        rating: number,
+        comment: string,
+        accessToken: string,
+    ) => Promise<IActionResponse<IPostSongCommentResponseDTO>>;
+    deleteSongComment: (
+        songId: string,
+        commentId: string,
+        accessToken: string,
+    ) => Promise<IActionResponse<IDeleteSongCommentResponseDTO>>;
+}
+
+export interface ISongCommentItemDTO {
+    id: string;
+    songId: string;
+    userId: string;
+    username: string;
+    userAvatar?: string | null;
+    userSlug?: string;
+    rating: number;
+    comment: string;
+    createdAt: string;
+    updatedAt: string;
+    isOwn?: boolean;
+}
+
+export interface IGetSongCommentsResponseDTO extends IBasicWebResponse {
+    songId: string;
+    averageRating: number;
+    totalComments: number;
+    distribution: Record<number, number>;
+    comments: ISongCommentItemDTO[];
+}
+
+export interface IPostSongCommentResponseDTO extends IBasicWebResponse {
+    averageRating: number;
+    totalComments: number;
+    distribution: Record<number, number>;
+    comment: ISongCommentItemDTO;
+}
+
+export interface IDeleteSongCommentResponseDTO extends IBasicWebResponse {
+    deletedCommentId: string;
+    averageRating: number;
+    totalComments: number;
+    distribution: Record<number, number>;
+}
+
+export interface ISoftDeleteSongResDTO extends IBasicWebResponse {
+    deletedId: string;
 }
 
 export interface ISongHistoryItemDTO {
@@ -91,6 +150,7 @@ export interface ISongRes {
     posted_by: string;
     fork_of_name?: string;
     avg_rate?: number;
+    ratings_count?: number;
     slug?: string;
 }
 

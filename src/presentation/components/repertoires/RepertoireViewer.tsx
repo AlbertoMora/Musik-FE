@@ -599,6 +599,7 @@ export default function RepertoireViewer({
                         i18n={lyricsI18n}
                         showMusicPlayer={showPlayer}
                         showSongTools={showTools}
+                        showComments={false}
                         focusMode={focusMode}
                         {...activeSongModel}
                     />

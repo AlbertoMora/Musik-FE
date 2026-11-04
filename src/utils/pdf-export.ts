@@ -100,9 +100,9 @@ const computeTransposedSongKey = (baseKey?: string, toneVariation = 0): string =
 };
 
 const preparePdfLines = (lyrics: string, chords: IKey[]): IPdfLineItem[] => {
-    const rawLines = removeChords(lyrics).split('\n');
-    const items: IPdfLineItem[] = rawLines.map((value, lineIndex) => ({
-        value: value.replace(/\t/g, '    '),
+    const rawLines = lyrics.replace(/\r\n/g, '\n').split('\n');
+    const items: IPdfLineItem[] = rawLines.map((rawLine, lineIndex) => ({
+        value: rawLine.replace(/\t/g, '    ').replaceAll(/\[[^\]]*\]/g, ''),
         lineIndex,
         chords: chords
             .filter(c => c.line === lineIndex)
@@ -415,13 +415,13 @@ const buildSongPageContentStream = (
 
                     // Draw subtle pill background behind each chord for clarity
                     const pillW = Math.max(
-                        chord.key.length * (layout.chordFontSize * COURIER_CHAR_RATIO) + 4,
-                        layout.chordFontSize * 1.15,
+                        chord.key.length * (layout.chordFontSize * COURIER_CHAR_RATIO) + 2,
+                        layout.chordFontSize * 0.95,
                     );
                     const pillH = layout.chordFontSize * 1.12;
                     ops.push(`0.94 0.90 0.99 rg`);
                     ops.push(
-                        `${(chordX - 2).toFixed(2)} ${(cursorY - layout.chordFontSize * 0.18).toFixed(2)} ${pillW.toFixed(2)} ${pillH.toFixed(2)} re f`,
+                        `${(chordX - 1).toFixed(2)} ${(cursorY - layout.chordFontSize * 0.18).toFixed(2)} ${pillW.toFixed(2)} ${pillH.toFixed(2)} re f`,
                     );
 
                     // Draw chord text in Sonnetia purple using Courier-Bold
@@ -430,7 +430,7 @@ const buildSongPageContentStream = (
                         `BT /F2 ${layout.chordFontSize.toFixed(2)} Tf ${chordX.toFixed(2)} ${cursorY.toFixed(2)} Td (${chordLabel}) Tj ET`,
                     );
 
-                    minNextX = chordX + pillW + 2;
+                    minNextX = chordX + pillW + 0.5;
                 }
             }
 

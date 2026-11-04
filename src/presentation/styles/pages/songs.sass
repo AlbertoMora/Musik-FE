@@ -49,6 +49,8 @@
         button
             background: transparent
             border: none
+            font-family: inherit
+            font-size: inherit
             margin: 0
             padding: 0
             position: absolute
@@ -62,11 +64,11 @@
         color: #fff
         cursor: pointer
         display: flex
-        font-size: 0.6rem
+        font-size: 0.6em
         justify-content: center
-        min-width: 1.35rem
+        min-width: 1.9em
         overflow: hidden
-        padding: 0
+        padding: 0 0.12em
 
     &-tools
         align-items: center
@@ -106,11 +108,12 @@
         > div
             height: 100%
             min-width: max-content
-            white-space: nowrap
+            white-space: pre
 
             p
                 line-height: 1.2
                 margin: 0
+                white-space: pre
 
     &-upload-container
         background: var(--lyrics-upload-bg)

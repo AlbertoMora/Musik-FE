@@ -84,7 +84,31 @@ export const getSessionInfoAction = async () => {
 
     if (!accessToken) return null;
 
-    return getTokenData<ILocalSessionData>(accessToken);
+    const decoded = getTokenData<ILocalSessionData>(accessToken);
+    if (!decoded) return null;
+
+    try {
+        const res = await fetch(`${AuthAdapterFromMicro.AUTH_MICRO_URI}/v1/users/me`, {
+            headers: { authorization: `Bearer ${accessToken}` },
+            cache: 'no-store',
+        });
+        if (res.ok) {
+            const data = await res.json();
+            if (data?.user) {
+                return {
+                    ...decoded,
+                    user: {
+                        ...decoded.user,
+                        ...data.user,
+                    },
+                };
+            }
+        }
+    } catch {
+        // Fallback to decoded token data
+    }
+
+    return decoded;
 };
 
 export async function setSessionCookie(data: ISessionResponseDTO) {

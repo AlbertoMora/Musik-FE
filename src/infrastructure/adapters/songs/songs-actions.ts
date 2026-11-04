@@ -53,3 +53,40 @@ export const getUserSongHistoryAction = async (limit: number = 6, offset: number
     }
     return await songAdapter.getUserSongHistory(limit, offset, accessToken);
 };
+
+export const softDeleteSongAction = async (id: string) => {
+    const songAdapter = new SongsFromMicroAdapter();
+    const [accessToken] = await getSessionCookieValues();
+    if (!accessToken) {
+        return { success: false, reason: 'auth05' };
+    }
+    return await songAdapter.softDeleteSong(id, accessToken);
+};
+
+export const getSongCommentsAction = async (songId: string) => {
+    const songAdapter = new SongsFromMicroAdapter();
+    const [accessToken] = await getSessionCookieValues();
+    return await songAdapter.getSongComments(songId, accessToken);
+};
+
+export const postSongCommentAction = async (
+    songId: string,
+    rating: number,
+    comment: string,
+) => {
+    const songAdapter = new SongsFromMicroAdapter();
+    const [accessToken] = await getSessionCookieValues();
+    if (!accessToken) {
+        return { success: false, reason: 'auth05' };
+    }
+    return await songAdapter.postSongComment(songId, rating, comment, accessToken);
+};
+
+export const deleteSongCommentAction = async (songId: string, commentId: string) => {
+    const songAdapter = new SongsFromMicroAdapter();
+    const [accessToken] = await getSessionCookieValues();
+    if (!accessToken) {
+        return { success: false, reason: 'auth05' };
+    }
+    return await songAdapter.deleteSongComment(songId, commentId, accessToken);
+};

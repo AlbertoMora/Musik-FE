@@ -116,5 +116,7 @@ export interface ILocalSessionData {
         isactive: number;
         ban_case_id?: string;
         creation_date?: string;
+        isAdmin?: boolean | number;
+        isDeveloper?: boolean | number;
     };
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import { IKey } from '@/infrastructure/models/SongModel';
-import { removeChords, tones } from './text-utils';
+import { tones } from './text-utils';
 
 export interface ISongPdfExportPayload {
     title: string;

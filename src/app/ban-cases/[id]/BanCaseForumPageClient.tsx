@@ -40,11 +40,15 @@ import {
 import { IBugMediaDTO } from '@/infrastructure/adapters/bugs/bugs-actions';
 import { controlledFileUploadRequest } from '@/utils/web-utils';
 import { NotificationsService } from '@/presentation/services/notification-service';
+import { I18nTypes } from '@/i18n/dictionaries';
 
 interface BanCaseForumPageClientProps {
     caseId: string;
     sessionUser: ILocalSessionData['user'];
+    i18n?: I18nTypes['banCaseForum'];
 }
+
+const MAX_BYTES = 50 * 1024 * 1024; // 50 MB
 
 const VERDICT_BADGE_COLORS: Record<string, string> = {
     open: 'yellow',
@@ -53,7 +57,7 @@ const VERDICT_BADGE_COLORS: Record<string, string> = {
     'No Procede': 'gray',
 };
 
-const BanCaseForumPageClient: React.FC<BanCaseForumPageClientProps> = ({ caseId }) => {
+const BanCaseForumPageClient: React.FC<BanCaseForumPageClientProps> = ({ caseId, i18n }) => {
     const [banCase, setBanCase] = useState<IBanCaseDTO | null>(null);
     const [messages, setMessages] = useState<IBanForumMessageDTO[]>([]);
     const [canResolve, setCanResolve] = useState(false);
@@ -67,6 +71,28 @@ const BanCaseForumPageClient: React.FC<BanCaseForumPageClientProps> = ({ caseId 
     const [resolving, setResolving] = useState(false);
 
     const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+    const getVerdictLabel = useCallback(
+        (verdict: string) => {
+            if (verdict === 'open') return i18n?.header?.statusOpen || 'Foro Abierto';
+            if (verdict === 'Baneado') return i18n?.adminDecision?.verdictBanned || 'Baneado';
+            if (verdict === 'Indultado') return i18n?.adminDecision?.verdictPardoned || 'Indultado';
+            if (verdict === 'No Procede')
+                return i18n?.adminDecision?.verdictDismissed || 'No Procede';
+            return verdict;
+        },
+        [i18n],
+    );
+
+    const getRoleLabel = useCallback(
+        (role: string) => {
+            if (role === 'admin') return i18n?.roleLabels?.admin || 'Admin';
+            if (role === 'reported')
+                return i18n?.roleLabels?.reported || 'Reportado (Defensa)';
+            return i18n?.roleLabels?.reporter || 'Reportante';
+        },
+        [i18n],
+    );
 
     const loadCase = useCallback(async () => {
         setLoading(true);
@@ -109,6 +135,17 @@ const BanCaseForumPageClient: React.FC<BanCaseForumPageClientProps> = ({ caseId 
         if (!banCase) return;
         if (!replyText.trim() && replyFiles.length === 0) return;
 
+        const totalSize = replyFiles.reduce((acc, f) => acc + f.size, 0);
+        if (totalSize > MAX_BYTES) {
+            NotificationsService.error({
+                title: i18n?.notifications?.sizeLimitTitle || 'Límite excedido',
+                message:
+                    i18n?.notifications?.sizeLimitMessage ||
+                    'Los archivos adjuntos no pueden superar los 50 MB.',
+            });
+            return;
+        }
+
         setSending(true);
         try {
             const media = await uploadFilesToS3(replyFiles);
@@ -121,14 +158,17 @@ const BanCaseForumPageClient: React.FC<BanCaseForumPageClientProps> = ({ caseId 
                 setReplyText('');
                 setReplyFiles([]);
                 NotificationsService.success({
-                    title: 'Publicado',
-                    message: 'Tu mensaje y pruebas se agregaron al foro.',
+                    title: i18n?.notifications?.replySuccessTitle || 'Publicado',
+                    message:
+                        i18n?.notifications?.replySuccessMessage ||
+                        'Tu mensaje y pruebas se agregaron al foro.',
                 });
             }
         } catch {
             NotificationsService.error({
-                title: 'Error',
-                message: 'No se pudo enviar tu mensaje.',
+                title: i18n?.notifications?.replyErrorTitle || 'Error',
+                message:
+                    i18n?.notifications?.replyErrorMessage || 'No se pudo enviar tu mensaje.',
             });
         } finally {
             setSending(false);
@@ -145,11 +185,25 @@ const BanCaseForumPageClient: React.FC<BanCaseForumPageClientProps> = ({ caseId 
         setResolving(false);
 
         if (res.success) {
+            const verdictLabel = getVerdictLabel(verdict);
             NotificationsService.success({
-                title: `Caso cerrado: ${verdict}`,
-                message: `El foro se ha cerrado con veredicto "${verdict}".`,
+                title:
+                    i18n?.notifications?.verdictSuccessTitle?.replace('{verdict}', verdictLabel) ||
+                    `Caso cerrado: ${verdictLabel}`,
+                message:
+                    i18n?.notifications?.verdictSuccessMessage?.replace(
+                        '{verdict}',
+                        verdictLabel,
+                    ) || `El foro se ha cerrado con veredicto "${verdictLabel}".`,
             });
             loadCase();
+        } else {
+            NotificationsService.error({
+                title: i18n?.notifications?.verdictErrorTitle || 'Error',
+                message:
+                    i18n?.notifications?.verdictErrorMessage ||
+                    'No se pudo emitir la resolución del caso.',
+            });
         }
     };
 
@@ -159,7 +213,7 @@ const BanCaseForumPageClient: React.FC<BanCaseForumPageClientProps> = ({ caseId 
                 <Stack align='center' py='xl'>
                     <Loader color='grape' />
                     <Text size='sm' c='dimmed'>
-                        Cargando foro del caso...
+                        {i18n?.header?.statusOpen || 'Cargando foro del caso...'}
                     </Text>
                 </Stack>
             </Container>
@@ -172,9 +226,12 @@ const BanCaseForumPageClient: React.FC<BanCaseForumPageClientProps> = ({ caseId 
                 <Card withBorder radius='md' p='xl' ta='center'>
                     <Stack align='center' gap='sm'>
                         <IconGavel size={42} color='#ef4444' />
-                        <Title order={3}>Acceso Restringido</Title>
+                        <Title order={3}>
+                            {i18n?.forbiddenTitle || 'Acceso Restringido'}
+                        </Title>
                         <Text size='sm' c='dimmed'>
-                            Sólo el usuario que reporta, el usuario reportado y los administradores pueden acceder a este ticket del foro.
+                            {i18n?.forbiddenMessage ||
+                                'Sólo el usuario que reporta, el usuario reportado y los administradores pueden acceder a este ticket del foro.'}
                         </Text>
                     </Stack>
                 </Card>
@@ -189,15 +246,23 @@ const BanCaseForumPageClient: React.FC<BanCaseForumPageClientProps> = ({ caseId 
                     <Group justify='space-between' mb='sm'>
                         <Group gap='xs'>
                             <IconGavel size={24} color='#a78bfa' />
-                            <Title order={2}>{banCase.title || 'Expediente de Moderación'}</Title>
+                            <Title order={2}>
+                                {banCase.title ||
+                                    (i18n?.header?.defaultCaseTitle || 'Expediente #{id}').replace(
+                                        '{id}',
+                                        banCase.id,
+                                    )}
+                            </Title>
                         </Group>
                         <Badge
                             size='lg'
                             color={VERDICT_BADGE_COLORS[banCase.status] || 'yellow'}
                             variant='filled'>
                             {banCase.status === 'open'
-                                ? 'Foro Abierto'
-                                : `Cerrado: ${banCase.status}`}
+                                ? i18n?.header?.statusOpen || 'Foro Abierto'
+                                : (
+                                      i18n?.header?.statusClosed || 'Cerrado: {status}'
+                                  ).replace('{status}', getVerdictLabel(banCase.status))}
                         </Badge>
                     </Group>
 
@@ -207,10 +272,24 @@ const BanCaseForumPageClient: React.FC<BanCaseForumPageClientProps> = ({ caseId 
 
                     <Group gap='sm'>
                         <Badge color='red' variant='light'>
-                            Reportado: @{banCase.banned_player?.username || banCase.banned_player_id}
+                            {(
+                                i18n?.header?.reportedUserBadge || 'Reportado: @{username}'
+                            ).replace(
+                                '{username}',
+                                banCase.banned_player?.username ||
+                                    banCase.banned_player_id ||
+                                    '',
+                            )}
                         </Badge>
                         <Badge color='blue' variant='light'>
-                            Reporta: @{banCase.reported_by_player?.username || banCase.reported_by_player_id}
+                            {(
+                                i18n?.header?.reporterBadge || 'Reporta: @{username}'
+                            ).replace(
+                                '{username}',
+                                banCase.reported_by_player?.username ||
+                                    banCase.reported_by_player_id ||
+                                    '',
+                            )}
                         </Badge>
                     </Group>
                 </Card>
@@ -233,11 +312,7 @@ const BanCaseForumPageClient: React.FC<BanCaseForumPageClientProps> = ({ caseId 
                                                   : 'blue'
                                         }
                                         variant='light'>
-                                        {msg.senderRole === 'admin'
-                                            ? 'Admin'
-                                            : msg.senderRole === 'reported'
-                                              ? 'Reportado (Defensa)'
-                                              : 'Reportante'}
+                                        {getRoleLabel(msg.senderRole)}
                                     </Badge>
                                 </Group>
                                 <Text size='xs' c='dimmed'>
@@ -271,6 +346,7 @@ const BanCaseForumPageClient: React.FC<BanCaseForumPageClientProps> = ({ caseId 
                                                     </Group>
                                                 )
                                             ) : m.url ? (
+                                                /* eslint-disable-next-line @next/next/no-img-element */
                                                 <img
                                                     src={m.url}
                                                     alt={m.name}
@@ -297,7 +373,7 @@ const BanCaseForumPageClient: React.FC<BanCaseForumPageClientProps> = ({ caseId 
                                                     variant='subtle'
                                                     mt={4}
                                                     rightSection={<IconExternalLink size={12} />}>
-                                                    Ver Evidencia
+                                                    {i18n?.viewEvidence || 'Ver Evidencia'}
                                                 </Button>
                                             )}
                                         </Paper>
@@ -313,8 +389,14 @@ const BanCaseForumPageClient: React.FC<BanCaseForumPageClientProps> = ({ caseId 
                         <form onSubmit={handleSendReply}>
                             <Stack gap='sm'>
                                 <Textarea
-                                    label='Agregar pruebas o contraevidencia'
-                                    placeholder='Escribe tu argumento o adjunta capturas/videos...'
+                                    label={
+                                        i18n?.replySection?.placeholder ||
+                                        'Agregar pruebas o contraevidencia'
+                                    }
+                                    placeholder={
+                                        i18n?.replySection?.placeholder ||
+                                        'Escribe tu argumento o adjunta capturas/videos...'
+                                    }
                                     value={replyText}
                                     onChange={e => setReplyText(e.currentTarget.value)}
                                     minRows={3}
@@ -327,7 +409,10 @@ const BanCaseForumPageClient: React.FC<BanCaseForumPageClientProps> = ({ caseId 
                                         variant='light'
                                         leftSection={<IconFileUpload size={14} />}
                                         onClick={() => fileInputRef.current?.click()}>
-                                        Adjuntar Archivos ({replyFiles.length})
+                                        {(
+                                            i18n?.replySection?.attachBtn ||
+                                            'Adjuntar Archivos ({count})'
+                                        ).replace('{count}', String(replyFiles.length))}
                                     </Button>
                                     <input
                                         ref={fileInputRef}
@@ -351,7 +436,7 @@ const BanCaseForumPageClient: React.FC<BanCaseForumPageClientProps> = ({ caseId 
                                         color='blue'
                                         loading={sending}
                                         leftSection={<IconSend size={14} />}>
-                                        Publicar en el Foro
+                                        {i18n?.replySection?.submitBtn || 'Publicar en el Foro'}
                                     </Button>
                                 </Group>
                             </Stack>
@@ -362,14 +447,20 @@ const BanCaseForumPageClient: React.FC<BanCaseForumPageClientProps> = ({ caseId 
                 {canResolve && (
                     <Card withBorder radius='md' p='md'>
                         <Divider
-                            label='Resolución Exclusiva de Administración'
+                            label={
+                                i18n?.adminDecision?.divider ||
+                                'Resolución Exclusiva de Administración'
+                            }
                             labelPosition='center'
                             mb='sm'
                         />
                         <Stack gap='sm'>
                             <TextInput
-                                label='Nota de resolución'
-                                placeholder='Conclusión oficial del caso...'
+                                label={i18n?.adminDecision?.noteLabel || 'Nota de resolución'}
+                                placeholder={
+                                    i18n?.adminDecision?.notePlaceholder ||
+                                    'Conclusión oficial del caso...'
+                                }
                                 value={resolutionNote}
                                 onChange={e => setResolutionNote(e.currentTarget.value)}
                             />
@@ -379,14 +470,14 @@ const BanCaseForumPageClient: React.FC<BanCaseForumPageClientProps> = ({ caseId 
                                     loading={resolving}
                                     leftSection={<IconBan size={16} />}
                                     onClick={() => handleVerdict('Baneado')}>
-                                    Baneado
+                                    {i18n?.adminDecision?.verdictBanned || 'Baneado'}
                                 </Button>
                                 <Button
                                     color='teal'
                                     loading={resolving}
                                     leftSection={<IconShieldCheck size={16} />}
                                     onClick={() => handleVerdict('Indultado')}>
-                                    Indultado
+                                    {i18n?.adminDecision?.verdictPardoned || 'Indultado'}
                                 </Button>
                                 <Button
                                     color='gray'
@@ -394,7 +485,7 @@ const BanCaseForumPageClient: React.FC<BanCaseForumPageClientProps> = ({ caseId 
                                     loading={resolving}
                                     leftSection={<IconCheck size={16} />}
                                     onClick={() => handleVerdict('No Procede')}>
-                                    No Procede
+                                    {i18n?.adminDecision?.verdictDismissed || 'No Procede'}
                                 </Button>
                             </Group>
                         </Stack>

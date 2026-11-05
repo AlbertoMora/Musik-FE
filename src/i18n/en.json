@@ -1,769 +1,1029 @@
 {
-    "app": {
-        "title": "Sonnetia",
-        "accountPage": {
-            "menuTitle": "Quick navigation",
-            "common": {
-                "defaultDisplayName": "Music Creator",
-                "guestHandle": "@guest",
-                "notAvailable": "Not available",
-                "today": "Today"
-            },
-            "hero": {
-                "kicker": "Profile overview",
-                "stats": {
-                    "activeSince": "Active since: ",
-                    "communityMember": "Creator community member",
-                    "creatorTools": "Revenue-ready creator tools"
-                }
-            },
-            "menu": {
-                "editAccount": {
-                    "label": "Edit account",
-                    "description": "name, lastname, email, phone"
-                },
-                "securitySettings": {
-                    "label": "Security Settings",
-                    "description": "DFA, password change, active sessions"
-                },
-                "statistics": {
-                    "label": "Statistics",
-                    "description": "sites visited, history"
-                },
-                "creatorPanel": {
-                    "label": "Creator Panel",
-                    "description": "created songs viewed, money earned, etc"
-                },
-                "admin": {
-                    "label": "Admin",
-                    "description": "User management and moderation forum"
-                },
-                "bugtracker": {
-                    "label": "Bugtracker",
-                    "description": "Track and manage bug reports"
-                },
-                "reportBug": {
-                    "label": "Report a Bug",
-                    "description": "Send details, screenshots, or videos of an issue"
-                }
-            },
-            "sections": {
-                "editAccount": {
-                    "title": "Edit account",
-                    "subtitle": "Update your personal details.",
-                    "fields": {
-                        "name": "Name",
-                        "lastname": "Lastname",
-                        "username": "Username",
-                        "email": "Email",
-                        "countryCode": "Country code",
-                        "phone": "Phone"
-                    },
-                    "placeholders": {
-                        "name": "Ex: John",
-                        "lastname": "Ex: Doe",
-                        "username": "Ex: johndoe",
-                        "email": "Ex: john@mail.com",
-                        "phone": "Ex: 88887777"
-                    },
-                    "actions": {
-                        "edit": "Edit details",
-                        "save": "Save changes",
-                        "cancel": "Cancel"
-                    },
-                    "messages": {
-                        "usernameAvailable": "Username is available",
-                        "usernameTaken": "This username is already taken",
-                        "emailAvailable": "Email is available",
-                        "emailTaken": "This email is already in use",
-                        "invalidEmail": "Enter a valid email address",
-                        "invalidUsername": "Username must be at least 3 characters",
-                        "updateSuccess": "Your account details have been updated.",
-                        "updateError": "Could not save changes. Please try again."
-                    }
-                },
-                "securitySettings": {
-                    "title": "Security Settings",
-                    "subtitle": "Keep your account protected.",
-                    "items": {
-                        "dfa": {
-                            "title": "DFA (Two-Factor Authentication)",
-                            "description": "Choose the channel where you want to receive verification codes when signing in or performing actions from unrecognized devices.",
-                            "emailOption": "Email",
-                            "smsOption": "SMS Message",
-                            "noPhoneHint": "Add a phone number in 'Edit account' to enable SMS DFA.",
-                            "saveChannel": "Save DFA method",
-                            "savedSuccess": "DFA verification method updated successfully.",
-                            "savedError": "Could not update DFA method."
-                        },
-                        "password": {
-                            "title": "Password change",
-                            "createTitle": "Link a password to your account",
-                            "description": "Update your password to keep your account secure.",
-                            "createDescription": "Your account was created with Google OAuth. Set a password so you can also sign in with your username or email.",
-                            "newPassword": "New password",
-                            "confirmPassword": "Confirm password",
-                            "passwordPlaceholder": "At least 8 characters",
-                            "confirmPlaceholder": "Repeat your password",
-                            "minLengthHint": "Password must be at least 8 characters",
-                            "mismatchHint": "Passwords do not match",
-                            "savePassword": "Update password",
-                            "createPasswordBtn": "Create password",
-                            "dfaVerificationTitle": "Device verification required",
-                            "dfaVerificationSubtitle": "This device is not marked as trusted. Enter the 6-digit code sent to:",
-                            "trustDeviceLabel": "Save this device as trusted",
-                            "verifyAndSave": "Verify & save password",
-                            "cancelVerification": "Cancel",
-                            "passwordSuccess": "Your password has been saved successfully.",
-                            "passwordError": "Could not save password. Please check your details or verification code."
-                        },
-                        "sessions": {
-                            "title": "Active sessions & devices",
-                            "description": "Review the devices where your account is currently signed in and close any sessions you don't recognize.",
-                            "currentSessionBadge": "Current session",
-                            "trustedDeviceBadge": "Trusted device",
-                            "untrustedDeviceBadge": "Standard verification",
-                            "osLabel": "Operating system",
-                            "ipLabel": "IP",
-                            "signedInSinceLabel": "Signed in since",
-                            "revokeBtn": "Revoke session",
-                            "refreshBtn": "Refresh",
-                            "empty": "No active sessions found.",
-                            "revokeSuccess": "The selected session was closed successfully.",
-                            "revokeError": "Could not close the session. Please try again."
-                        }
-                    }
-                },
-                "statistics": {
-                    "title": "Statistics",
-                    "subtitle": "Track your app activity and history.",
-                    "cards": {
-                        "sitesVisited": "Songs visited",
-                        "historyRecords": "History records",
-                        "lastVisit": "Last visit"
-                    },
-                    "history": {
-                        "title": "Visited lyrics history",
-                        "empty": "You haven't visited any lyrics with your account yet.",
-                        "artistLabel": "Artist",
-                        "keyLabel": "Key",
-                        "viewedAtLabel": "Visited on",
-                        "openSong": "Open lyrics"
-                    }
-                },
-                "creatorPanel": {
-                    "title": "Creator Panel",
-                    "subtitle": "Your creator performance snapshot.",
-                    "cards": {
-                        "createdSongsViewed": "Created songs viewed",
-                        "moneyEarned": "Money earned",
-                        "publishedSongs": "Published songs",
-                        "draftsReady": "Drafts ready"
-                    }
-                }
-            }
-        },
-        "footer": {
-            "description": "Create, manage, and publish your music ideas in one place.",
-            "logoAlt": "Sonnetia logo",
-            "links": {
-                "home": "Home",
-                "createLyrics": "Create Lyrics",
-                "myAccount": "My Account",
-                "statistics": "Statistics",
-                "reportBug": "Report a Bug"
-            },
-            "aria": {
-                "home": "Sonnetia home",
-                "navigation": "Footer navigation",
-                "email": "Email",
-                "github": "GitHub",
-                "instagram": "Instagram"
-            },
-            "meta": {
-                "madeBy": "Made with ❤️ by musicians to musicians 🎸",
-                "allRightsReserved": "all rights reserved."
-            },
-            "bugReportModal": {
-                "modalTitle": "Report a Bug",
-                "friendlyNoticeTitle": "Hey there! Before submitting your report, please keep this in mind 💡",
-                "friendlyNoticeBody": "A bug report covers a website feature that isn't working properly; it does not include editing topics such as incorrect song titles, wrong lyrics or chords, or anything related to editing lyrics, repertoires, collections, or books.",
-                "titleLabel": "Title",
-                "titlePlaceholder": "Add a descriptive title to the report",
-                "contentLabel": "Content",
-                "contentPlaceholder": "Describe the bug in detail and how to reproduce it...",
-                "mediaLabel": "Media (Images or Videos - Max 50 MB)",
-                "mediaDropzoneCaption": "Drag images or videos here or click to select",
-                "mediaSubCaption": "You can upload one or multiple files at once (up to 50 MB total)",
-                "submitButton": "Publish Report",
-                "cancelButton": "Cancel",
-                "publishingTitle": "Publishing bug report...",
-                "publishingSub": "Tuning and fixing broken notes, please wait...",
-                "successTitle": "Report submitted",
-                "successMessage": "Thank you! Your report has been successfully registered.",
-                "errorTitle": "Error reporting bug",
-                "errorSizeLimit": "Total file size exceeds the 50 MB maximum limit.",
-                "errorInvalidFields": "Please fill in the bug title and description.",
-                "errorUploadFailed": "Could not complete file upload or report submission."
-            }
-        },
-        "navbar": {
-            "lyrics": {
-                "title": "Lyrics",
-                "children": {
-                    "createLyrics": "Publish Lyrics",
-                    "stats": "Stats"
-                }
-            },
-            "repertoires": {
-                "title": "Repertoires",
-                "children": {
-                    "createRepertoire": "Create Repertoire",
-                    "myRepertoires": "My Repertoires"
-                }
-            },
-            "books": {
-                "title": "Books",
-                "children": {
-                    "createBook": "Create Book",
-                    "myBooks": "My Books"
-                }
-            },
-            "folders": {
-                "title": "Folders",
-                "children": {
-                    "createFolder": "Create Book",
-                    "myFolders": "My Folders"
-                }
-            },
-            "account": {
-                "profile": {
-                    "name": "Name",
-                    "username": "Username",
-                    "email": "Email",
-                    "fallback": "Unknown"
-                },
-                "children": {
-                    "myAccount": "My Account",
-                    "reportBug": "Report a Bug",
-                    "admin": "Admin",
-                    "bugtracker": "Bugtracker",
-                    "signout": {
-                        "button": "Sign Out"
-                    }
-                }
-            },
-            "searchbar": {
-                "placeholder": "Search songs, artists, genres..."
-            },
-            "theme": {
-                "toDark": "Switch to dark mode",
-                "toLight": "Switch to light mode"
-            },
-            "auth": {
-                "button": "Sign In",
-                "login": {
-                    "title": "Login Form",
-                    "button": "Sign In",
-                    "divider": "Or",
-                    "username": {
-                        "label": "Email or Username",
-                        "placeholder": "Ex: user123 or user@mail.com"
-                    },
-                    "password": { "label": "Password", "placeholder": "" },
-                    "not_an_account": "Don't have an account?",
-                    "signup_button": "Sign Up",
-                    "errorModal": {
-                        "title": "Invalid User or Password",
-                        "caption": "The username or password has not been validated correctly."
-                    },
-                    "oauth": {
-                        "google": "Login with Google",
-                        "googleInitiErr": "Cannot stablish connection with Google Server",
-                        "sessionErr": "Cannot complete the login action, please try again later",
-                        "fb": "Login with Facebook",
-                        "fbInitiErr": "Cannot stablish connection with Facebook Server",
-                        "validating": "We're checking session info, please wait..."
-                    }
-                },
-                "signup": {
-                    "title": "Sign Up Form",
-                    "button": "Sign Up",
-                    "username": {
-                        "label": "Username",
-                        "placeholder": "Ex: user123"
-                    },
-                    "email": { "label": "Email", "placeholder": "Ex: user@mail.com" },
-                    "password": { "label": "Password", "placeholder": "" },
-                    "conf_pass": {
-                        "label": "Confirm Password",
-                        "placeholder": "Confirm your password"
-                    },
-                    "login_button": "Go to Login"
-                },
-                "dfa": {
-                    "title": "Multifactor Authentication",
-                    "caption": "We have sent a secret code to the email address:",
-                    "isSecure": "Save this device as trusted."
-                }
-            }
+  "app": {
+    "title": "Sonnetia",
+    "accountPage": {
+      "menuTitle": "Quick navigation",
+      "common": {
+        "defaultDisplayName": "Music Creator",
+        "guestHandle": "@guest",
+        "notAvailable": "Not available",
+        "today": "Today"
+      },
+      "hero": {
+        "kicker": "Profile overview",
+        "stats": {
+          "activeSince": "Active since: ",
+          "communityMember": "Creator community member",
+          "creatorTools": "Revenue-ready creator tools"
         }
+      },
+      "menu": {
+        "editAccount": {
+          "label": "Edit account",
+          "description": "name, lastname, email, phone"
+        },
+        "securitySettings": {
+          "label": "Security Settings",
+          "description": "DFA, password change, active sessions"
+        },
+        "statistics": {
+          "label": "Statistics",
+          "description": "sites visited, history"
+        },
+        "creatorPanel": {
+          "label": "Creator Panel",
+          "description": "created songs viewed, money earned, etc"
+        },
+        "admin": {
+          "label": "Admin",
+          "description": "User management and moderation forum"
+        },
+        "bugtracker": {
+          "label": "Bugtracker",
+          "description": "Track and manage bug reports"
+        },
+        "reportBug": {
+          "label": "Report a Bug",
+          "description": "Send details, screenshots, or videos of an issue"
+        }
+      },
+      "sections": {
+        "editAccount": {
+          "title": "Edit account",
+          "subtitle": "Update your personal details.",
+          "fields": {
+            "name": "Name",
+            "lastname": "Lastname",
+            "username": "Username",
+            "email": "Email",
+            "countryCode": "Country code",
+            "phone": "Phone"
+          },
+          "placeholders": {
+            "name": "Ex: John",
+            "lastname": "Ex: Doe",
+            "username": "Ex: johndoe",
+            "email": "Ex: john@mail.com",
+            "phone": "Ex: 88887777"
+          },
+          "actions": {
+            "edit": "Edit details",
+            "save": "Save changes",
+            "cancel": "Cancel"
+          },
+          "messages": {
+            "usernameAvailable": "Username is available",
+            "usernameTaken": "This username is already taken",
+            "emailAvailable": "Email is available",
+            "emailTaken": "This email is already in use",
+            "invalidEmail": "Enter a valid email address",
+            "invalidUsername": "Username must be at least 3 characters",
+            "updateSuccess": "Your account details have been updated.",
+            "updateError": "Could not save changes. Please try again."
+          }
+        },
+        "securitySettings": {
+          "title": "Security Settings",
+          "subtitle": "Keep your account protected.",
+          "items": {
+            "dfa": {
+              "title": "DFA (Two-Factor Authentication)",
+              "description": "Choose the channel where you want to receive verification codes when signing in or performing actions from unrecognized devices.",
+              "emailOption": "Email",
+              "smsOption": "SMS Message",
+              "noPhoneHint": "Add a phone number in 'Edit account' to enable SMS DFA.",
+              "saveChannel": "Save DFA method",
+              "savedSuccess": "DFA verification method updated successfully.",
+              "savedError": "Could not update DFA method."
+            },
+            "password": {
+              "title": "Password change",
+              "createTitle": "Link a password to your account",
+              "description": "Update your password to keep your account secure.",
+              "createDescription": "Your account was created with Google OAuth. Set a password so you can also sign in with your username or email.",
+              "newPassword": "New password",
+              "confirmPassword": "Confirm password",
+              "passwordPlaceholder": "At least 8 characters",
+              "confirmPlaceholder": "Repeat your password",
+              "minLengthHint": "Password must be at least 8 characters",
+              "mismatchHint": "Passwords do not match",
+              "savePassword": "Update password",
+              "createPasswordBtn": "Create password",
+              "dfaVerificationTitle": "Device verification required",
+              "dfaVerificationSubtitle": "This device is not marked as trusted. Enter the 6-digit code sent to:",
+              "trustDeviceLabel": "Save this device as trusted",
+              "verifyAndSave": "Verify & save password",
+              "cancelVerification": "Cancel",
+              "passwordSuccess": "Your password has been saved successfully.",
+              "passwordError": "Could not save password. Please check your details or verification code."
+            },
+            "sessions": {
+              "title": "Active sessions & devices",
+              "description": "Review the devices where your account is currently signed in and close any sessions you don't recognize.",
+              "currentSessionBadge": "Current session",
+              "trustedDeviceBadge": "Trusted device",
+              "untrustedDeviceBadge": "Standard verification",
+              "osLabel": "Operating system",
+              "ipLabel": "IP",
+              "signedInSinceLabel": "Signed in since",
+              "revokeBtn": "Revoke session",
+              "refreshBtn": "Refresh",
+              "empty": "No active sessions found.",
+              "revokeSuccess": "The selected session was closed successfully.",
+              "revokeError": "Could not close the session. Please try again."
+            }
+          }
+        },
+        "statistics": {
+          "title": "Statistics",
+          "subtitle": "Track your app activity and history.",
+          "cards": {
+            "sitesVisited": "Songs visited",
+            "historyRecords": "History records",
+            "lastVisit": "Last visit"
+          },
+          "history": {
+            "title": "Visited lyrics history",
+            "empty": "You haven't visited any lyrics with your account yet.",
+            "artistLabel": "Artist",
+            "keyLabel": "Key",
+            "viewedAtLabel": "Visited on",
+            "openSong": "Open lyrics"
+          }
+        },
+        "creatorPanel": {
+          "title": "Creator Panel",
+          "subtitle": "Your creator performance snapshot.",
+          "cards": {
+            "createdSongsViewed": "Created songs viewed",
+            "moneyEarned": "Money earned",
+            "publishedSongs": "Published songs",
+            "draftsReady": "Drafts ready"
+          }
+        }
+      }
     },
-    "lyrics": {
-        "create": {
-            "title": "Create Lyrics",
-            "breadcrumb": {
-                "home": "Home",
-                "songs": "Songs",
-                "lyrics": "My Lyrics",
-                "create": "Create"
-            },
-            "form": {
-                "title": { "label": "Title", "placeholder": "Enter song title" },
-                "artist": {
-                    "label": "Artist",
-                    "placeholder": "Enter artist name",
-                    "not_found_create": "not found, clic to create it",
-                    "typeToFind": "Type to find the artist"
-                },
-                "key": { "label": "Key", "placeholder": "Enter musical key" },
-                "genre": { "label": "Genre", "placeholder": "Enter genre" },
-                "bpm": { "label": "BPM", "placeholder": "Enter beats per minute" },
-                "lyrics": { "label": "Lyrics", "placeholder": "Enter song lyrics" },
-                "save": "Save",
-                "cancel": "Cancel"
-            }
-        },
-        "text": {
-            "labels": {
-                "postedBy": "Posted by",
-                "artist": "Artist",
-                "forkOf": "Fork of",
-                "key": "Key",
-                "rythm": "Rythm",
-                "bpm": "Beats per Minute",
-                "by": "by",
-                "exportPdf": "Export to PDF"
-            },
-            "menuLabels": {
-                "musicOptions": "Music Options",
-                "resetTone": "Reset Tone",
-                "toneUp": "Tone up",
-                "halfToneUp": "Half-tone up",
-                "halfToneDown": "Half-tone down",
-                "toneDown": "Tone down",
-                "textOptions": "Text Options",
-                "increaseFont": "Increase font size",
-                "decreaseFont": "Decrease font size",
-                "exportPdf": "Export to PDF",
-                "recordOptions": "Record Options",
-                "recordSample": "Record new sample",
-                "uploadSample": "Upload sample"
-            },
-            "musicPlayer": {
-                "noUrl": "This song doesn't have any sample",
-                "isLoading": "Sample is loading, please wait",
-                "play": "Play",
-                "stop": "Stop",
-                "pause": "Pause",
-                "tenSecondsForward": "",
-                "tenSecondsBackward": ""
-            },
-            "uploadModal": {
-                "caption": "Drag mp3, wav or ogg record here to preview",
-                "clickCaption": "Or just click here to open file selector",
-                "leaveCaption": "Leave to preview the record",
-                "badFileType": "File type not allowed",
-                "songName": "Record Name",
-                "uploadCaption": "Click upload button to complete the record uploading process",
-                "cancelButton": "Cancel",
-                "uploadButton": "Upload",
-                "uploadProcess": {
-                    "ok": "File posted successfully",
-                    "okTitle": "Success!",
-                    "errTitle": "Error",
-                    "serverErr": "Cannot connect with server, please try again later",
-                    "clientErr": "Something went wrong, please try again later.",
-                    "uploading": "Record is uploading, please wait...",
-                    "cancelButton": "Cancel",
-                    "okButton": "Ok",
-                    "retryButton": "Retry"
-                }
-            },
-            "comments": {
-                "title": "Ratings & Comments",
-                "averageLabel": "Overall average",
-                "reviewsCount": "ratings",
-                "noReviewsYet": "No ratings yet",
-                "leaveReviewTitle": "Leave your star rating & comment",
-                "ratingLabel": "Your star rating",
-                "commentLabel": "Comment",
-                "commentPlaceholder": "Share your thoughts on this song... 🎵✨",
-                "plainTextHint": "Only plain text and emojis are allowed.",
-                "invalidCharsError": "Comment contains disallowed characters. Please use plain text and emojis only.",
-                "ratingRequiredError": "Please select a rating from 1 to 5 stars.",
-                "commentRequiredError": "Please write a comment before posting.",
-                "emojiPickerTooltip": "Insert emoji",
-                "submitButton": "Post comment",
-                "submitting": "Posting...",
-                "deleteTooltip": "Delete my comment",
-                "emptyComments": "No comments for this song yet. Be the first to rate it!",
-                "loginRequiredNotice": "Sign in to leave a star rating and comment.",
-                "postSuccess": "Your rating and comment have been saved.",
-                "postError": "Could not post your comment. Please check your session and try again.",
-                "deleteSuccess": "Your comment was deleted.",
-                "deleteError": "Could not delete comment."
-            }
-        },
-        "notFound": {
-            "metaTitle": "Song Not Found | Sonnetia",
-            "metaDescription": "The lyrics or song you are looking for is not available on Sonnetia.",
-            "badge": "Error 404 · Silent measure",
-            "title": "We couldn't find this song",
-            "description": "It looks like the lyrics you're looking for were moved, deleted, or the link is incorrect.",
-            "redirectNotice": "Redirecting you to the home page in {seconds} seconds...",
-            "goHomeButton": "Go to home page",
-            "createSongButton": "Create new lyrics"
-        }
+    "footer": {
+      "description": "Create, manage, and publish your music ideas in one place.",
+      "logoAlt": "Sonnetia logo",
+      "links": {
+        "home": "Home",
+        "createLyrics": "Create Lyrics",
+        "myAccount": "My Account",
+        "statistics": "Statistics",
+        "reportBug": "Report a Bug"
+      },
+      "aria": {
+        "home": "Sonnetia home",
+        "navigation": "Footer navigation",
+        "email": "Email",
+        "github": "GitHub",
+        "instagram": "Instagram"
+      },
+      "meta": {
+        "madeBy": "Made with ❤️ by musicians to musicians 🎸",
+        "allRightsReserved": "all rights reserved."
+      },
+      "bugReportModal": {
+        "modalTitle": "Report a Bug",
+        "friendlyNoticeTitle": "Hey there! Before submitting your report, please keep this in mind 💡",
+        "friendlyNoticeBody": "A bug report covers a website feature that isn't working properly; it does not include editing topics such as incorrect song titles, wrong lyrics or chords, or anything related to editing lyrics, repertoires, collections, or books.",
+        "titleLabel": "Title",
+        "titlePlaceholder": "Add a descriptive title to the report",
+        "contentLabel": "Content",
+        "contentPlaceholder": "Describe the bug in detail and how to reproduce it...",
+        "mediaLabel": "Media (Images or Videos - Max 50 MB)",
+        "mediaDropzoneCaption": "Drag images or videos here or click to select",
+        "mediaSubCaption": "You can upload one or multiple files at once (up to 50 MB total)",
+        "submitButton": "Publish Report",
+        "cancelButton": "Cancel",
+        "publishingTitle": "Publishing bug report...",
+        "publishingSub": "Tuning and fixing broken notes, please wait...",
+        "successTitle": "Report submitted",
+        "successMessage": "Thank you! Your report has been successfully registered.",
+        "errorTitle": "Error reporting bug",
+        "errorSizeLimit": "Total file size exceeds the 50 MB maximum limit.",
+        "errorInvalidFields": "Please fill in the bug title and description.",
+        "errorUploadFailed": "Could not complete file upload or report submission.",
+        "deleteFileAria": "Remove file"
+      }
     },
-    "main": {
-        "head": {
-            "title": "Sonnetia | Home",
-            "description": "Home page of Sonnetia"
-        },
-        "betaNotice": {
-            "badge": "Beta Phase",
-            "title": "We're building Sonnetia with passion!",
-            "message": "Our application is currently in beta phase, our team is working with dedication and love to deliver a quality product that improves the lives of musicians looking to share their knowledge with fellow musicians. If you find any error, please report it using the \"Report a Bug\" button in the footer of the site. Thank you!",
-            "dismissAria": "Dismiss beta notice"
-        },
-        "searchbar": {
-            "label": "Search for a song, artist, or editor",
-            "results": {
-                "songs": {
-                    "title": "Songs",
-                    "templateReplacement": "by"
-                },
-                "artists": {
-                    "title": "Artists"
-                },
-                "users": {
-                    "title": "Editors"
-                },
-                "not_found": "No results found"
-            }
+    "navbar": {
+      "lyrics": {
+        "title": "Lyrics",
+        "children": {
+          "createLyrics": "Publish Lyrics",
+          "stats": "Stats"
         }
+      },
+      "repertoires": {
+        "title": "Repertoires",
+        "children": {
+          "createRepertoire": "Create Repertoire",
+          "myRepertoires": "My Repertoires"
+        }
+      },
+      "books": {
+        "title": "Books",
+        "children": {
+          "createBook": "Create Book",
+          "myBooks": "My Books"
+        }
+      },
+      "folders": {
+        "title": "Folders",
+        "children": {
+          "createFolder": "Create Book",
+          "myFolders": "My Folders"
+        }
+      },
+      "account": {
+        "profile": {
+          "name": "Name",
+          "username": "Username",
+          "email": "Email",
+          "fallback": "Unknown"
+        },
+        "children": {
+          "myAccount": "My Account",
+          "reportBug": "Report a Bug",
+          "admin": "Admin",
+          "bugtracker": "Bugtracker",
+          "signout": {
+            "button": "Sign Out"
+          }
+        }
+      },
+      "searchbar": {
+        "placeholder": "Search songs, artists, genres..."
+      },
+      "theme": {
+        "toDark": "Switch to dark mode",
+        "toLight": "Switch to light mode"
+      },
+      "auth": {
+        "button": "Sign In",
+        "login": {
+          "title": "Login Form",
+          "button": "Sign In",
+          "divider": "Or",
+          "username": {
+            "label": "Email or Username",
+            "placeholder": "Ex: user123 or user@mail.com"
+          },
+          "password": {
+            "label": "Password",
+            "placeholder": ""
+          },
+          "not_an_account": "Don't have an account?",
+          "signup_button": "Sign Up",
+          "errorModal": {
+            "title": "Invalid User or Password",
+            "caption": "The username or password has not been validated correctly."
+          },
+          "oauth": {
+            "google": "Login with Google",
+            "googleInitiErr": "Cannot stablish connection with Google Server",
+            "sessionErr": "Cannot complete the login action, please try again later",
+            "fb": "Login with Facebook",
+            "fbInitiErr": "Cannot stablish connection with Facebook Server",
+            "validating": "We're checking session info, please wait..."
+          }
+        },
+        "signup": {
+          "title": "Sign Up Form",
+          "button": "Sign Up",
+          "username": {
+            "label": "Username",
+            "placeholder": "Ex: user123"
+          },
+          "email": {
+            "label": "Email",
+            "placeholder": "Ex: user@mail.com"
+          },
+          "password": {
+            "label": "Password",
+            "placeholder": ""
+          },
+          "conf_pass": {
+            "label": "Confirm Password",
+            "placeholder": "Confirm your password"
+          },
+          "login_button": "Go to Login"
+        },
+        "dfa": {
+          "title": "Multifactor Authentication",
+          "caption": "We have sent a secret code to the email address:",
+          "isSecure": "Save this device as trusted."
+        }
+      }
+    }
+  },
+  "lyrics": {
+    "create": {
+      "title": "Create Lyrics",
+      "breadcrumb": {
+        "home": "Home",
+        "songs": "Songs",
+        "lyrics": "My Lyrics",
+        "create": "Create"
+      },
+      "form": {
+        "title": {
+          "label": "Title",
+          "placeholder": "Enter song title"
+        },
+        "artist": {
+          "label": "Artist",
+          "placeholder": "Enter artist name",
+          "not_found_create": "not found, clic to create it",
+          "typeToFind": "Type to find the artist"
+        },
+        "key": {
+          "label": "Key",
+          "placeholder": "Enter musical key"
+        },
+        "genre": {
+          "label": "Genre",
+          "placeholder": "Enter genre"
+        },
+        "bpm": {
+          "label": "BPM",
+          "placeholder": "Enter beats per minute"
+        },
+        "lyrics": {
+          "label": "Lyrics",
+          "placeholder": "Enter song lyrics"
+        },
+        "save": "Save",
+        "cancel": "Cancel"
+      }
+    },
+    "text": {
+      "labels": {
+        "postedBy": "Posted by",
+        "artist": "Artist",
+        "forkOf": "Fork of",
+        "key": "Key",
+        "rythm": "Rythm",
+        "bpm": "Beats per Minute",
+        "by": "by",
+        "exportPdf": "Export to PDF"
+      },
+      "menuLabels": {
+        "musicOptions": "Music Options",
+        "resetTone": "Reset Tone",
+        "toneUp": "Tone up",
+        "halfToneUp": "Half-tone up",
+        "halfToneDown": "Half-tone down",
+        "toneDown": "Tone down",
+        "textOptions": "Text Options",
+        "increaseFont": "Increase font size",
+        "decreaseFont": "Decrease font size",
+        "exportPdf": "Export to PDF",
+        "recordOptions": "Record Options",
+        "recordSample": "Record new sample",
+        "uploadSample": "Upload sample"
+      },
+      "musicPlayer": {
+        "noUrl": "This song doesn't have any sample",
+        "isLoading": "Sample is loading, please wait",
+        "play": "Play",
+        "stop": "Stop",
+        "pause": "Pause",
+        "tenSecondsForward": "",
+        "tenSecondsBackward": ""
+      },
+      "uploadModal": {
+        "caption": "Drag mp3, wav or ogg record here to preview",
+        "clickCaption": "Or just click here to open file selector",
+        "leaveCaption": "Leave to preview the record",
+        "badFileType": "File type not allowed",
+        "songName": "Record Name",
+        "uploadCaption": "Click upload button to complete the record uploading process",
+        "cancelButton": "Cancel",
+        "uploadButton": "Upload",
+        "uploadProcess": {
+          "ok": "File posted successfully",
+          "okTitle": "Success!",
+          "errTitle": "Error",
+          "serverErr": "Cannot connect with server, please try again later",
+          "clientErr": "Something went wrong, please try again later.",
+          "uploading": "Record is uploading, please wait...",
+          "cancelButton": "Cancel",
+          "okButton": "Ok",
+          "retryButton": "Retry"
+        }
+      },
+      "comments": {
+        "title": "Ratings & Comments",
+        "averageLabel": "Overall average",
+        "reviewsCount": "ratings",
+        "noReviewsYet": "No ratings yet",
+        "leaveReviewTitle": "Leave your star rating & comment",
+        "ratingLabel": "Your star rating",
+        "commentLabel": "Comment",
+        "commentPlaceholder": "Share your thoughts on this song... 🎵✨",
+        "plainTextHint": "Only plain text and emojis are allowed.",
+        "invalidCharsError": "Comment contains disallowed characters. Please use plain text and emojis only.",
+        "ratingRequiredError": "Please select a rating from 1 to 5 stars.",
+        "commentRequiredError": "Please write a comment before posting.",
+        "emojiPickerTooltip": "Insert emoji",
+        "submitButton": "Post comment",
+        "submitting": "Posting...",
+        "deleteTooltip": "Delete my comment",
+        "emptyComments": "No comments for this song yet. Be the first to rate it!",
+        "loginRequiredNotice": "Sign in to leave a star rating and comment.",
+        "postSuccess": "Your rating and comment have been saved.",
+        "postError": "Could not post your comment. Please check your session and try again.",
+        "deleteSuccess": "Your comment was deleted.",
+        "deleteError": "Could not delete comment."
+      }
     },
     "notFound": {
-        "metaTitle": "Page Not Found | Sonnetia",
-        "metaDescription": "The page you are looking for does not exist or has been moved on Sonnetia.",
-        "badge": "Error 404 · Broken strings & out of spares",
-        "title": "We snapped a string on this route",
-        "description": "Our guitarist searched the whole stage, but there are no spare strings left and the page you tried to visit doesn't exist.",
-        "redirectNotice": "Heading back to the main stage in {seconds} seconds...",
-        "goHomeButton": "Go to home page",
-        "createSongButton": "Create new lyrics"
-    },
-    "unauthorized": {
-        "metaTitle": "Unauthorized Access | Sonnetia",
-        "metaDescription": "You must sign in to access this section of Sonnetia.",
-        "badge": "Error 401 · Backstage VIP only",
-        "title": "Hold on! Our bassist is blocking the way",
-        "description": "You need to be signed in to enter this area. Log in at the top bar or head back to the main stage.",
-        "redirectNotice": "Heading back to the main stage in {seconds} seconds...",
-        "goHomeButton": "Go to home page"
-    },
-    "repertoires": {
-        "create": {
-            "title": "Create Repertoire",
-            "subtitle": "Search songs by title or artist, preview their lyrics, and build your ordered setlist.",
-            "breadcrumb": {
-                "home": "Home",
-                "repertoires": "Repertoires",
-                "myRepertoires": "My Repertoires",
-                "create": "Create"
-            },
-            "form": {
-                "nameLabel": "Repertoire name",
-                "namePlaceholder": "Ex: Friday Acoustic Gig, Sunday Setlist...",
-                "nameMinLengthError": "Repertoire name must be at least 3 characters long.",
-                "emptyLyricsError": "Add at least one song to the list to create the repertoire.",
-                "searchLabel": "Search lyrics by song or artist",
-                "searchPlaceholder": "Type at least 2 characters to search by song title or artist...",
-                "searchEmptyHint": "Use the search box to find songs and preview their lyrics before adding them.",
-                "noResults": "No songs found matching your search.",
-                "previewButton": "Preview",
-                "hidePreviewButton": "Hide",
-                "addButton": "Add",
-                "addedButton": "Added",
-                "selectedListTitle": "Songs in repertoire",
-                "selectedListSubtitle": "They will be saved in this order inside your repertoire.",
-                "selectedEmpty": "You haven't added any songs yet. Search for a song on the left and click 'Add'.",
-                "moveUp": "Move up",
-                "moveDown": "Move down",
-                "remove": "Remove from list",
-                "keyBadge": "Key",
-                "bpmBadge": "BPM",
-                "genreBadge": "Rhythm",
-                "byLabel": "by",
-                "postedByLabel": "by",
-                "previewTitle": "Lyrics preview",
-                "openFullSong": "Open full lyrics",
-                "cancel": "Cancel",
-                "save": "Create Repertoire",
-                "saving": "Saving repertoire...",
-                "successTitle": "Repertoire created!",
-                "successMessage": "Your repertoire has been saved successfully.",
-                "errorTitle": "Could not create repertoire",
-                "errorMessage": "Please make sure you are signed in and try again."
-            }
-        },
-        "myRepertoires": {
-            "title": "My Repertoires",
-            "subtitle": "Manage and open the musical repertoires you have created or that have been shared with you.",
-            "searchPlaceholder": "Filter by repertoire name...",
-            "createButton": "New Repertoire",
-            "emptyTitle": "You haven't created any repertoires yet",
-            "emptyDescription": "Organize your favorite lyrics into ordered setlists for your gigs or rehearsals.",
-            "songsCountLabel": "songs",
-            "songSingularLabel": "song",
-            "updatedLabel": "Updated on",
-            "openButton": "Open repertoire",
-            "deleteButton": "Delete",
-            "deleteSuccess": "Repertoire deleted successfully.",
-            "deleteError": "Could not delete the repertoire.",
-            "folderAllTitle": "All folders",
-            "folderAllSubtitle": "Owned & shared repertoires",
-            "folderOwnedTitle": "My Repertoires",
-            "folderOwnedSubtitle": "Created by you",
-            "folderSharedTitle": "Shared with me",
-            "folderSharedSubtitle": "Where you are an editor",
-            "emptyOwnedFolder": "You have no owned repertoires matching the filters.",
-            "emptySharedFolder": "No repertoires have been shared with you as an editor yet.",
-            "sortByLabel": "Sort by",
-            "sortRecent": "Most recent",
-            "sortOldest": "Oldest",
-            "sortNameAsc": "Alphabetical name",
-            "sortSongsDesc": "Most songs",
-            "filterSongsLabel": "Content",
-            "filterAllSongs": "All",
-            "filterWithSongs": "With songs",
-            "filterEmptySongs": "Empty",
-            "ownerBadge": "Owner",
-            "sharedByBadge": "Shared by",
-            "sharedEditorBadge": "Editor"
-        },
-        "view": {
-            "metaNotFoundTitle": "Repertoire Unavailable | Sonnetia",
-            "metaNotFoundDescription": "The repertoire does not exist or you do not have permission to view it.",
-            "songsInRepertoire": "Songs in repertoire",
-            "songIndexLabel": "Song",
-            "ofLabel": "of",
-            "previousSong": "Previous",
-            "nextSong": "Next",
-            "openIndividualSong": "Open standalone lyrics",
-            "emptySongs": "This repertoire has no songs attached yet.",
-            "backToMyRepertoires": "My Repertoires",
-            "showPlayer": "Show recording",
-            "hidePlayer": "Hide recording",
-            "showTools": "Show tools",
-            "hideTools": "Hide tools",
-            "focusModeEnter": "Focus mode",
-            "focusModeExit": "Exit focus mode",
-            "exportRepertoirePdf": "Export repertoire to PDF",
-            "editSongsButton": "Edit songs",
-            "editModalTitle": "Edit repertoire songs",
-            "addSongsSectionTitle": "Add songs to repertoire",
-            "searchSongsPlaceholder": "Search song by title or artist...",
-            "noSearchResults": "No songs found matching your search.",
-            "addSongBtn": "Add",
-            "addedSongBtn": "In list",
-            "removeSongTooltip": "Remove from repertoire",
-            "moveUpTooltip": "Move up",
-            "moveDownTooltip": "Move down",
-            "saveChangesBtn": "Save changes",
-            "cancelBtn": "Cancel",
-            "updateSuccess": "Repertoire updated successfully.",
-            "updateError": "Could not update repertoire.",
-            "shareEditLinkButton": "Share edit link",
-            "shareModalTitle": "Repertoire edit link",
-            "shareModalDescription": "Any signed-in user who opens this link will be able to view and edit the repertoire songs while browsing with the link.",
-            "generateLinkBtn": "Generate edit link",
-            "regenerateLinkBtn": "Regenerate link",
-            "revokeLinkBtn": "Revoke link",
-            "copyLinkBtn": "Copy link",
-            "copiedLinkBtn": "Copied!",
-            "noActiveLinkNotice": "There is currently no active edit link for this repertoire.",
-            "linkGeneratedSuccess": "Edit link generated successfully.",
-            "linkRevokedSuccess": "Edit link revoked successfully.",
-            "linkActionError": "Could not manage the edit link.",
-            "editingViaLinkBadge": "Editing via shared link",
-            "manageEditorsButton": "Editor users",
-            "editorsModalTitle": "Repertoire editor users",
-            "editorsModalDescription": "Add users by username or email to grant them permanent edit access to this repertoire.",
-            "searchEditorPlaceholder": "Search by username, email, or name...",
-            "addEditorBtn": "Add editor",
-            "alreadyEditorBtn": "Already editor",
-            "currentEditorsTitle": "Editors with access",
-            "noEditorsEmpty": "You haven't added any editor users to this repertoire yet.",
-            "noUsersFound": "No users found matching your search.",
-            "removeEditorTooltip": "Remove edit access",
-            "editorAddedSuccess": "User added as editor successfully.",
-            "editorRemovedSuccess": "Editor access revoked successfully.",
-            "editorActionError": "Could not update the editors list.",
-            "focusSwipeHint": "Swipe or drag left/right like a book, or use the arrows",
-            "toggleSidebar": "Repertoire menu",
-            "forbiddenBadge": "Restricted access · Error 403 / 404",
-            "forbiddenTitle": "Repertoire not found or access denied",
-            "forbiddenDescription": "You do not have OpenFGA permissions to view this repertoire, or the link does not exist.",
-            "redirectNotice": "Redirecting to the home page in {seconds} seconds...",
-            "goHomeButton": "Go to home page",
-            "myRepertoiresButton": "View my repertoires"
-        }
-    },
-    "artists": {
-        "view": {
-            "metaNotFoundTitle": "Artist Not Found | Sonnetia",
-            "metaNotFoundDescription": "The artist you are looking for does not exist on Sonnetia.",
-            "verifiedBadge": "Verified artist",
-            "postedByLabel": "Added by",
-            "totalSongsBadge": "Songs in catalog",
-            "matchingSongsBadge": "Matches",
-            "filtersSectionTitle": "Filters & sorting",
-            "showAdvancedFilters": "More filters",
-            "hideAdvancedFilters": "Fewer filters",
-            "clearFiltersBtn": "Clear filters",
-            "sortByLabel": "Sort by field",
-            "sortDirLabel": "Direction",
-            "sortAsc": "Ascending",
-            "sortDesc": "Descending",
-            "fields": {
-                "id": "Lyric ID",
-                "name": "Song title",
-                "lyrics_text": "Lyrics content",
-                "genre": "Genre / Rhythm",
-                "sample_uri": "Audio sample",
-                "bpm": "Tempo",
-                "key": "Musical key",
-                "artist_id": "Artist",
-                "posted_by": "Posted by",
-                "fork_of": "Base song / Fork",
-                "creation_date": "Creation date",
-                "last_modified": "Last modified",
-                "album_id": "Album"
-            },
-            "placeholders": {
-                "name": "Filter by song title...",
-                "lyrics_text": "Search word or phrase inside lyrics...",
-                "id": "Filter by UUID...",
-                "genre": "All genres",
-                "key": "All keys",
-                "bpmMin": "Min BPM",
-                "bpmMax": "Max BPM",
-                "posted_by": "Posted by username...",
-                "fork_of": "All songs",
-                "forkOriginalOnly": "Originals only",
-                "forkOnly": "Forks only",
-                "album_id": "All albums",
-                "withAlbum": "With album",
-                "withoutAlbum": "Without album",
-                "sampleAll": "All",
-                "sampleYes": "With audio",
-                "sampleNo": "No audio",
-                "dateFrom": "From",
-                "dateTo": "To"
-            },
-            "card": {
-                "keyLabel": "Key",
-                "bpmLabel": "BPM",
-                "genreLabel": "Genre",
-                "postedByLabel": "By",
-                "forkOfLabel": "Fork of",
-                "albumLabel": "Album",
-                "createdLabel": "Created",
-                "modifiedLabel": "Modified",
-                "hasAudioBadge": "Audio sample",
-                "openSongBtn": "View lyrics & chords"
-            },
-            "emptySongsTitle": "No songs found for this artist",
-            "emptySongsDescription": "Try adjusting or clearing the search filters."
-        }
-    },
-    "editors": {
-        "view": {
-            "metaNotFoundTitle": "Editor Not Found | Sonnetia",
-            "metaNotFoundDescription": "The editor you are looking for does not exist on Sonnetia.",
-            "selfBadge": "Your editor profile",
-            "selfBannerText": "You are viewing your own catalog of published songs. From here you can manage and delete your lyrics.",
-            "createSongCta": "Publish new lyrics",
-            "memberSinceLabel": "Member since",
-            "totalSongsBadge": "Published songs",
-            "matchingSongsBadge": "Matches",
-            "filtersSectionTitle": "Filters & sorting",
-            "showAdvancedFilters": "More filters",
-            "hideAdvancedFilters": "Fewer filters",
-            "clearFiltersBtn": "Clear filters",
-            "sortByLabel": "Sort by field",
-            "sortDirLabel": "Direction",
-            "sortAsc": "Ascending",
-            "sortDesc": "Descending",
-            "fields": {
-                "id": "Lyric ID",
-                "name": "Song title",
-                "lyrics_text": "Lyrics content",
-                "genre": "Genre / Rhythm",
-                "sample_uri": "Audio sample",
-                "bpm": "Tempo",
-                "key": "Musical key",
-                "artist_id": "Artist",
-                "posted_by": "Posted by",
-                "fork_of": "Base song / Fork",
-                "creation_date": "Creation date",
-                "last_modified": "Last modified",
-                "album_id": "Album"
-            },
-            "placeholders": {
-                "name": "Filter by song title...",
-                "lyrics_text": "Search word or phrase inside lyrics...",
-                "id": "Filter by UUID...",
-                "genre": "All genres",
-                "key": "All keys",
-                "bpmMin": "Min BPM",
-                "bpmMax": "Max BPM",
-                "artist_id": "All artists",
-                "fork_of": "All songs",
-                "forkOriginalOnly": "Originals only",
-                "forkOnly": "Forks only",
-                "album_id": "All albums",
-                "withAlbum": "With album",
-                "withoutAlbum": "Without album",
-                "sampleAll": "All",
-                "sampleYes": "With audio",
-                "sampleNo": "No audio",
-                "dateFrom": "From",
-                "dateTo": "To"
-            },
-            "card": {
-                "keyLabel": "Key",
-                "bpmLabel": "BPM",
-                "genreLabel": "Genre",
-                "artistLabel": "Artist",
-                "forkOfLabel": "Fork of",
-                "albumLabel": "Album",
-                "createdLabel": "Created",
-                "modifiedLabel": "Modified",
-                "hasAudioBadge": "Audio sample",
-                "openSongBtn": "View lyrics & chords",
-                "deleteSongTooltip": "Delete song",
-                "deleteModalTitle": "Delete song",
-                "deleteModalConfirm": "Are you sure you want to mark as deleted the song",
-                "deleteModalCancel": "Cancel",
-                "deleteModalAccept": "Yes, delete",
-                "deleteSuccess": "The song has been marked as deleted.",
-                "deleteError": "Could not delete the song."
-            },
-            "emptySongsTitle": "No songs found for this editor",
-            "emptySongsDescription": "Try adjusting or clearing the search filters."
-        }
+      "metaTitle": "Song Not Found | Sonnetia",
+      "metaDescription": "The lyrics or song you are looking for is not available on Sonnetia.",
+      "badge": "Error 404 · Silent measure",
+      "title": "We couldn't find this song",
+      "description": "It looks like the lyrics you're looking for were moved, deleted, or the link is incorrect.",
+      "redirectNotice": "Redirecting you to the home page in {seconds} seconds...",
+      "goHomeButton": "Go to home page",
+      "createSongButton": "Create new lyrics"
     }
+  },
+  "main": {
+    "head": {
+      "title": "Sonnetia | Home",
+      "description": "Home page of Sonnetia"
+    },
+    "betaNotice": {
+      "badge": "Beta Phase",
+      "title": "We're building Sonnetia with passion!",
+      "message": "Our application is currently in beta phase, our team is working with dedication and love to deliver a quality product that improves the lives of musicians looking to share their knowledge with fellow musicians. If you find any error, please report it using the \"Report a Bug\" button in the footer of the site. Thank you!",
+      "dismissAria": "Dismiss beta notice"
+    },
+    "searchbar": {
+      "label": "Search for a song, artist, or editor",
+      "results": {
+        "songs": {
+          "title": "Songs",
+          "templateReplacement": "by"
+        },
+        "artists": {
+          "title": "Artists"
+        },
+        "users": {
+          "title": "Editors"
+        },
+        "not_found": "No results found"
+      }
+    },
+    "popular": {
+      "title": "Most Popular",
+      "topSongs": "Top Songs",
+      "topArtists": "Top Artists",
+      "bestRated": "Top Rated",
+      "by": "by"
+    },
+    "adBanner": "Ad banner"
+  },
+  "notFound": {
+    "metaTitle": "Page Not Found | Sonnetia",
+    "metaDescription": "The page you are looking for does not exist or has been moved on Sonnetia.",
+    "badge": "Error 404 · Broken strings & out of spares",
+    "title": "We snapped a string on this route",
+    "description": "Our guitarist searched the whole stage, but there are no spare strings left and the page you tried to visit doesn't exist.",
+    "redirectNotice": "Heading back to the main stage in {seconds} seconds...",
+    "goHomeButton": "Go to home page",
+    "createSongButton": "Create new lyrics"
+  },
+  "unauthorized": {
+    "metaTitle": "Unauthorized Access | Sonnetia",
+    "metaDescription": "You must sign in to access this section of Sonnetia.",
+    "badge": "Error 401 · Backstage VIP only",
+    "title": "Hold on! Our bassist is blocking the way",
+    "description": "You need to be signed in to enter this area. Log in at the top bar or head back to the main stage.",
+    "redirectNotice": "Heading back to the main stage in {seconds} seconds...",
+    "goHomeButton": "Go to home page"
+  },
+  "repertoires": {
+    "create": {
+      "title": "Create Repertoire",
+      "subtitle": "Search songs by title or artist, preview their lyrics, and build your ordered setlist.",
+      "breadcrumb": {
+        "home": "Home",
+        "repertoires": "Repertoires",
+        "myRepertoires": "My Repertoires",
+        "create": "Create"
+      },
+      "form": {
+        "nameLabel": "Repertoire name",
+        "namePlaceholder": "Ex: Friday Acoustic Gig, Sunday Setlist...",
+        "nameMinLengthError": "Repertoire name must be at least 3 characters long.",
+        "emptyLyricsError": "Add at least one song to the list to create the repertoire.",
+        "searchLabel": "Search lyrics by song or artist",
+        "searchPlaceholder": "Type at least 2 characters to search by song title or artist...",
+        "searchEmptyHint": "Use the search box to find songs and preview their lyrics before adding them.",
+        "noResults": "No songs found matching your search.",
+        "previewButton": "Preview",
+        "hidePreviewButton": "Hide",
+        "addButton": "Add",
+        "addedButton": "Added",
+        "selectedListTitle": "Songs in repertoire",
+        "selectedListSubtitle": "They will be saved in this order inside your repertoire.",
+        "selectedEmpty": "You haven't added any songs yet. Search for a song on the left and click 'Add'.",
+        "moveUp": "Move up",
+        "moveDown": "Move down",
+        "remove": "Remove from list",
+        "keyBadge": "Key",
+        "bpmBadge": "BPM",
+        "genreBadge": "Rhythm",
+        "byLabel": "by",
+        "postedByLabel": "by",
+        "previewTitle": "Lyrics preview",
+        "openFullSong": "Open full lyrics",
+        "cancel": "Cancel",
+        "save": "Create Repertoire",
+        "saving": "Saving repertoire...",
+        "successTitle": "Repertoire created!",
+        "successMessage": "Your repertoire has been saved successfully.",
+        "errorTitle": "Could not create repertoire",
+        "errorMessage": "Please make sure you are signed in and try again."
+      }
+    },
+    "myRepertoires": {
+      "title": "My Repertoires",
+      "subtitle": "Manage and open the musical repertoires you have created or that have been shared with you.",
+      "searchPlaceholder": "Filter by repertoire name...",
+      "createButton": "New Repertoire",
+      "emptyTitle": "You haven't created any repertoires yet",
+      "emptyDescription": "Organize your favorite lyrics into ordered setlists for your gigs or rehearsals.",
+      "songsCountLabel": "songs",
+      "songSingularLabel": "song",
+      "updatedLabel": "Updated on",
+      "openButton": "Open repertoire",
+      "deleteButton": "Delete",
+      "deleteSuccess": "Repertoire deleted successfully.",
+      "deleteError": "Could not delete the repertoire.",
+      "folderAllTitle": "All folders",
+      "folderAllSubtitle": "Owned & shared repertoires",
+      "folderOwnedTitle": "My Repertoires",
+      "folderOwnedSubtitle": "Created by you",
+      "folderSharedTitle": "Shared with me",
+      "folderSharedSubtitle": "Where you are an editor",
+      "emptyOwnedFolder": "You have no owned repertoires matching the filters.",
+      "emptySharedFolder": "No repertoires have been shared with you as an editor yet.",
+      "sortByLabel": "Sort by",
+      "sortRecent": "Most recent",
+      "sortOldest": "Oldest",
+      "sortNameAsc": "Alphabetical name",
+      "sortSongsDesc": "Most songs",
+      "filterSongsLabel": "Content",
+      "filterAllSongs": "All",
+      "filterWithSongs": "With songs",
+      "filterEmptySongs": "Empty",
+      "ownerBadge": "Owner",
+      "sharedByBadge": "Shared by",
+      "sharedEditorBadge": "Editor"
+    },
+    "view": {
+      "metaNotFoundTitle": "Repertoire Unavailable | Sonnetia",
+      "metaNotFoundDescription": "The repertoire does not exist or you do not have permission to view it.",
+      "songsInRepertoire": "Songs in repertoire",
+      "songIndexLabel": "Song",
+      "ofLabel": "of",
+      "previousSong": "Previous",
+      "nextSong": "Next",
+      "openIndividualSong": "Open standalone lyrics",
+      "emptySongs": "This repertoire has no songs attached yet.",
+      "backToMyRepertoires": "My Repertoires",
+      "showPlayer": "Show recording",
+      "hidePlayer": "Hide recording",
+      "showTools": "Show tools",
+      "hideTools": "Hide tools",
+      "focusModeEnter": "Focus mode",
+      "focusModeExit": "Exit focus mode",
+      "exportRepertoirePdf": "Export repertoire to PDF",
+      "editSongsButton": "Edit songs",
+      "editModalTitle": "Edit repertoire songs",
+      "addSongsSectionTitle": "Add songs to repertoire",
+      "searchSongsPlaceholder": "Search song by title or artist...",
+      "noSearchResults": "No songs found matching your search.",
+      "addSongBtn": "Add",
+      "addedSongBtn": "In list",
+      "removeSongTooltip": "Remove from repertoire",
+      "moveUpTooltip": "Move up",
+      "moveDownTooltip": "Move down",
+      "saveChangesBtn": "Save changes",
+      "cancelBtn": "Cancel",
+      "updateSuccess": "Repertoire updated successfully.",
+      "updateError": "Could not update repertoire.",
+      "shareEditLinkButton": "Share edit link",
+      "shareModalTitle": "Repertoire edit link",
+      "shareModalDescription": "Any signed-in user who opens this link will be able to view and edit the repertoire songs while browsing with the link.",
+      "generateLinkBtn": "Generate edit link",
+      "regenerateLinkBtn": "Regenerate link",
+      "revokeLinkBtn": "Revoke link",
+      "copyLinkBtn": "Copy link",
+      "copiedLinkBtn": "Copied!",
+      "noActiveLinkNotice": "There is currently no active edit link for this repertoire.",
+      "linkGeneratedSuccess": "Edit link generated successfully.",
+      "linkRevokedSuccess": "Edit link revoked successfully.",
+      "linkActionError": "Could not manage the edit link.",
+      "editingViaLinkBadge": "Editing via shared link",
+      "manageEditorsButton": "Editor users",
+      "editorsModalTitle": "Repertoire editor users",
+      "editorsModalDescription": "Add users by username or email to grant them permanent edit access to this repertoire.",
+      "searchEditorPlaceholder": "Search by username, email, or name...",
+      "addEditorBtn": "Add editor",
+      "alreadyEditorBtn": "Already editor",
+      "currentEditorsTitle": "Editors with access",
+      "noEditorsEmpty": "You haven't added any editor users to this repertoire yet.",
+      "noUsersFound": "No users found matching your search.",
+      "removeEditorTooltip": "Remove edit access",
+      "editorAddedSuccess": "User added as editor successfully.",
+      "editorRemovedSuccess": "Editor access revoked successfully.",
+      "editorActionError": "Could not update the editors list.",
+      "focusSwipeHint": "Swipe or drag left/right like a book, or use the arrows",
+      "toggleSidebar": "Repertoire menu",
+      "forbiddenBadge": "Restricted access · Error 403 / 404",
+      "forbiddenTitle": "Repertoire not found or access denied",
+      "forbiddenDescription": "You do not have OpenFGA permissions to view this repertoire, or the link does not exist.",
+      "redirectNotice": "Redirecting to the home page in {seconds} seconds...",
+      "goHomeButton": "Go to home page",
+      "myRepertoiresButton": "View my repertoires"
+    }
+  },
+  "artists": {
+    "view": {
+      "metaNotFoundTitle": "Artist Not Found | Sonnetia",
+      "metaNotFoundDescription": "The artist you are looking for does not exist on Sonnetia.",
+      "verifiedBadge": "Verified artist",
+      "postedByLabel": "Added by",
+      "totalSongsBadge": "Songs in catalog",
+      "matchingSongsBadge": "Matches",
+      "filtersSectionTitle": "Filters & sorting",
+      "showAdvancedFilters": "More filters",
+      "hideAdvancedFilters": "Fewer filters",
+      "clearFiltersBtn": "Clear filters",
+      "sortByLabel": "Sort by field",
+      "sortDirLabel": "Direction",
+      "sortAsc": "Ascending",
+      "sortDesc": "Descending",
+      "fields": {
+        "id": "Lyric ID",
+        "name": "Song title",
+        "lyrics_text": "Lyrics content",
+        "genre": "Genre / Rhythm",
+        "sample_uri": "Audio sample",
+        "bpm": "Tempo",
+        "key": "Musical key",
+        "artist_id": "Artist",
+        "posted_by": "Posted by",
+        "fork_of": "Base song / Fork",
+        "creation_date": "Creation date",
+        "last_modified": "Last modified",
+        "album_id": "Album"
+      },
+      "placeholders": {
+        "name": "Filter by song title...",
+        "lyrics_text": "Search word or phrase inside lyrics...",
+        "id": "Filter by UUID...",
+        "genre": "All genres",
+        "key": "All keys",
+        "bpmMin": "Min BPM",
+        "bpmMax": "Max BPM",
+        "posted_by": "Posted by username...",
+        "fork_of": "All songs",
+        "forkOriginalOnly": "Originals only",
+        "forkOnly": "Forks only",
+        "album_id": "All albums",
+        "withAlbum": "With album",
+        "withoutAlbum": "Without album",
+        "sampleAll": "All",
+        "sampleYes": "With audio",
+        "sampleNo": "No audio",
+        "dateFrom": "From",
+        "dateTo": "To"
+      },
+      "card": {
+        "keyLabel": "Key",
+        "bpmLabel": "BPM",
+        "genreLabel": "Genre",
+        "postedByLabel": "By",
+        "forkOfLabel": "Fork of",
+        "albumLabel": "Album",
+        "createdLabel": "Created",
+        "modifiedLabel": "Modified",
+        "hasAudioBadge": "Audio sample",
+        "openSongBtn": "View lyrics & chords"
+      },
+      "emptySongsTitle": "No songs found for this artist",
+      "emptySongsDescription": "Try adjusting or clearing the search filters."
+    }
+  },
+  "editors": {
+    "view": {
+      "metaNotFoundTitle": "Editor Not Found | Sonnetia",
+      "metaNotFoundDescription": "The editor you are looking for does not exist on Sonnetia.",
+      "selfBadge": "Your editor profile",
+      "selfBannerText": "You are viewing your own catalog of published songs. From here you can manage and delete your lyrics.",
+      "createSongCta": "Publish new lyrics",
+      "memberSinceLabel": "Member since",
+      "totalSongsBadge": "Published songs",
+      "matchingSongsBadge": "Matches",
+      "filtersSectionTitle": "Filters & sorting",
+      "showAdvancedFilters": "More filters",
+      "hideAdvancedFilters": "Fewer filters",
+      "clearFiltersBtn": "Clear filters",
+      "sortByLabel": "Sort by field",
+      "sortDirLabel": "Direction",
+      "sortAsc": "Ascending",
+      "sortDesc": "Descending",
+      "fields": {
+        "id": "Lyric ID",
+        "name": "Song title",
+        "lyrics_text": "Lyrics content",
+        "genre": "Genre / Rhythm",
+        "sample_uri": "Audio sample",
+        "bpm": "Tempo",
+        "key": "Musical key",
+        "artist_id": "Artist",
+        "posted_by": "Posted by",
+        "fork_of": "Base song / Fork",
+        "creation_date": "Creation date",
+        "last_modified": "Last modified",
+        "album_id": "Album"
+      },
+      "placeholders": {
+        "name": "Filter by song title...",
+        "lyrics_text": "Search word or phrase inside lyrics...",
+        "id": "Filter by UUID...",
+        "genre": "All genres",
+        "key": "All keys",
+        "bpmMin": "Min BPM",
+        "bpmMax": "Max BPM",
+        "artist_id": "All artists",
+        "fork_of": "All songs",
+        "forkOriginalOnly": "Originals only",
+        "forkOnly": "Forks only",
+        "album_id": "All albums",
+        "withAlbum": "With album",
+        "withoutAlbum": "Without album",
+        "sampleAll": "All",
+        "sampleYes": "With audio",
+        "sampleNo": "No audio",
+        "dateFrom": "From",
+        "dateTo": "To"
+      },
+      "card": {
+        "keyLabel": "Key",
+        "bpmLabel": "BPM",
+        "genreLabel": "Genre",
+        "artistLabel": "Artist",
+        "forkOfLabel": "Fork of",
+        "albumLabel": "Album",
+        "createdLabel": "Created",
+        "modifiedLabel": "Modified",
+        "hasAudioBadge": "Audio sample",
+        "openSongBtn": "View lyrics & chords",
+        "deleteSongTooltip": "Delete song",
+        "deleteModalTitle": "Delete song",
+        "deleteModalConfirm": "Are you sure you want to mark as deleted the song",
+        "deleteModalCancel": "Cancel",
+        "deleteModalAccept": "Yes, delete",
+        "deleteSuccess": "The song has been marked as deleted.",
+        "deleteError": "Could not delete the song."
+      },
+      "emptySongsTitle": "No songs found for this editor",
+      "emptySongsDescription": "Try adjusting or clearing the search filters."
+    }
+  },
+  "bugtracker": {
+    "metaTitle": "Bugtracker",
+    "metaDescription": "Track, assign, and resolve bug reports in Sonnetia",
+    "header": {
+      "title": "Bugtracker & Issue Monitoring",
+      "description": "Manage and resolve bugs reported by the community. Developers can only see their assigned tickets; Admins can reassign tickets and oversee all reports.",
+      "reportBugBtn": "Report Bug",
+      "refreshBtn": "Refresh"
+    },
+    "stats": {
+      "total": "Total",
+      "open": "Open",
+      "inProgress": "In Progress",
+      "resolved": "Resolved"
+    },
+    "filters": {
+      "searchPlaceholder": "Search by title, description, or reporter...",
+      "statusAll": "All",
+      "statusOpen": "Open",
+      "statusInProgress": "In Progress",
+      "statusResolved": "Resolved",
+      "statusClosed": "Closed"
+    },
+    "statuses": {
+      "open": "Open",
+      "in_progress": "In Progress",
+      "resolved": "Resolved",
+      "closed": "Closed"
+    },
+    "loading": "Loading bug reports...",
+    "empty": {
+      "title": "No bug reports found",
+      "description": "There are no reports matching your filters or no bugs have been submitted yet."
+    },
+    "card": {
+      "reportedBy": "Reported by:",
+      "assignedTo": "Assigned to:",
+      "unassigned": "Unassigned",
+      "reassignLabel": "Assign developer:",
+      "autoAssignNote": "Auto-assigned by OpenFGA",
+      "viewDetailsBtn": "View details",
+      "attachments": "Attachments"
+    },
+    "detailModal": {
+      "title": "Bug Report Details",
+      "reporter": "Reporter",
+      "date": "Report Date",
+      "status": "Current Status",
+      "assignee": "Assignee (Developer)",
+      "description": "Description",
+      "evidence": "Attached Evidence (Screenshots / Videos)",
+      "noEvidence": "No evidence attached.",
+      "viewEvidence": "View file",
+      "changeStatus": "Change Status",
+      "reassignDeveloper": "Reassign Developer",
+      "close": "Close"
+    },
+    "notifications": {
+      "loadErrorTitle": "Error",
+      "loadErrorMessage": "Could not load bug reports.",
+      "statusSuccessTitle": "Status updated",
+      "statusSuccessMessage": "Bug report status was changed to: {status}.",
+      "statusErrorTitle": "Error",
+      "statusErrorMessage": "Could not update bug status.",
+      "assignSuccessTitle": "Bug assigned",
+      "assignSuccessMessage": "The report was reassigned successfully.",
+      "assignErrorTitle": "Error",
+      "assignErrorMessage": "Could not reassign developer."
+    }
+  },
+  "admin": {
+    "metaTitle": "User Management & Moderation Forum",
+    "metaDescription": "Manage user roles, permissions, and moderation forum in Sonnetia",
+    "header": {
+      "title": "Admin Control Panel",
+      "adminBadge": "Admin: @{username}",
+      "description": "Manage user permissions (isAdmin / isDeveloper) and moderate ban cases through the Evidence Forum.",
+      "goToBugtracker": "Go to Bugtracker",
+      "refreshAll": "Refresh All"
+    },
+    "tabs": {
+      "users": "Users Directory",
+      "forum": "Moderation Forum & Bans"
+    },
+    "usersTable": {
+      "searchPlaceholder": "Filter by username, email, or name...",
+      "filterAll": "All",
+      "filterAdmins": "Admins",
+      "filterDevelopers": "Developers",
+      "filterBanned": "Banned",
+      "loading": "Loading users...",
+      "thUser": "User",
+      "thEmail": "Email",
+      "thStatus": "Status",
+      "thAdmin": "Admin (isAdmin)",
+      "thDeveloper": "Developer (isDeveloper)",
+      "thModeration": "Moderation (Forum)",
+      "activeBadge": "Active",
+      "bannedBadge": "Banned",
+      "noName": "No name",
+      "yes": "Yes",
+      "no": "No",
+      "openCaseBtn": "Open Case / Report",
+      "viewForumBtn": "View Forum ({count})"
+    },
+    "forumTab": {
+      "loading": "Loading moderation forum cases...",
+      "emptyTitle": "No open tickets in forum",
+      "emptyDescription": "You can open a report ticket from the Users Directory by attaching evidence, a title, and a description.",
+      "statusOpen": "Under Discussion (Open)",
+      "verdictPrefix": "Verdict: {verdict}",
+      "defaultTitle": "User conduct report",
+      "reportedLabel": "Reported: @{username}",
+      "reporterLabel": "Reporter: @{username}",
+      "resolutionLabel": "Final resolution:",
+      "enterForumBtn": "Enter Case Forum"
+    },
+    "createCaseModal": {
+      "title": "Open Forum Ticket against @{username}",
+      "notice": "This ticket will open an inquiry in the Admin Forum where only the reporter, the reported user (@{username}), and administrators can participate to present evidence and counter-evidence.",
+      "titleLabel": "Report Title",
+      "titlePlaceholder": "Ex: Content misuse or abusive behavior",
+      "descriptionLabel": "Detailed Description",
+      "descriptionPlaceholder": "Explain the facts and reasons for the report...",
+      "evidenceLabel": "Evidence / Proof (Images or Videos)",
+      "attachBtn": "Attach Evidence",
+      "cancelBtn": "Cancel",
+      "submitBtn": "Open Forum Ticket"
+    },
+    "forumModal": {
+      "title": "Moderation Forum: {caseTitle}",
+      "fallbackTitle": "User Case Record",
+      "reportedUserBadge": "Reported User: @{username}",
+      "reporterBadge": "Reported by: @{username}",
+      "statusOpenBadge": "Open for Evidence",
+      "statusClosedBadge": "Closed: {status}",
+      "accessNotice": "Exclusive access: Reporter, Reported User, and Administrators.",
+      "roleAdmin": "Admin",
+      "roleReported": "Reported User (Defense)",
+      "roleReporter": "Reporter",
+      "viewEvidence": "View Evidence",
+      "replyPlaceholder": "Add additional evidence, arguments, or counter-evidence to the forum...",
+      "replyAttachBtn": "Attach Evidence ({count})",
+      "replySubmitBtn": "Post in Forum",
+      "adminDecisionDivider": "Admin Decision / Resolution",
+      "resolutionNoteLabel": "Admin resolution note (optional)",
+      "resolutionNotePlaceholder": "Write the official conclusion to close or update the forum ruling...",
+      "decisionPrompt": "Select final decision to resolve the forum case:",
+      "verdictBanned": "Banned",
+      "verdictPardoned": "Pardoned",
+      "verdictDismissed": "Dismissed"
+    },
+    "notifications": {
+      "loadUsersErrorTitle": "Error",
+      "loadUsersErrorMessage": "Could not load users list.",
+      "updateRoleSuccessTitle": "Permissions updated",
+      "updateRoleSuccessMessage": "Updated {field} for @{username}.",
+      "updateRoleErrorTitle": "Error",
+      "updateRoleErrorMessage": "Could not update user role.",
+      "requiredFieldsTitle": "Required fields",
+      "requiredFieldsMessage": "Please enter a title and description to open the forum ticket.",
+      "sizeLimitTitle": "Limit exceeded",
+      "sizeLimitMessage": "Attached files cannot exceed 50 MB.",
+      "createCaseSuccessTitle": "Forum Ticket created",
+      "createCaseSuccessMessage": "The case has been opened against @{username}.",
+      "createCaseErrorTitle": "Error",
+      "createCaseErrorMessage": "Could not open ticket in moderation forum.",
+      "forumDetailErrorTitle": "Access denied or error",
+      "forumDetailErrorMessage": "Could not load forum thread.",
+      "replySuccessTitle": "Message posted",
+      "replySuccessMessage": "Your response/evidence was added to the case thread.",
+      "replyErrorTitle": "Error",
+      "replyErrorMessage": "Could not post response in forum.",
+      "verdictSuccessTitle": "Case resolved: {verdict}",
+      "verdictSuccessMessage": "The ticket was closed with the decision \"{verdict}\".",
+      "verdictErrorTitle": "Error",
+      "verdictErrorMessage": "Could not emit case resolution."
+    }
+  },
+  "banCaseForum": {
+    "metaTitle": "Moderation Case Forum",
+    "metaDescription": "Restricted forum to discuss and resolve conduct cases with evidence.",
+    "forbiddenTitle": "Access Denied",
+    "forbiddenMessage": "This forum ticket is restricted. Only the reporter, the reported user, and administrators are authorized to participate.",
+    "backToAdmin": "Go to Admin Panel",
+    "header": {
+      "title": "Moderation Forum: {caseTitle}",
+      "defaultCaseTitle": "Case Record #{id}",
+      "reportedUserBadge": "Reported User: @{username}",
+      "reporterBadge": "Reported by: @{username}",
+      "statusOpen": "Open for Evidence",
+      "statusClosed": "Closed: {status}",
+      "exclusiveAccess": "Exclusive access: Reporter, Reported User, and Administrators."
+    },
+    "roleLabels": {
+      "admin": "Admin",
+      "reported": "Reported User (Defense)",
+      "reporter": "Reporter"
+    },
+    "viewEvidence": "View Evidence",
+    "replySection": {
+      "placeholder": "Add additional evidence, arguments, or counter-evidence to the forum...",
+      "attachBtn": "Attach Evidence ({count})",
+      "submitBtn": "Post in Forum"
+    },
+    "adminDecision": {
+      "divider": "Admin Decision / Resolution",
+      "noteLabel": "Admin resolution note (optional)",
+      "notePlaceholder": "Write the official conclusion to close or update the forum ruling...",
+      "prompt": "Select final decision to resolve the forum case:",
+      "verdictBanned": "Banned",
+      "verdictPardoned": "Pardoned",
+      "verdictDismissed": "Dismissed"
+    },
+    "notifications": {
+      "sizeLimitTitle": "Limit exceeded",
+      "sizeLimitMessage": "Attached files cannot exceed 50 MB.",
+      "replySuccessTitle": "Message posted",
+      "replySuccessMessage": "Your response/evidence was added to the case thread.",
+      "replyErrorTitle": "Error",
+      "replyErrorMessage": "Could not post response in forum.",
+      "verdictSuccessTitle": "Case resolved: {verdict}",
+      "verdictSuccessMessage": "The ticket was closed with the decision \"{verdict}\".",
+      "verdictErrorTitle": "Error",
+      "verdictErrorMessage": "Could not emit case resolution."
+    }
+  }
 }

@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { IconBug, IconChevronRight, IconShieldLock, IconTerminal2 } from '@tabler/icons-react';
 import { AccountMenuId, IAccountMenuItem } from './account.types';
 import { BugReportModal } from '../bugs/BugReportModal';
+import { I18nTypes } from '@/i18n/dictionaries';
 
 interface IAccountSidebarProps {
     menuTitle: string;
@@ -12,6 +13,8 @@ interface IAccountSidebarProps {
     onSelectSection: (sectionId: AccountMenuId) => void;
     isAdmin?: boolean;
     isDeveloper?: boolean;
+    i18nMenu?: I18nTypes['app']['accountPage']['menu'];
+    bugModalTexts?: I18nTypes['app']['footer']['bugReportModal'];
 }
 
 const AccountSidebar = ({
@@ -21,6 +24,8 @@ const AccountSidebar = ({
     onSelectSection,
     isAdmin = false,
     isDeveloper = false,
+    i18nMenu,
+    bugModalTexts,
 }: IAccountSidebarProps) => {
     const [bugModalOpened, setBugModalOpened] = useState(false);
 
@@ -57,8 +62,8 @@ const AccountSidebar = ({
                                 <IconShieldLock size={18} />
                             </span>
                             <span className='sideMenuText'>
-                                <strong>Admin</strong>
-                                <small>Gestión de usuarios y foro de moderación</small>
+                                <strong>{i18nMenu?.admin?.label || 'Admin'}</strong>
+                                <small>{i18nMenu?.admin?.description}</small>
                             </span>
                             <IconChevronRight size={16} className='sideMenuChevron' />
                         </a>
@@ -70,8 +75,8 @@ const AccountSidebar = ({
                                 <IconTerminal2 size={18} />
                             </span>
                             <span className='sideMenuText'>
-                                <strong>Bugtracker</strong>
-                                <small>Seguimiento y estado de reportes de bugs</small>
+                                <strong>{i18nMenu?.bugtracker?.label || 'Bugtracker'}</strong>
+                                <small>{i18nMenu?.bugtracker?.description}</small>
                             </span>
                             <IconChevronRight size={16} className='sideMenuChevron' />
                         </a>
@@ -86,8 +91,10 @@ const AccountSidebar = ({
                             <IconBug size={18} />
                         </span>
                         <span className='sideMenuText'>
-                            <strong style={{ color: '#ef4444' }}>Reportar un Bug</strong>
-                            <small>Envía detalles, capturas o videos de un problema</small>
+                            <strong style={{ color: '#ef4444' }}>
+                                {i18nMenu?.reportBug?.label || 'Reportar un Bug'}
+                            </strong>
+                            <small>{i18nMenu?.reportBug?.description}</small>
                         </span>
                         <IconChevronRight size={16} className='sideMenuChevron' />
                     </button>
@@ -97,6 +104,7 @@ const AccountSidebar = ({
             <BugReportModal
                 opened={bugModalOpened}
                 onClose={() => setBugModalOpened(false)}
+                texts={bugModalTexts}
             />
         </aside>
     );

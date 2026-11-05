@@ -199,8 +199,7 @@ const SongInfo = ({
                                 gap: '0.35rem',
                                 fontWeight: 700,
                                 color: '#f59e0b',
-                            }}
-                        >
+                            }}>
                             <IconStarFilled size={14} style={{ color: '#f59e0b' }} />
                             {Number(averageScore).toFixed(1)}
                         </p>
@@ -210,8 +209,7 @@ const SongInfo = ({
                         {postedBy ? (
                             <Link
                                 href={`/editors/${getSlugifiedValue([postedBy])}`}
-                                style={{ textDecoration: 'underline', fontWeight: 600 }}
-                            >
+                                style={{ textDecoration: 'underline', fontWeight: 600 }}>
                                 {postedBy}
                             </Link>
                         ) : (
@@ -228,8 +226,7 @@ const SongInfo = ({
                             {i18n.labels.artist}:{' '}
                             <Link
                                 href={`/artists/${getSlugifiedValue([artist])}`}
-                                style={{ textDecoration: 'underline', fontWeight: 600 }}
-                            >
+                                style={{ textDecoration: 'underline', fontWeight: 600 }}>
                                 {artist}
                             </Link>
                         </p>

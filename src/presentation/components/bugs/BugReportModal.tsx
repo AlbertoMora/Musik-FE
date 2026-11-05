@@ -59,6 +59,7 @@ export interface BugReportModalTexts {
     errorSizeLimit: string;
     errorInvalidFields: string;
     errorUploadFailed: string;
+    deleteFileAria?: string;
 }
 
 const DEFAULT_TEXTS_ES: BugReportModalTexts = esDict.app.footer.bugReportModal;
@@ -381,7 +382,7 @@ export const BugReportModal: React.FC<BugReportModalProps> = ({ opened, onClose,
                                                 color='red'
                                                 variant='subtle'
                                                 onClick={() => removeFileAt(idx)}
-                                                aria-label='Eliminar archivo'>
+                                                aria-label={t.deleteFileAria || 'Eliminar archivo'}>
                                                 <IconTrash size={16} />
                                             </ActionIcon>
                                         </Group>

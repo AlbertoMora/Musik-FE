@@ -188,6 +188,7 @@ const AccountPageClient = ({ i18n }: IAccountPageClientProps) => {
                     onSelectSection={setActiveSection}
                     isAdmin={Boolean(sessionUser?.isAdmin)}
                     isDeveloper={Boolean(sessionUser?.isDeveloper)}
+                    i18nMenu={i18n.menu}
                 />
 
                 <div className='sections'>

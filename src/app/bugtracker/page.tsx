@@ -7,7 +7,7 @@ import BugtrackerPageClient from './BugtrackerPageClient';
 import { Metadata } from 'next';
 
 export async function generateMetadata(): Promise<Metadata> {
-    const { app, unauthorized } = (await getI18n(headers)) ?? {};
+    const { app, unauthorized, bugtracker } = (await getI18n(headers)) ?? {};
     const session = await getSessionInfoAction();
     const hasAccess = Boolean(session?.user?.isAdmin || session?.user?.isDeveloper);
 
@@ -19,13 +19,13 @@ export async function generateMetadata(): Promise<Metadata> {
     }
 
     return {
-        title: `Bugtracker | ${app?.title ?? 'Sonnetia'}`,
-        description: 'Gestión y seguimiento de reportes de bugs en Sonnetia',
+        title: `${bugtracker?.metaTitle ?? 'Bugtracker'} | ${app?.title ?? 'Sonnetia'}`,
+        description: bugtracker?.metaDescription ?? '',
     };
 }
 
 const BugtrackerPage = async () => {
-    const { unauthorized } = await getI18n(headers);
+    const { unauthorized, bugtracker } = await getI18n(headers);
     const session = await getSessionInfoAction();
     const hasAccess = Boolean(session?.user?.isAdmin || session?.user?.isDeveloper);
 
@@ -33,7 +33,7 @@ const BugtrackerPage = async () => {
         return <Unauthorized401 i18n={unauthorized} />;
     }
 
-    return <BugtrackerPageClient sessionUser={session.user} />;
+    return <BugtrackerPageClient sessionUser={session.user} i18n={bugtracker} />;
 };
 
 export default BugtrackerPage;

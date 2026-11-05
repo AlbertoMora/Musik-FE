@@ -40,17 +40,12 @@ import {
 } from '@/infrastructure/adapters/bugs/bugs-actions';
 import { NotificationsService } from '@/presentation/services/notification-service';
 import { BugReportModal } from '@/presentation/components/bugs/BugReportModal';
+import { I18nTypes } from '@/i18n/dictionaries';
 
 interface BugtrackerPageClientProps {
     sessionUser: ILocalSessionData['user'];
+    i18n?: I18nTypes['bugtracker'];
 }
-
-const STATUS_LABELS: Record<BugStatus, string> = {
-    open: 'Abierto',
-    in_progress: 'En Progreso',
-    resolved: 'Resuelto',
-    closed: 'Cerrado',
-};
 
 const STATUS_COLORS: Record<BugStatus, string> = {
     open: 'red',
@@ -59,7 +54,7 @@ const STATUS_COLORS: Record<BugStatus, string> = {
     closed: 'gray',
 };
 
-const BugtrackerPageClient: React.FC<BugtrackerPageClientProps> = ({ sessionUser }) => {
+const BugtrackerPageClient: React.FC<BugtrackerPageClientProps> = ({ sessionUser, i18n }) => {
     const isAdmin = Boolean(sessionUser?.isAdmin);
 
     const [bugs, setBugs] = useState<IBugDTO[]>([]);
@@ -70,6 +65,13 @@ const BugtrackerPageClient: React.FC<BugtrackerPageClientProps> = ({ sessionUser
     const [selectedBug, setSelectedBug] = useState<IBugDTO | null>(null);
     const [updatingBugId, setUpdatingBugId] = useState<string | null>(null);
     const [createModalOpened, setCreateModalOpened] = useState(false);
+
+    const getStatusLabel = useCallback(
+        (status: BugStatus) => {
+            return i18n?.statuses?.[status] || status;
+        },
+        [i18n],
+    );
 
     const fetchBugs = useCallback(async () => {
         setLoading(true);
@@ -85,12 +87,14 @@ const BugtrackerPageClient: React.FC<BugtrackerPageClientProps> = ({ sessionUser
             }
         } else {
             NotificationsService.error({
-                title: 'Error',
-                message: 'No se pudieron cargar los tickets de bugs.',
+                title: i18n?.notifications?.loadErrorTitle || 'Error',
+                message:
+                    i18n?.notifications?.loadErrorMessage ||
+                    'No se pudieron cargar los tickets de bugs.',
             });
         }
         setLoading(false);
-    }, [statusFilter, searchQuery]);
+    }, [statusFilter, searchQuery, i18n]);
 
     useEffect(() => {
         fetchBugs();
@@ -107,14 +111,19 @@ const BugtrackerPageClient: React.FC<BugtrackerPageClientProps> = ({ sessionUser
             if (selectedBug?._id === bugId) {
                 setSelectedBug(updated);
             }
+            const statusLabel = getStatusLabel(newStatus);
             NotificationsService.success({
-                title: 'Estado actualizado',
-                message: `El ticket ahora está en estado "${STATUS_LABELS[newStatus]}".`,
+                title: i18n?.notifications?.statusSuccessTitle || 'Estado actualizado',
+                message:
+                    i18n?.notifications?.statusSuccessMessage?.replace('{status}', statusLabel) ||
+                    `El ticket ahora está en estado "${statusLabel}".`,
             });
         } else {
             NotificationsService.error({
-                title: 'Error',
-                message: 'No se pudo actualizar el estado del ticket.',
+                title: i18n?.notifications?.statusErrorTitle || 'Error',
+                message:
+                    i18n?.notifications?.statusErrorMessage ||
+                    'No se pudo actualizar el estado del ticket.',
             });
         }
     };
@@ -131,25 +140,38 @@ const BugtrackerPageClient: React.FC<BugtrackerPageClientProps> = ({ sessionUser
                 setSelectedBug(updated);
             }
             NotificationsService.success({
-                title: 'Asignación actualizada',
-                message: updated.assignedToUsername
-                    ? `Bug asignado a @${updated.assignedToUsername} (OpenFGA actualizado).`
-                    : 'El bug ha quedado sin asignar.',
+                title: i18n?.notifications?.assignSuccessTitle || 'Bug reasignado',
+                message:
+                    i18n?.notifications?.assignSuccessMessage ||
+                    (updated.assignedToUsername
+                        ? `Bug asignado a @${updated.assignedToUsername} (OpenFGA actualizado).`
+                        : 'El bug ha quedado sin asignar.'),
             });
         } else {
             NotificationsService.error({
-                title: 'Error',
-                message: 'No se pudo reasignar el ticket.',
+                title: i18n?.notifications?.assignErrorTitle || 'Error',
+                message:
+                    i18n?.notifications?.assignErrorMessage ||
+                    'No se pudo reasignar el ticket.',
             });
         }
     };
 
+    const unassignedLabel = i18n?.card?.unassigned || 'Sin asignar';
+
     const developerOptions = [
-        { value: '__unassigned__', label: 'Sin asignar' },
+        { value: '__unassigned__', label: unassignedLabel },
         ...developers.map(dev => ({
             value: dev.id,
             label: `@${dev.username}${dev.name ? ` (${dev.name})` : ''}`,
         })),
+    ];
+
+    const statusOptions = [
+        { value: 'open', label: i18n?.statuses?.open || 'Abierto' },
+        { value: 'in_progress', label: i18n?.statuses?.in_progress || 'En Progreso' },
+        { value: 'resolved', label: i18n?.statuses?.resolved || 'Resuelto' },
+        { value: 'closed', label: i18n?.statuses?.closed || 'Cerrado' },
     ];
 
     const stats = {
@@ -187,18 +209,21 @@ const BugtrackerPageClient: React.FC<BugtrackerPageClientProps> = ({ sessionUser
                             </div>
                             <div>
                                 <Group gap='xs'>
-                                    <Title order={2}>Bugtracker</Title>
+                                    <Title order={2}>
+                                        {i18n?.header?.title || 'Bugtracker'}
+                                    </Title>
                                     <Badge
                                         color={isAdmin ? 'red' : 'violet'}
                                         variant='filled'
                                         size='sm'>
-                                        {isAdmin ? 'Vista Admin (Total)' : 'Vista Developer (OpenFGA)'}
+                                        {isAdmin ? 'Admin' : 'Developer'}
                                     </Badge>
                                 </Group>
                                 <Text size='sm' c='dimmed'>
-                                    {isAdmin
-                                        ? 'Supervisa todos los reportes, estado de resolución y reasigna tickets a los desarrolladores.'
-                                        : 'Visualiza y gestiona los tickets de bugs asignados a tu cuenta mediante OpenFGA.'}
+                                    {i18n?.header?.description ||
+                                        (isAdmin
+                                            ? 'Supervisa todos los reportes, estado de resolución y reasigna tickets a los desarrolladores.'
+                                            : 'Visualiza y gestiona los tickets de bugs asignados a tu cuenta mediante OpenFGA.')}
                                 </Text>
                             </div>
                         </Group>
@@ -210,13 +235,13 @@ const BugtrackerPageClient: React.FC<BugtrackerPageClientProps> = ({ sessionUser
                                 leftSection={<IconRefresh size={16} />}
                                 onClick={fetchBugs}
                                 loading={loading}>
-                                Actualizar
+                                {i18n?.header?.refreshBtn || 'Actualizar'}
                             </Button>
                             <Button
                                 color='red'
                                 leftSection={<IconBug size={16} />}
                                 onClick={() => setCreateModalOpened(true)}>
-                                Nuevo Reporte
+                                {i18n?.header?.reportBugBtn || 'Reportar Bug'}
                             </Button>
                         </Group>
                     </Group>
@@ -224,7 +249,7 @@ const BugtrackerPageClient: React.FC<BugtrackerPageClientProps> = ({ sessionUser
                     <SimpleGrid cols={{ base: 2, sm: 4 }} mt='lg'>
                         <Card radius='md' p='sm' withBorder>
                             <Text size='xs' c='dimmed'>
-                                Total Listados
+                                {i18n?.stats?.total || 'Total'}
                             </Text>
                             <Text fw={800} size='xl'>
                                 {stats.total}
@@ -232,7 +257,7 @@ const BugtrackerPageClient: React.FC<BugtrackerPageClientProps> = ({ sessionUser
                         </Card>
                         <Card radius='md' p='sm' withBorder>
                             <Text size='xs' c='red'>
-                                Abiertos
+                                {i18n?.stats?.open || 'Abiertos'}
                             </Text>
                             <Text fw={800} size='xl' c='red'>
                                 {stats.open}
@@ -240,7 +265,7 @@ const BugtrackerPageClient: React.FC<BugtrackerPageClientProps> = ({ sessionUser
                         </Card>
                         <Card radius='md' p='sm' withBorder>
                             <Text size='xs' c='yellow'>
-                                En Progreso
+                                {i18n?.stats?.inProgress || 'En Progreso'}
                             </Text>
                             <Text fw={800} size='xl' c='yellow'>
                                 {stats.inProgress}
@@ -248,7 +273,7 @@ const BugtrackerPageClient: React.FC<BugtrackerPageClientProps> = ({ sessionUser
                         </Card>
                         <Card radius='md' p='sm' withBorder>
                             <Text size='xs' c='teal'>
-                                Resueltos / Cerrados
+                                {i18n?.stats?.resolved || 'Resueltos'}
                             </Text>
                             <Text fw={800} size='xl' c='teal'>
                                 {stats.resolved}
@@ -261,7 +286,10 @@ const BugtrackerPageClient: React.FC<BugtrackerPageClientProps> = ({ sessionUser
                 <Card radius='md' p='md' withBorder>
                     <Group justify='space-between' wrap='wrap' gap='md'>
                         <TextInput
-                            placeholder='Buscar por título, descripción o autor...'
+                            placeholder={
+                                i18n?.filters?.searchPlaceholder ||
+                                'Buscar por título, contenido o usuario...'
+                            }
                             leftSection={<IconSearch size={16} />}
                             value={searchQuery}
                             onChange={e => setSearchQuery(e.currentTarget.value)}
@@ -271,11 +299,20 @@ const BugtrackerPageClient: React.FC<BugtrackerPageClientProps> = ({ sessionUser
                             value={statusFilter}
                             onChange={setStatusFilter}
                             data={[
-                                { label: 'Todos', value: 'all' },
-                                { label: 'Abiertos', value: 'open' },
-                                { label: 'En Progreso', value: 'in_progress' },
-                                { label: 'Resueltos', value: 'resolved' },
-                                { label: 'Cerrados', value: 'closed' },
+                                { label: i18n?.filters?.statusAll || 'Todos', value: 'all' },
+                                { label: i18n?.filters?.statusOpen || 'Abiertos', value: 'open' },
+                                {
+                                    label: i18n?.filters?.statusInProgress || 'En Progreso',
+                                    value: 'in_progress',
+                                },
+                                {
+                                    label: i18n?.filters?.statusResolved || 'Resueltos',
+                                    value: 'resolved',
+                                },
+                                {
+                                    label: i18n?.filters?.statusClosed || 'Cerrados',
+                                    value: 'closed',
+                                },
                             ]}
                         />
                     </Group>
@@ -286,18 +323,19 @@ const BugtrackerPageClient: React.FC<BugtrackerPageClientProps> = ({ sessionUser
                     <Stack align='center' py='xl'>
                         <Loader color='red' />
                         <Text size='sm' c='dimmed'>
-                            Cargando reportes de bugs...
+                            {i18n?.loading || 'Cargando tickets de bugs...'}
                         </Text>
                     </Stack>
                 ) : bugs.length === 0 ? (
                     <Card radius='md' p='xl' withBorder ta='center'>
                         <Stack align='center' gap='xs'>
                             <IconBug size={40} color='gray' />
-                            <Title order={4}>No hay reportes de bugs para mostrar</Title>
+                            <Title order={4}>
+                                {i18n?.empty?.title || 'No se encontraron reportes de bugs'}
+                            </Title>
                             <Text size='sm' c='dimmed'>
-                                {isAdmin
-                                    ? 'Aún no se han registrado reportes con los filtros actuales.'
-                                    : 'No tienes tickets de bugs asignados actualmente con estos filtros.'}
+                                {i18n?.empty?.description ||
+                                    'No hay tickets que coincidan con los filtros seleccionados o aún no se han reportado errores.'}
                             </Text>
                         </Stack>
                     </Card>
@@ -320,7 +358,7 @@ const BugtrackerPageClient: React.FC<BugtrackerPageClientProps> = ({ sessionUser
                                             <Badge
                                                 color={STATUS_COLORS[bug.status] || 'gray'}
                                                 variant='filled'>
-                                                {STATUS_LABELS[bug.status] || bug.status}
+                                                {getStatusLabel(bug.status)}
                                             </Badge>
                                             <Group gap={6}>
                                                 <IconCalendar size={14} />
@@ -346,7 +384,8 @@ const BugtrackerPageClient: React.FC<BugtrackerPageClientProps> = ({ sessionUser
                                                 variant='light'
                                                 color='grape'
                                                 leftSection={<IconUser size={12} />}>
-                                                Reportado por: @{bug.reportedBy?.username || 'usuario'}
+                                                {i18n?.card?.reportedBy || 'Reportado por:'} @
+                                                {bug.reportedBy?.username || 'usuario'}
                                             </Badge>
 
                                             <Badge
@@ -354,8 +393,8 @@ const BugtrackerPageClient: React.FC<BugtrackerPageClientProps> = ({ sessionUser
                                                 color={bug.assignedTo ? 'blue' : 'gray'}
                                                 leftSection={<IconUserCheck size={12} />}>
                                                 {bug.assignedToUsername
-                                                    ? `Asignado: @${bug.assignedToUsername}`
-                                                    : 'Sin asignar'}
+                                                    ? `${i18n?.card?.assignedTo || 'Asignado a:'} @${bug.assignedToUsername}`
+                                                    : unassignedLabel}
                                             </Badge>
 
                                             {Array.isArray(bug.media) && bug.media.length > 0 && (
@@ -363,7 +402,8 @@ const BugtrackerPageClient: React.FC<BugtrackerPageClientProps> = ({ sessionUser
                                                     variant='outline'
                                                     color='red'
                                                     leftSection={<IconPhoto size={12} />}>
-                                                    {bug.media.length} adjunto(s)
+                                                    {bug.media.length}{' '}
+                                                    {i18n?.card?.attachments || 'Adjuntos'}
                                                 </Badge>
                                             )}
                                         </Group>
@@ -378,7 +418,7 @@ const BugtrackerPageClient: React.FC<BugtrackerPageClientProps> = ({ sessionUser
                                         }}>
                                         <Select
                                             size='xs'
-                                            label='Estado del bug'
+                                            label={i18n?.detailModal?.status || 'Estado'}
                                             value={bug.status}
                                             disabled={updatingBugId === bug._id}
                                             onChange={val => {
@@ -386,19 +426,14 @@ const BugtrackerPageClient: React.FC<BugtrackerPageClientProps> = ({ sessionUser
                                                     handleStatusChange(bug._id, val as BugStatus);
                                                 }
                                             }}
-                                            data={[
-                                                { value: 'open', label: 'Abierto' },
-                                                { value: 'in_progress', label: 'En Progreso' },
-                                                { value: 'resolved', label: 'Resuelto' },
-                                                { value: 'closed', label: 'Cerrado' },
-                                            ]}
+                                            data={statusOptions}
                                             style={{ width: 155 }}
                                         />
 
                                         {isAdmin && (
                                             <Select
                                                 size='xs'
-                                                label='Asignar Developer'
+                                                label={i18n?.card?.reassignLabel || 'Asignar developer:'}
                                                 value={bug.assignedTo ?? '__unassigned__'}
                                                 disabled={updatingBugId === bug._id}
                                                 onChange={val => {
@@ -419,7 +454,7 @@ const BugtrackerPageClient: React.FC<BugtrackerPageClientProps> = ({ sessionUser
                                             color='red'
                                             mt={18}
                                             onClick={() => setSelectedBug(bug)}>
-                                            Ver Detalle
+                                            {i18n?.card?.viewDetailsBtn || 'Ver detalles'}
                                         </Button>
                                     </Group>
                                 </Card>
@@ -439,7 +474,9 @@ const BugtrackerPageClient: React.FC<BugtrackerPageClientProps> = ({ sessionUser
                 title={
                     <Group gap='xs'>
                         <IconBug size={20} color='#ef4444' />
-                        <Text fw={700}>Detalle del Ticket</Text>
+                        <Text fw={700}>
+                            {i18n?.detailModal?.title || 'Detalle del Reporte de Bug'}
+                        </Text>
                     </Group>
                 }>
                 {selectedBug && (
@@ -449,7 +486,7 @@ const BugtrackerPageClient: React.FC<BugtrackerPageClientProps> = ({ sessionUser
                                 size='lg'
                                 color={STATUS_COLORS[selectedBug.status] || 'gray'}
                                 variant='filled'>
-                                {STATUS_LABELS[selectedBug.status] || selectedBug.status}
+                                {getStatusLabel(selectedBug.status)}
                             </Badge>
                             <Text size='xs' c='dimmed'>
                                 ID: {selectedBug._id}
@@ -466,24 +503,31 @@ const BugtrackerPageClient: React.FC<BugtrackerPageClientProps> = ({ sessionUser
 
                         <Group gap='md'>
                             <Text size='sm'>
-                                <strong>Reportado por:</strong> @{selectedBug.reportedBy?.username}
+                                <strong>{i18n?.card?.reportedBy || 'Reportado por:'}</strong> @
+                                {selectedBug.reportedBy?.username}
                             </Text>
                             <Text size='sm'>
-                                <strong>Asignado a:</strong>{' '}
+                                <strong>{i18n?.card?.assignedTo || 'Asignado a:'}</strong>{' '}
                                 {selectedBug.assignedToUsername
                                     ? `@${selectedBug.assignedToUsername}`
-                                    : 'Sin asignar'}
+                                    : unassignedLabel}
                             </Text>
                         </Group>
 
                         {Array.isArray(selectedBug.media) && selectedBug.media.length > 0 && (
                             <Stack gap='xs'>
                                 <Text fw={600} size='sm'>
-                                    Archivos Adjuntos ({selectedBug.media.length})
+                                    {i18n?.detailModal?.evidence ||
+                                        'Evidencia adjunta (Imágenes / Videos)'}{' '}
+                                    ({selectedBug.media.length})
                                 </Text>
                                 <SimpleGrid cols={{ base: 1, sm: 2 }} spacing='sm'>
                                     {selectedBug.media.map((m, idx) => (
-                                        <Card key={`${m.key}-${idx}`} withBorder radius='md' p='xs'>
+                                        <Card
+                                            key={`${m.key}-${idx}`}
+                                            withBorder
+                                            radius='md'
+                                            p='xs'>
                                             <Stack gap='xs'>
                                                 {m.type?.startsWith('video/') ? (
                                                     m.url ? (
@@ -503,6 +547,7 @@ const BugtrackerPageClient: React.FC<BugtrackerPageClientProps> = ({ sessionUser
                                                         </Group>
                                                     )
                                                 ) : m.url ? (
+                                                    /* eslint-disable-next-line @next/next/no-img-element */
                                                     <img
                                                         src={m.url}
                                                         alt={m.name}
@@ -521,7 +566,10 @@ const BugtrackerPageClient: React.FC<BugtrackerPageClientProps> = ({ sessionUser
                                                 )}
 
                                                 <Group justify='space-between'>
-                                                    <Text size='xs' truncate style={{ maxWidth: 160 }}>
+                                                    <Text
+                                                        size='xs'
+                                                        truncate
+                                                        style={{ maxWidth: 160 }}>
                                                         {m.name}
                                                     </Text>
                                                     {m.url && (
@@ -532,8 +580,11 @@ const BugtrackerPageClient: React.FC<BugtrackerPageClientProps> = ({ sessionUser
                                                             rel='noreferrer'
                                                             size='compact-xs'
                                                             variant='subtle'
-                                                            rightSection={<IconExternalLink size={12} />}>
-                                                            Abrir
+                                                            rightSection={
+                                                                <IconExternalLink size={12} />
+                                                            }>
+                                                            {i18n?.detailModal?.viewEvidence ||
+                                                                'Ver archivo'}
                                                         </Button>
                                                     )}
                                                 </Group>
@@ -546,24 +597,22 @@ const BugtrackerPageClient: React.FC<BugtrackerPageClientProps> = ({ sessionUser
 
                         <Group justify='space-between' mt='md'>
                             <Select
-                                label='Actualizar Estado'
+                                label={i18n?.detailModal?.changeStatus || 'Cambiar Estado'}
                                 value={selectedBug.status}
                                 onChange={val => {
                                     if (val) {
                                         handleStatusChange(selectedBug._id, val as BugStatus);
                                     }
                                 }}
-                                data={[
-                                    { value: 'open', label: 'Abierto' },
-                                    { value: 'in_progress', label: 'En Progreso' },
-                                    { value: 'resolved', label: 'Resuelto' },
-                                    { value: 'closed', label: 'Cerrado' },
-                                ]}
+                                data={statusOptions}
                             />
 
                             {isAdmin && (
                                 <Select
-                                    label='Reasignar Developer'
+                                    label={
+                                        i18n?.detailModal?.reassignDeveloper ||
+                                        'Reasignar a Developer'
+                                    }
                                     value={selectedBug.assignedTo ?? '__unassigned__'}
                                     onChange={val => {
                                         const devId =

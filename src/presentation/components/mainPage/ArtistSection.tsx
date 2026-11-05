@@ -10,6 +10,7 @@ import { ISongRes } from '@/domain/songs/song-gateway';
 import { getSlugifiedValue } from '@/utils/text-utils';
 import { useSetState } from '@mantine/hooks';
 import { Text } from '@mantine/core';
+import { I18nTypes } from '@/i18n/dictionaries';
 
 interface IState {
     topArtists: [] | IArtistModel[];
@@ -17,7 +18,11 @@ interface IState {
     bestRatedSongs: [] | ISongRes[];
 }
 
-const ArtistSection = () => {
+interface ArtistSectionProps {
+    i18n?: I18nTypes['main']['popular'];
+}
+
+const ArtistSection = ({ i18n }: ArtistSectionProps) => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [tops, setTops] = useSetState<IState>({
         topArtists: [],
@@ -61,24 +66,24 @@ const ArtistSection = () => {
             <h2 className='flex items-center justify-center w-full'>
                 <IconFlame size={25} />{' '}
                 <Text fw={600} size='xl'>
-                    Lo más popular
+                    {i18n?.title || 'Lo más popular'}
                 </Text>
             </h2>
             <hr />
             <div className='popular-container'>
                 <div className='popular-top'>
                     <Text fw={600} size='lg'>
-                        Canciones más populares
+                        {i18n?.topSongs || 'Canciones más populares'}
                     </Text>
                     {isLoading ? (
                         <ArtistSkeleton />
                     ) : (
-                        <SectionMapper type='lyric' data={tops.topSongs} />
+                        <SectionMapper type='lyric' data={tops.topSongs} byLabel={i18n?.by} />
                     )}
                 </div>
                 <div className='popular-top'>
                     <Text fw={600} size='lg'>
-                        Artistas más populares
+                        {i18n?.topArtists || 'Artistas más populares'}
                     </Text>
                     {isLoading ? (
                         <ArtistSkeleton />
@@ -88,12 +93,12 @@ const ArtistSection = () => {
                 </div>
                 <div className='popular-top'>
                     <Text fw={600} size='lg'>
-                        Las mejor calificadas
+                        {i18n?.bestRated || 'Las mejor calificadas'}
                     </Text>
                     {isLoading ? (
                         <ArtistSkeleton />
                     ) : (
-                        <SectionMapper type='lyric' data={tops.bestRatedSongs} showRating />
+                        <SectionMapper type='lyric' data={tops.bestRatedSongs} showRating byLabel={i18n?.by} />
                     )}
                 </div>
             </div>
@@ -105,9 +110,10 @@ interface ISectionMapperProps {
     data: IArtistModel[] | ISongRes[];
     type: 'artist' | 'lyric';
     showRating?: boolean;
+    byLabel?: string;
 }
 
-const SectionMapper = ({ data, type, showRating = false }: ISectionMapperProps) => {
+const SectionMapper = ({ data, type, showRating = false, byLabel = 'de' }: ISectionMapperProps) => {
     return (
         <>
             {data.map(e => {
@@ -131,7 +137,7 @@ const SectionMapper = ({ data, type, showRating = false }: ISectionMapperProps) 
                         {type === 'lyric' ? <IconMusic size={15} /> : <IconMicrophone size={17} />}
                         <span className={type === 'artist' ? 'flex-1' : ''}>
                             {e.name}
-                            {type === 'lyric' && ` de ${(e as ISongRes).artist_name}`}
+                            {type === 'lyric' && ` ${byLabel} ${(e as ISongRes).artist_name}`}
                         </span>
                         {showRating && avgRate > 0 && (
                             <span

@@ -24,8 +24,8 @@ export default async function Home() {
             <BetaNoticeBanner i18n={main?.betaNotice} />
             <Image src='/resources/musik-logo1.png' alt='Musik logo' width={150} height={150} />
             <MusikSearchBar i18n={main} />
-            <ArtistSection />
-            <div>Ad banner</div>
+            <ArtistSection i18n={main?.popular} />
+            <div>{main?.adBanner}</div>
         </div>
     );
 }
